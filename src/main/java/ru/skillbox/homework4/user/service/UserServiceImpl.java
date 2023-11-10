@@ -81,6 +81,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.findById(id).ifPresent(userRepository::delete);
         log.info("User with id {} deleted", id);
+
         return UserMapper.USER_MAPPER.toUserDto(user);
     }
 }
