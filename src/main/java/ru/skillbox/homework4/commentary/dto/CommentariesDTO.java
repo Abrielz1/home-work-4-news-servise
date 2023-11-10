@@ -1,6 +1,5 @@
-package ru.skillbox.homework4.model;
+package ru.skillbox.homework4.commentary.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,14 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@Entity
-@Table(name = "commentaries")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Commentary {
+public class CommentariesDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 }
