@@ -9,4 +9,6 @@ public interface NewsService {
     List<NewsDto> findAll(PageRequest page);
 
     NewsDto findNewsById(Long id);
+
+    NewsDto deleteNewsById(Long id);
 }

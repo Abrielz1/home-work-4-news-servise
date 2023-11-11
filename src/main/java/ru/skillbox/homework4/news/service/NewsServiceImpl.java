@@ -21,6 +21,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<NewsDto> findAll(PageRequest page) {
+
+        log.info("List of news was sent!");
+
         return newsRepository.findAll(page)
                 .stream().map(NewsMapper.NEWS_MAPPER::toNewsDto)
                 .collect(Collectors.toList());
@@ -30,14 +33,31 @@ public class NewsServiceImpl implements NewsService {
     public NewsDto findNewsById(Long id) {
 
         News news = newsRepository.findById(id).orElseThrow( () -> {
-            log.warn("");
-            return new ObjectNotFoundException("");
+            log.warn("news with id: {} not present!", id);
+
+            return new ObjectNotFoundException("News not Found!");
         });
 
         //todo добавить коментарии
+        log.info("news with id: {} was sent", id);
 
         return NewsMapper.NEWS_MAPPER.toNewsDto(news);
     }
 
+    //Todo: create
+    // update
 
+    @Override
+    public NewsDto deleteNewsById(Long id) {
+
+        News news = newsRepository.findById(id).orElseThrow( ()-> {
+            log.warn("news with id: {} not present!", id);
+            return new ObjectNotFoundException("News not Found!");
+        });
+
+        newsRepository.deleteById(id);
+        log.info("news with id: {} was deleted!", id);
+
+        return NewsMapper.NEWS_MAPPER.toNewsDto(news);
+    }
 }
