@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.homework4.news.model.category.NewsCategory;
+import ru.skillbox.homework4.user.dto.UserDto;
 
 @Data
 @Builder

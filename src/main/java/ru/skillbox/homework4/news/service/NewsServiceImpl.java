@@ -9,6 +9,8 @@ import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.mapper.NewsMapper;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.repository.NewsRepository;
+import ru.skillbox.homework4.user.model.User;
+import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
 public class NewsServiceImpl implements NewsService {
 
     private final NewsRepository newsRepository;
+
+    private final UserRepository userRepository;
 
     @Override
     public List<NewsDto> findAll(PageRequest page) {
@@ -32,8 +36,8 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsDto findNewsById(Long id) {
 
-        News news = newsRepository.findById(id).orElseThrow( () -> {
-            log.warn("news with id: {} not present!", id);
+        News news = newsRepository.findById(id).orElseThrow(() -> {
+        log.warn("news with id: {} not present!", id);
 
             return new ObjectNotFoundException("News not Found!");
         });
@@ -44,13 +48,54 @@ public class NewsServiceImpl implements NewsService {
         return NewsMapper.NEWS_MAPPER.toNewsDto(news);
     }
 
-    //Todo: create
-    // update
+    @Override
+    public NewsDto createNews(Long id, NewsDto newsDto) {
+        //todo добавить коментарии
+
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            log.warn("Пользователь с id {} не найден", id);
+            return new ObjectNotFoundException("Пользователь не найден");
+        });
+
+        log.info("News was created");
+        News news = newsRepository.save(NewsMapper.NEWS_MAPPER.toNews(newsDto, user));
+
+        return NewsMapper.NEWS_MAPPER.toNewsDto(news);
+    }
+
+    @Override
+    public NewsDto updateNewsById(Long userId, Long newsId, NewsDto newsDto) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            log.warn("Пользователь с id {} не найден", userId);
+            return new ObjectNotFoundException("Пользователь не найден");
+        });
+
+        News news = newsRepository.findById(newsId).orElseThrow(() -> {
+            log.warn("news with id: {} not present!", newsId);
+
+            return new ObjectNotFoundException("News not Found!");
+        });
+
+        if (newsDto.getNewsMessage() != null) {
+            news.setNewsMessage(newsDto.getNewsMessage());
+        }
+
+        if (newsDto.getNewsCategory() != null) {
+            news.setNewsCategory(newsDto.getNewsCategory());
+        }
+
+        newsRepository.save(news);
+        log.info("news was updated");
+        //todo добавить коментарии
+
+        return NewsMapper.NEWS_MAPPER.toNewsDto(news);
+    }
 
     @Override
     public NewsDto deleteNewsById(Long id) {
 
-        News news = newsRepository.findById(id).orElseThrow( ()-> {
+        News news = newsRepository.findById(id).orElseThrow(() -> {
             log.warn("news with id: {} not present!", id);
             return new ObjectNotFoundException("News not Found!");
         });
