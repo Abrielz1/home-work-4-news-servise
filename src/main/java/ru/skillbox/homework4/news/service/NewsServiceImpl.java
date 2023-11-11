@@ -8,7 +8,6 @@ import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.mapper.NewsMapper;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.repository.NewsRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
