@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.mapper.NewsMapper;
 import ru.skillbox.homework4.news.model.News;
@@ -24,4 +25,19 @@ public class NewsServiceImpl implements NewsService {
                 .stream().map(NewsMapper.NEWS_MAPPER::toNewsDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public NewsDto findNewsById(Long id) {
+
+        News news = newsRepository.findById(id).orElseThrow( () -> {
+            log.warn("");
+            return new ObjectNotFoundException("");
+        });
+
+        //todo добавить коментарии
+
+        return NewsMapper.NEWS_MAPPER.toNewsDto(news);
+    }
+
+
 }
