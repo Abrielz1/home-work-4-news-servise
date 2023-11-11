@@ -1,5 +1,6 @@
 package ru.skillbox.homework4.commentary.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,7 +30,7 @@ public class Commentary {
 
     private String comment;
 
-    @OneToMany
+    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     List<News> listNews;
 
     @ManyToOne

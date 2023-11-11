@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.news.model.News;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,6 @@ public class User {
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private List<News> listNews = new ArrayList<>();
 
-    @ManyToOne
-    private User user;
+    @OneToMany(mappedBy = "commentary", cascade = CascadeType.ALL)
+    private List<Commentary> commentaryList;
 }

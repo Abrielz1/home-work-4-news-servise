@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.user.model.User;
 
+import java.util.List;
+
 @Data
 @Builder
 @Entity
@@ -26,6 +28,6 @@ public class News {
     @ManyToOne
     private User user;
 
-    @ManyToOne
-    private Commentary commentary;
+    @OneToMany(mappedBy = "commentary", cascade = CascadeType.ALL)
+    private List<Commentary> commentaryList;
 }

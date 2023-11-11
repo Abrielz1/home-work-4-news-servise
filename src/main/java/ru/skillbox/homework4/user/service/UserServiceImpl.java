@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
             return new ObjectNotFoundException("User not found");
         });
 
-        userRepository.findById(id).ifPresent(userRepository::delete);
+        userRepository.delete(user);
         log.info("User with id {} deleted", id);
 
         return UserMapper.USER_MAPPER.toUserDto(user);
