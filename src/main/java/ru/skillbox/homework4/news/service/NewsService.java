@@ -1,13 +1,10 @@
 package ru.skillbox.homework4.news.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.PageRequest;
+import ru.skillbox.homework4.news.dto.NewsDto;
+import java.util.List;
 
-@Slf4j
-@Service
-@RequiredArgsConstructor
-public class NewsService {
+public interface NewsService {
 
-
+    List<NewsDto> findAll(PageRequest page);
 }
