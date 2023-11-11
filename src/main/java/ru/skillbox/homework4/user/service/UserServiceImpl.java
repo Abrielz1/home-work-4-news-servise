@@ -23,7 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> findAll(Pageable page) {
+
         log.info("All users sent");
+
        return userRepository.findAll(page)
                .stream().map(UserMapper.USER_MAPPER::toUserDto)
                .collect(Collectors.toList());
@@ -31,8 +33,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getById(long id) {
+
        return UserMapper.USER_MAPPER.toUserDto(userRepository.findById(id).orElseThrow( () -> {
            log.warn("User with id {} not found", id);
+
            return new ObjectNotFoundException("User not found");
        }));
     }
@@ -45,6 +49,7 @@ public class UserServiceImpl implements UserService {
         User user = UserMapper.USER_MAPPER.toUser(userDto);
         userRepository.save(user);
         log.info("User created");
+
         return UserMapper.USER_MAPPER.toUserDto(user);
     }
 
@@ -60,6 +65,7 @@ public class UserServiceImpl implements UserService {
         if (userDto.getEmail() != null) {
             user.setEmail(userDto.getEmail());
         }
+
         if (userDto.getName() != null) {
             user.setName(userDto.getName());
         }

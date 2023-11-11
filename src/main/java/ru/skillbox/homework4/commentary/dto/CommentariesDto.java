@@ -13,4 +13,5 @@ public class CommentariesDto {
 
     private Long id;
 
+    private String commentaryText;
 }

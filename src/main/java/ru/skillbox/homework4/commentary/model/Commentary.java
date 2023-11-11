@@ -1,6 +1,7 @@
 package ru.skillbox.homework4.commentary.model;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +29,8 @@ public class Commentary {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String comment;
+    @Column(name = "commentary_text")
+    private String commentaryText;
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     List<News> listNews;
