@@ -8,11 +8,11 @@ public interface UserService {
 
     List<UserDto> findAll(Pageable page);
 
-    UserDto getById(long id);
+    UserDto getById(Long id);
 
     UserDto create(UserDto userDto);
 
-    UserDto update(long id, UserDto userDto);
+    UserDto update(Long id, UserDto userDto);
 
-    UserDto delete(long id);
+    UserDto delete(Long id);
 }

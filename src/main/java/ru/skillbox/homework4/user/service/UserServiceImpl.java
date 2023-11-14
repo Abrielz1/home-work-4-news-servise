@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getById(long id) {
+    public UserDto getById(Long id) {
 
        return UserMapper.USER_MAPPER.toUserDto(userRepository.findById(id).orElseThrow( () -> {
            log.warn("User with id {} not found", id);
@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
     public UserDto create(UserDto userDto) {
 
         User user = UserMapper.USER_MAPPER.toUser(userDto);
+
         userRepository.save(user);
         log.info("User created");
 
@@ -55,12 +56,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto update(long id, UserDto userDto) {
+    public UserDto update(Long id, UserDto userDto) {
 
-        User user = userRepository.findById(id).orElseThrow(() -> {
-            log.warn("Пользователь с id {} не найден", id);
-            throw new ObjectNotFoundException("Пользователь не найден");
-        });
+        User user = checkUserById(id);
 
         if (userDto.getEmail() != null) {
             user.setEmail(userDto.getEmail());
@@ -78,12 +76,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto delete(long id) {
+    public UserDto delete(Long id) {
 
-        User user = userRepository.findById(id).orElseThrow(() -> {
-            log.warn("User with id {} not found", id);
-            throw new ObjectNotFoundException("User not found");
-        });
+        User user = checkUserById(id);
 
         userRepository.delete(user);
         log.info("User with id {} deleted", id);
@@ -91,5 +86,13 @@ public class UserServiceImpl implements UserService {
         return UserMapper.USER_MAPPER.toUserDto(user);
     }
 
-    // todo: приывиный метод для провекри наличия и выброса исключения в случае отсутствия
+    private User checkUserById(Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            log.warn("User with id {} is not found", userId);
+            return new ObjectNotFoundException("Пользователь не найден");
+        });
+
+        return user;
+    }
 }
