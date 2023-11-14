@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
        return UserMapper.USER_MAPPER.toUserDto(userRepository.findById(id).orElseThrow( () -> {
            log.warn("User with id {} not found", id);
 
-           return new ObjectNotFoundException("User not found");
+           throw new ObjectNotFoundException("User not found");
        }));
     }
 
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findById(id).orElseThrow(() -> {
             log.warn("Пользователь с id {} не найден", id);
-            return new ObjectNotFoundException("Пользователь не найден");
+            throw new ObjectNotFoundException("Пользователь не найден");
         });
 
         if (userDto.getEmail() != null) {
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findById(id).orElseThrow(() -> {
             log.warn("User with id {} not found", id);
-            return new ObjectNotFoundException("User not found");
+            throw new ObjectNotFoundException("User not found");
         });
 
         userRepository.delete(user);
@@ -90,4 +90,6 @@ public class UserServiceImpl implements UserService {
 
         return UserMapper.USER_MAPPER.toUserDto(user);
     }
+
+    // todo: приывиный метод для провекри наличия и выброса исключения в случае отсутствия
 }

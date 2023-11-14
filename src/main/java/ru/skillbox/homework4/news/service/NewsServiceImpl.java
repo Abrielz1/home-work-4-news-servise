@@ -8,6 +8,7 @@ import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.mapper.NewsMapper;
 import ru.skillbox.homework4.news.model.News;
+import ru.skillbox.homework4.news.model.category.NewsCategory;
 import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
@@ -39,7 +40,7 @@ public class NewsServiceImpl implements NewsService {
         News news = newsRepository.findById(id).orElseThrow(() -> {
         log.warn("news with id: {} not present!", id);
 
-            return new ObjectNotFoundException("News not Found!");
+            throw new ObjectNotFoundException("News not Found!");
         });
 
         //todo добавить коментарии
@@ -74,7 +75,7 @@ public class NewsServiceImpl implements NewsService {
         News news = newsRepository.findById(newsId).orElseThrow(() -> {
             log.warn("news with id: {} not present!", newsId);
 
-            return new ObjectNotFoundException("News not Found!");
+            throw new ObjectNotFoundException("News not Found!");
         });
 
         if (newsDto.getNewsMessage() != null) {
@@ -97,7 +98,7 @@ public class NewsServiceImpl implements NewsService {
 
         News news = newsRepository.findById(id).orElseThrow(() -> {
             log.warn("news with id: {} not present!", id);
-            return new ObjectNotFoundException("News not Found!");
+            throw new ObjectNotFoundException("News not Found!");
         });
 
         newsRepository.deleteById(id);
@@ -105,4 +106,37 @@ public class NewsServiceImpl implements NewsService {
 
         return NewsMapper.NEWS_MAPPER.toNewsDto(news);
     }
+
+    // todo: метод управления категориями и проверки права владения.
+
+    @Override
+    public NewsDto changeNewsCategoryById(Long userId, Long newsId, String category) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            log.warn("Пользователь с id {} не найден", userId);
+            return new ObjectNotFoundException("Пользователь не найден");
+        });
+
+        News news = newsRepository.findById(newsId).orElseThrow(() -> {
+            log.warn("news with id: {} not present!", newsId);
+
+            throw new ObjectNotFoundException("News not Found!");
+        });
+
+        switch (category) {
+            case "POLITIC", "SPORT", "AUTO", "CELEBRITY" -> {
+                news.setNewsCategory(NewsCategory.valueOf(category));
+            }
+        }
+
+        newsRepository.save(news);
+        log.info("news was updated");
+        //todo добавить коментарии
+
+        return NewsMapper.NEWS_MAPPER.toNewsDto(news);
+    }
+
+
+
+    // todo: приватный метод для проверки наличия и выброса исключения в случае отсутствия
 }
