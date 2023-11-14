@@ -35,28 +35,21 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public NewsDto findNewsById(Long id) {
+    public NewsDto findNewsById(Long newsId) {
 
-        News news = newsRepository.findById(id).orElseThrow(() -> {
-        log.warn("news with id: {} not present!", id);
-
-            throw new ObjectNotFoundException("News not Found!");
-        });
+        News news = checkNewsById(newsId);;
 
         //todo добавить коментарии
-        log.info("news with id: {} was sent", id);
+        log.info("News with id: {} was sent", newsId);
 
         return NewsMapper.NEWS_MAPPER.toNewsDto(news);
     }
 
     @Override
-    public NewsDto createNews(Long id, NewsDto newsDto) {
+    public NewsDto createNews(Long userId, NewsDto newsDto) {
         //todo добавить коментарии
 
-        User user = userRepository.findById(id).orElseThrow(() -> {
-            log.warn("Пользователь с id {} не найден", id);
-            return new ObjectNotFoundException("Пользователь не найден");
-        });
+        User user = checkUserById(userId);
 
         log.info("News was created");
         News news = newsRepository.save(NewsMapper.NEWS_MAPPER.toNews(newsDto, user));
@@ -67,16 +60,9 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsDto updateNewsById(Long userId, Long newsId, NewsDto newsDto) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("Пользователь с id {} не найден", userId);
-            return new ObjectNotFoundException("Пользователь не найден");
-        });
+        User user = checkUserById(userId);
 
-        News news = newsRepository.findById(newsId).orElseThrow(() -> {
-            log.warn("news with id: {} not present!", newsId);
-
-            throw new ObjectNotFoundException("News not Found!");
-        });
+        News news = checkNewsById(newsId);
 
         if (newsDto.getNewsMessage() != null) {
             news.setNewsMessage(newsDto.getNewsMessage());
@@ -87,22 +73,19 @@ public class NewsServiceImpl implements NewsService {
         }
 
         newsRepository.save(news);
-        log.info("news was updated");
+        log.info("News was updated");
         //todo добавить коментарии
 
         return NewsMapper.NEWS_MAPPER.toNewsDto(news);
     }
 
     @Override
-    public NewsDto deleteNewsById(Long id) {
+    public NewsDto deleteNewsById(Long newsId) {
 
-        News news = newsRepository.findById(id).orElseThrow(() -> {
-            log.warn("news with id: {} not present!", id);
-            throw new ObjectNotFoundException("News not Found!");
-        });
+        News news = checkNewsById(newsId);
 
-        newsRepository.deleteById(id);
-        log.info("news with id: {} was deleted!", id);
+        newsRepository.deleteById(newsId);
+        log.info("News with id: {} was deleted!", newsId);
 
         return NewsMapper.NEWS_MAPPER.toNewsDto(news);
     }
@@ -112,16 +95,9 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsDto changeNewsCategoryById(Long userId, Long newsId, String category) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("Пользователь с id {} не найден", userId);
-            return new ObjectNotFoundException("Пользователь не найден");
-        });
+        User user = checkUserById(userId);
 
-        News news = newsRepository.findById(newsId).orElseThrow(() -> {
-            log.warn("news with id: {} not present!", newsId);
-
-            throw new ObjectNotFoundException("News not Found!");
-        });
+        News news = checkNewsById(newsId);
 
         switch (category) {
             case "POLITIC", "SPORT", "AUTO", "CELEBRITY" -> {
@@ -130,13 +106,28 @@ public class NewsServiceImpl implements NewsService {
         }
 
         newsRepository.save(news);
-        log.info("news was updated");
+        log.info("News was updated");
         //todo добавить коментарии
 
         return NewsMapper.NEWS_MAPPER.toNewsDto(news);
     }
 
 
+    private User checkUserById(Long userId) {
+     User user = userRepository.findById(userId).orElseThrow(() -> {
+            log.warn("User with id {} is not found", userId);
+            return new ObjectNotFoundException("Пользователь не найден");
+        });
+        return user;
+    }
+
+    private News checkNewsById(Long newsId) {
+        News news = newsRepository.findById(newsId).orElseThrow(() -> {
+            log.warn("News with id {} is not found", newsId);
+            return new ObjectNotFoundException("Пользователь не найден");
+        });
+        return news;
+    }
 
     // todo: приватный метод для проверки наличия и выброса исключения в случае отсутствия
 }
