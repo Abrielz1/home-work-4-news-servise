@@ -31,7 +31,7 @@ public class Commentary {
     @Column(name = "commentary_text")
     private String commentaryText;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "news_id")
     News news;
 
