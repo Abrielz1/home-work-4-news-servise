@@ -12,6 +12,8 @@ import ru.skillbox.homework4.news.model.category.NewsCategory;
 import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
+import ru.skillbox.homework4.util.Utils;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,21 +64,27 @@ public class NewsServiceImpl implements NewsService {
 
         User user = checkUserById(userId);
 
-        News news = checkNewsById(newsId);
+        News newsBd = checkNewsById(newsId);
 
-        if (newsDto.getNewsMessage() != null) {
-            news.setNewsMessage(newsDto.getNewsMessage());
-        }
+//        if (newsDto.getNewsMessage() != null) {
+//            news.setNewsMessage(newsDto.getNewsMessage());
+//        }
+//
+//        if (newsDto.getNewsCategory() != null) {
+//            news.setNewsCategory(newsDto.getNewsCategory());
+//        }
 
-        if (newsDto.getNewsCategory() != null) {
-            news.setNewsCategory(newsDto.getNewsCategory());
-        }
+        Utils.copyNonNullProperties(newsDto, newsBd); //todo: проверить
 
-        newsRepository.save(news);
+        newsBd.setUser(user);
+
+        newsRepository.save(newsBd);
         log.info("News was updated");
         //todo добавить коментарии
 
-        return NewsMapper.NEWS_MAPPER.toNewsDto(news);
+
+
+        return NewsMapper.NEWS_MAPPER.toNewsDto(newsBd);
     }
 
     @Override
