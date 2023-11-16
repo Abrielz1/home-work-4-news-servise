@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.commentary.service.CommentaryService;
 import ru.skillbox.homework4.common.Create;
 import ru.skillbox.homework4.common.Update;
@@ -70,9 +71,10 @@ public class NewsController {
     @ResponseStatus(HttpStatus.OK)
     public NewsDto updateNewsById(@RequestHeader(HEADER) Long userId,
                                   @PathVariable(name = "id") Long newsId,
-                                  @Validated(Update.class) @RequestBody NewsDto newsDto) {
+                                  @Validated(Update.class) @RequestBody NewsDto newsDto,
+                                  @RequestParam(required = false) List<CommentariesDto> comments) {
 
-         return newsService.updateNewsById(userId, newsId, newsDto);
+         return newsService.updateNewsById(userId, newsId, newsDto, comments);
     }
 
 

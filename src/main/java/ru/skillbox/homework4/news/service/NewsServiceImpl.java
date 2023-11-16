@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.mapper.NewsMapper;
@@ -13,7 +14,6 @@ import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import ru.skillbox.homework4.util.Utils;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,7 +60,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public NewsDto updateNewsById(Long userId, Long newsId, NewsDto newsDto) {
+    public NewsDto updateNewsById(Long userId, Long newsId, NewsDto newsDto, List<CommentariesDto> comments) {
 
         User user = checkUserById(userId);
 
@@ -81,8 +81,6 @@ public class NewsServiceImpl implements NewsService {
         newsRepository.save(newsBd);
         log.info("News was updated");
         //todo добавить коментарии
-
-
 
         return NewsMapper.NEWS_MAPPER.toNewsDto(newsBd);
     }
