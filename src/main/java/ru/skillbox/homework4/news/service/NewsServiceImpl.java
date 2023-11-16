@@ -128,6 +128,4 @@ public class NewsServiceImpl implements NewsService {
         });
         return news;
     }
-
-    // todo: приватный метод для проверки наличия и выброса исключения в случае отсутствия
 }
