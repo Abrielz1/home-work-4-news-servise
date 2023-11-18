@@ -9,7 +9,6 @@ import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.mapper.NewsMapper;
 import ru.skillbox.homework4.news.model.News;
-import ru.skillbox.homework4.news.model.category.NewsCategory;
 import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
@@ -101,7 +100,7 @@ public class NewsServiceImpl implements NewsService {
     private User checkUserById(Long userId) {
      User user = userRepository.findById(userId).orElseThrow(() -> {
             log.warn("User with id {} is not found", userId);
-            return new ObjectNotFoundException("Пользователь не найден");
+            throw  new ObjectNotFoundException("Пользователь не найден");
         });
         return user;
     }
@@ -109,7 +108,7 @@ public class NewsServiceImpl implements NewsService {
     private News checkNewsById(Long newsId) {
         News news = newsRepository.findById(newsId).orElseThrow(() -> {
             log.warn("News with id {} is not found", newsId);
-            return new ObjectNotFoundException("Пользователь не найден");
+            throw  new ObjectNotFoundException("Пользователь не найден");
         });
         return news;
     }
