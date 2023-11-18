@@ -21,6 +21,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 import ru.skillbox.homework4.commentary.model.Commentary;
+import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.news.model.category.NewsCategory;
 import ru.skillbox.homework4.user.model.User;
 import java.util.List;
@@ -46,13 +47,17 @@ public class News {
     @Enumerated(EnumType.STRING)
     private NewsCategory newsCategory;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY) //todo: проверить на n+1
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Commentary> commentaryList;
+
+    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Category> categoryList;
 
     @Override
     public final boolean equals(Object o) {
