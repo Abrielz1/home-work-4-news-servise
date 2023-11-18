@@ -79,10 +79,6 @@ public class NewsServiceImpl implements NewsService {
 
         newsDto.setCategory(CATEGORY_MAPPER.toCategoryDto(category));
 
-        //         if (newsDto.getNewsCategory() != null) {
-        //       newsBd.setNewsCategory();
-        //        }
-
 //        Utils.copyNonNullProperties(newsDto, newsBd); //todo: проверить
 
   //      newsBd.setUser(user); //
