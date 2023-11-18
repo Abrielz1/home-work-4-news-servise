@@ -60,23 +60,23 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public NewsDto updateNewsById(Long userId, Long newsId, NewsDto newsDto, List<CommentariesDto> comments) {
+    public NewsDto updateNewsById(Long userId, Long newsId, NewsDto newsDto) {
 
         User user = checkUserById(userId);
 
         News newsBd = checkNewsById(newsId);
 
-//        if (newsDto.getNewsMessage() != null) {
-//            news.setNewsMessage(newsDto.getNewsMessage());
-//        }
-//
-//        if (newsDto.getNewsCategory() != null) {
-//            news.setNewsCategory(newsDto.getNewsCategory());
-//        }
+        if (newsDto.getNewsMessage() != null) {
+            newsBd.setNewsMessage(newsDto.getNewsMessage());
+        }
 
-        Utils.copyNonNullProperties(newsDto, newsBd); //todo: проверить
+        if (newsDto.getNewsCategory() != null) {
+            newsBd.setNewsCategory(newsDto.getNewsCategory());
+        }
 
-        newsBd.setUser(user);
+//        Utils.copyNonNullProperties(newsDto, newsBd); //todo: проверить
+
+  //      newsBd.setUser(user); //
 
         newsRepository.save(newsBd);
         log.info("News was updated");
@@ -97,27 +97,6 @@ public class NewsServiceImpl implements NewsService {
     }
 
     // todo: метод управления категориями и проверки права владения.
-
-    @Override
-    public NewsDto changeNewsCategoryById(Long userId, Long newsId, String category) {
-
-        User user = checkUserById(userId);
-
-        News news = checkNewsById(newsId);
-
-        switch (category) {
-            case "POLITIC", "SPORT", "AUTO", "CELEBRITY" -> {
-                news.setNewsCategory(NewsCategory.valueOf(category));
-            }
-        }
-
-        newsRepository.save(news);
-        log.info("News was updated");
-        //todo добавить коментарии
-
-        return NewsMapper.NEWS_MAPPER.toNewsDto(news);
-    }
-
 
     private User checkUserById(Long userId) {
      User user = userRepository.findById(userId).orElseThrow(() -> {

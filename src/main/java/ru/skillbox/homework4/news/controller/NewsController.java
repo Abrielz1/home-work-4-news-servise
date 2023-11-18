@@ -71,10 +71,9 @@ public class NewsController {
     @ResponseStatus(HttpStatus.OK)
     public NewsDto updateNewsById(@RequestHeader(HEADER) Long userId,
                                   @PathVariable(name = "id") Long newsId,
-                                  @Validated(Update.class) @RequestBody NewsDto newsDto,
-                                  @RequestParam(required = false) List<CommentariesDto> comments) {
+                                  @Validated(Update.class) @RequestBody NewsDto newsDto) {
 
-         return newsService.updateNewsById(userId, newsId, newsDto, comments);
+         return newsService.updateNewsById(userId, newsId, newsDto);
     }
 
 
