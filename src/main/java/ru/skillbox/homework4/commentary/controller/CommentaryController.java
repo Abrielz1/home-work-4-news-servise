@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping(path = "/news/commentaries/")
+@RequestMapping(path = "/news/{newsId}/commentaries/")
 @RequiredArgsConstructor
 public class CommentaryController {
 
@@ -36,6 +37,15 @@ public class CommentaryController {
         PageRequest page = PageRequest.of(from / size, size);
 
         return commentaryService.findAllCommentary(page);
+    }
+
+    @GetMapping("/comment{commentaryId}")
+    public CommentariesDto findCommentaryById(@PathVariable Long newsId,
+                                           //   @PathVariable Long userId,
+                                              @PathVariable Long commentaryId) {
+
+
+       return commentaryService.findCommentaryById(newsId, commentaryId);
     }
 
     /*
