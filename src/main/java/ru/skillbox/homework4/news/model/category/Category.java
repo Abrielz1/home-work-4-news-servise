@@ -38,6 +38,7 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.LAZY) //todo: проверить на n+1
     @JoinColumn(name = "news_id")
+    @ToString.Exclude
     private News news;
 
     @Override

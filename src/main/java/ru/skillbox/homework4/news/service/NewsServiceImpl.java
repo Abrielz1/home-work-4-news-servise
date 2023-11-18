@@ -75,9 +75,9 @@ public class NewsServiceImpl implements NewsService {
             newsBd.setNewsMessage(newsDto.getNewsMessage());
         }
 
-        if (newsDto.getNewsCategory() != null) {
-            newsBd.setNewsCategory(newsDto.getNewsCategory());
-        }
+        //         if (newsDto.getNewsCategory() != null) {
+        //       newsBd.setNewsCategory();
+        //        }
 
 //        Utils.copyNonNullProperties(newsDto, newsBd); //todo: проверить
 

@@ -44,9 +44,6 @@ public class News {
     @Column(name = "news_message")
     private String newsMessage;
 
-    @Enumerated(EnumType.STRING)
-    private NewsCategory newsCategory;
-
     @ManyToOne(fetch = FetchType.LAZY) //todo: проверить на n+1
     @JoinColumn(name = "user_id")
     private User user;
