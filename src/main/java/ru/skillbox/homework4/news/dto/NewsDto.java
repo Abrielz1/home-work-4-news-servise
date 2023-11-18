@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.homework4.news.model.category.NewsCategory;
-import ru.skillbox.homework4.user.dto.UserDto;
+import ru.skillbox.homework4.news.dto.category.CategoryDto;
 
 @Data
 @Builder
@@ -17,5 +16,5 @@ public class NewsDto {
 
     private String newsMessage;
 
-    private NewsCategory newsCategory;
+    private CategoryDto category;
 }

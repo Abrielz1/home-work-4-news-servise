@@ -18,6 +18,8 @@ import ru.skillbox.homework4.util.Utils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -74,6 +76,8 @@ public class NewsServiceImpl implements NewsService {
         if (newsDto.getNewsMessage() != null) {
             newsBd.setNewsMessage(newsDto.getNewsMessage());
         }
+
+        newsDto.setCategory(CATEGORY_MAPPER.toCategoryDto(category));
 
         //         if (newsDto.getNewsCategory() != null) {
         //       newsBd.setNewsCategory();

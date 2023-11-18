@@ -3,8 +3,6 @@ package ru.skillbox.homework4.news.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +20,6 @@ import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.news.model.category.Category;
-import ru.skillbox.homework4.news.model.category.NewsCategory;
 import ru.skillbox.homework4.user.model.User;
 import java.util.List;
 import java.util.Objects;
@@ -46,15 +43,16 @@ public class News {
 
     @ManyToOne(fetch = FetchType.LAZY) //todo: проверить на n+1
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User user;
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Commentary> commentaryList;
 
-    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Category> categoryList;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Override
     public final boolean equals(Object o) {

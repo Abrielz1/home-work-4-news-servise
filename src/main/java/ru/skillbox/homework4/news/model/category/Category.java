@@ -1,12 +1,9 @@
 package ru.skillbox.homework4.news.model.category;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,9 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
-import ru.skillbox.homework4.news.dto.category.CategoryDto;
-import ru.skillbox.homework4.news.model.News;
-
 import java.util.Objects;
 
 @Getter
@@ -36,11 +30,6 @@ public class Category {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY) //todo: проверить на n+1
-    @JoinColumn(name = "news_id")
-    @ToString.Exclude
-    private News news;
-
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -48,8 +37,8 @@ public class Category {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        CategoryDto categoryDto = (CategoryDto) o;
-        return getId() != null && Objects.equals(getId(), categoryDto.getId());
+        Category category = (Category) o;
+        return getId() != null && Objects.equals(getId(), category.getId());
     }
 
     @Override
