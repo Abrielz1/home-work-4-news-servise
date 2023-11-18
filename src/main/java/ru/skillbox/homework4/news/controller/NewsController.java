@@ -23,6 +23,7 @@ import ru.skillbox.homework4.common.Create;
 import ru.skillbox.homework4.common.Update;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.model.News;
+import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.news.service.NewsService;
 import ru.skillbox.homework4.user.dto.UserDto;
 import ru.skillbox.homework4.user.service.UserService;
@@ -71,9 +72,10 @@ public class NewsController {
     @ResponseStatus(HttpStatus.OK)
     public NewsDto updateNewsById(@RequestHeader(HEADER) Long userId,
                                   @PathVariable(name = "id") Long newsId,
+                                  @PathVariable Long categoryId,
                                   @Validated(Update.class) @RequestBody NewsDto newsDto) {
 
-         return newsService.updateNewsById(userId, newsId, newsDto);
+         return newsService.updateNewsById(userId, newsId, categoryId, newsDto);
     }
 
 

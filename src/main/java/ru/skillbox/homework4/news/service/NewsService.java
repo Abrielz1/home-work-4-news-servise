@@ -1,8 +1,8 @@
 package ru.skillbox.homework4.news.service;
 
 import org.springframework.data.domain.PageRequest;
-import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.news.dto.NewsDto;
+
 import java.util.List;
 
 public interface NewsService {
@@ -15,5 +15,5 @@ public interface NewsService {
 
     NewsDto createNews(Long id, NewsDto newsDto);
 
-    NewsDto updateNewsById(Long userId, Long newsId, NewsDto newsDto);
+    NewsDto updateNewsById(Long userId, Long newsId, Long categoryId, NewsDto newsDto);
 }

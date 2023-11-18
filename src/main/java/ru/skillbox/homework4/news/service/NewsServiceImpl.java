@@ -9,6 +9,8 @@ import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.mapper.NewsMapper;
 import ru.skillbox.homework4.news.model.News;
+import ru.skillbox.homework4.news.model.category.Category;
+import ru.skillbox.homework4.news.repository.CategoryRepository;
 import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
@@ -24,6 +26,8 @@ public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
 
     private final UserRepository userRepository;
+
+    private final CategoryRepository categoryRepository;
 
     @Override
     public List<NewsDto> findAll(PageRequest page) {
@@ -59,11 +63,13 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public NewsDto updateNewsById(Long userId, Long newsId, NewsDto newsDto) {
+    public NewsDto updateNewsById(Long userId, Long newsId, Long categoryId, NewsDto newsDto) {
 
         User user = checkUserById(userId);
 
         News newsBd = checkNewsById(newsId);
+
+        Category category = checkCategoryById(categoryId);
 
         if (newsDto.getNewsMessage() != null) {
             newsBd.setNewsMessage(newsDto.getNewsMessage());
@@ -100,16 +106,27 @@ public class NewsServiceImpl implements NewsService {
     private User checkUserById(Long userId) {
      User user = userRepository.findById(userId).orElseThrow(() -> {
             log.warn("User with id {} is not found", userId);
-            throw  new ObjectNotFoundException("Пользователь не найден");
+            throw  new ObjectNotFoundException("User was not found");
         });
+
         return user;
     }
 
     private News checkNewsById(Long newsId) {
         News news = newsRepository.findById(newsId).orElseThrow(() -> {
             log.warn("News with id {} is not found", newsId);
-            throw  new ObjectNotFoundException("Пользователь не найден");
+            throw  new ObjectNotFoundException("News was not found");
         });
+
         return news;
+    }
+
+    private Category checkCategoryById(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> {
+            log.warn("Category with id {} is not found", categoryId);
+            throw  new ObjectNotFoundException("Category was not found");
+        });
+
+        return category;
     }
 }
