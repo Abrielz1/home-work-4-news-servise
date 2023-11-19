@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> findAll(Pageable page) {
 
-        log.info("All users sent");
+        log.info("All users were sent");
 
        return userRepository.findAll(page)
                .stream().map(UserMapper.USER_MAPPER::toUserDto)
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getById(Long id) {
 
        return UserMapper.USER_MAPPER.toUserDto(userRepository.findById(id).orElseThrow( () -> {
-           log.warn("User with id {} not found", id);
+           log.warn("User with id {} was not found", id);
 
            throw new ObjectNotFoundException("User not found");
        }));
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         User user = UserMapper.USER_MAPPER.toUser(userDto);
 
         userRepository.save(user);
-        log.info("User created");
+        log.info("User was created");
 
         return UserMapper.USER_MAPPER.toUserDto(user);
     }
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         User user = checkUserById(id);
 
         userRepository.delete(user);
-        log.info("User with id {} deleted", id);
+        log.info("User with id {} was deleted", id);
 
         return UserMapper.USER_MAPPER.toUserDto(user);
     }
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
     private User checkUserById(Long userId) {
 
         User user = userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("User with id {} is not found", userId);
+            log.warn("User with id {} was not found", userId);
             throw  new ObjectNotFoundException("Пользователь не найден");
         });
 

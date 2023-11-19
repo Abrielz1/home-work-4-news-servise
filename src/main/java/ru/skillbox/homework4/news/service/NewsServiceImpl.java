@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
@@ -47,7 +46,7 @@ public class NewsServiceImpl implements NewsService {
            newsDtoList.add(newsDto);
         }
 
-        log.info("List of news was sent!");
+        log.info("List of news were sent!");
         return newsDtoList;
     }
 
@@ -119,7 +118,7 @@ public class NewsServiceImpl implements NewsService {
 
     private User checkUserById(Long userId) {
      User user = userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("User with id {} is not found", userId);
+            log.warn("User with id {} was not found", userId);
             throw  new ObjectNotFoundException("User was not found");
         });
 
@@ -128,7 +127,7 @@ public class NewsServiceImpl implements NewsService {
 
     private News checkNewsById(Long newsId) {
         News news = newsRepository.findById(newsId).orElseThrow(() -> {
-            log.warn("News with id {} is not found", newsId);
+            log.warn("News with id {} was not found", newsId);
             throw  new ObjectNotFoundException("News was not found");
         });
 
@@ -137,7 +136,7 @@ public class NewsServiceImpl implements NewsService {
 
     private Category checkCategoryById(Long categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> {
-            log.warn("Category with id {} is not found", categoryId);
+            log.warn("Category with id {} was not found", categoryId);
             throw  new ObjectNotFoundException("Category was not found");
         });
 

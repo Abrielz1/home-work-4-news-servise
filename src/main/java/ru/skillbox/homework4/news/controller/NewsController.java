@@ -17,18 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.commentary.service.CommentaryService;
 import ru.skillbox.homework4.common.Create;
 import ru.skillbox.homework4.common.Update;
 import ru.skillbox.homework4.news.dto.NewsDto;
-import ru.skillbox.homework4.news.model.News;
-import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.news.service.NewsService;
-import ru.skillbox.homework4.user.dto.UserDto;
 import ru.skillbox.homework4.user.service.UserService;
 import java.util.List;
-
 import static ru.skillbox.homework4.common.Header.HEADER;
 
 @Validated
