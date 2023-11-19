@@ -33,7 +33,7 @@ public class CommentaryServiceImpl implements CommentaryService {
     @Override
     public List<CommentariesDto> findAllCommentary(Long newsId, PageRequest page) {
 
-        log.info("All users commentary was sent");
+        log.info("All commentaries were sent");
 
         return commentaryRepository.getListOfCommentariesByNewsId(newsId, page).stream()
                 .map(CommentaryMapper.COMMENTARY_MAPPER::CommentaryToCommentariesDto)
@@ -45,6 +45,8 @@ public class CommentaryServiceImpl implements CommentaryService {
 
         News news = checkNewsById(newsId);
         Commentary commentary = checkCommentaryById(commentaryId);
+
+        log.info("Commentary with id {} was sent", commentaryId);
 
         return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentary);
     }
@@ -64,6 +66,7 @@ public class CommentaryServiceImpl implements CommentaryService {
 
         commentaryRepository.save(commentary);
 
+        log.info("Commentary with id {} was created", commentary.getId());
         return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentary);
     }
 
@@ -78,22 +81,32 @@ public class CommentaryServiceImpl implements CommentaryService {
         User userDb = checkUserById(userId);
         Commentary commentaryDb = checkCommentaryById(commentaryId);
 
-        if (newsDb != null) {
-
-        }
-
-        if (userDb != null) {
-
-        }
-
         if (commentariesDto != null) {
 
             if (commentariesDto.getCommentaryText() !=null) {
                 commentaryDb.setCommentaryText(commentariesDto.getCommentaryText());
             }
+
+            commentaryRepository.save(commentaryDb);
+            log.info("Commentary with id {} was created", commentaryDb.getId());
+        } else {
+            throw new ObjectNotFoundException("no item for update");
         }
 
-        return null;
+        return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentaryDb);
+    }
+
+    @Override
+    public CommentariesDto deleteCommentaryById(Long userId, Long newsId, Long commentaryId) {
+
+        News newsDb = checkNewsById(newsId);
+        User userDb = checkUserById(userId);
+        Commentary commentaryDb = checkCommentaryById(commentaryId);
+
+        commentaryRepository.delete(commentaryDb);
+        log.info("Commentary with id {} was deleted", commentaryId);
+
+        return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentaryDb);
     }
 
 

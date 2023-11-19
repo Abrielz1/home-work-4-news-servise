@@ -5,6 +5,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,10 +77,14 @@ public class CommentaryController {
         return commentaryService.updateCommentaryById(userId, newsId, commentaryId, commentariesDto);
     }
 
-    /*
+    @DeleteMapping("/commentaries/{commentaryId}")
+    public CommentariesDto deleteCommentaryById(
+            @RequestHeader(HEADER)  Long userId,
+            @PathVariable Long newsId,
+            @PathVariable Long commentaryId) {
 
-
-     @DeleteMapping("/{id}")
-    */
-
+        return commentaryService.deleteCommentaryById(userId, newsId, commentaryId);
+    }
 }
+
+

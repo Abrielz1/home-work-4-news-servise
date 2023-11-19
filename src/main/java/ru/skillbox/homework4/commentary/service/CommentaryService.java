@@ -13,4 +13,6 @@ public interface CommentaryService {
     CommentariesDto createCommentary(Long newsId, Long userId, CommentariesDto commentariesDto);
 
     CommentariesDto updateCommentaryById(Long newsId, Long commentaryId, Long userId, CommentariesDto commentariesDto);
+
+    CommentariesDto deleteCommentaryById(Long userId, Long newsId, Long commentaryId);
 }
