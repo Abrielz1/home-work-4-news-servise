@@ -11,7 +11,6 @@ import ru.skillbox.homework4.user.mapper.UserMapper;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import ru.skillbox.homework4.util.Utils;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,15 +61,15 @@ public class UserServiceImpl implements UserService {
 
         User userBd = checkUserById(id);
 
-//        if (userDto.getEmail() != null) {
-//            user.setEmail(userDto.getEmail());
-//        }
-//
-//        if (userDto.getName() != null) {
-//            user.setName(userDto.getName());
-//        }
+        if (userDto.getEmail() != null) {
+            userBd.setEmail(userDto.getEmail());
+        }
 
-        Utils.copyNonNullProperties(userDto, userBd); //todo: проверить
+        if (userDto.getName() != null) {
+            userBd.setName(userDto.getName());
+        }
+
+    //    Utils.copyNonNullProperties(userDto, userBd); //todo: проверить
 
         log.info("User updated");
         userRepository.save(userBd);

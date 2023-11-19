@@ -6,7 +6,11 @@ import java.util.List;
 
 public interface CommentaryService {
 
-    List<CommentariesDto> findAllCommentary(PageRequest page);
+    List<CommentariesDto> findAllCommentary(Long newsId, PageRequest page);
 
     CommentariesDto findCommentaryById(Long newsId, Long commentaryId);
+
+    CommentariesDto createCommentary(Long newsId, Long userId, CommentariesDto commentariesDto);
+
+    CommentariesDto updateCommentaryById(Long newsId, Long commentaryId, Long userId, CommentariesDto commentariesDto);
 }

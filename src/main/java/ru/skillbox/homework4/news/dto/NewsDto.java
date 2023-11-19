@@ -17,4 +17,6 @@ public class NewsDto {
     private String newsMessage;
 
     private CategoryDto category;
+
+    private Integer numberOfCommentaries;
 }

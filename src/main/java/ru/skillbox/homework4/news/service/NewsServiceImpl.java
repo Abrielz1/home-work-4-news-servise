@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.homework4.commentary.dto.CommentariesDto;
+import ru.skillbox.homework4.commentary.model.Commentary;
+import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.mapper.NewsMapper;
@@ -14,14 +17,13 @@ import ru.skillbox.homework4.news.repository.CategoryRepository;
 import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
-import ru.skillbox.homework4.util.Utils;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
 
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
 
@@ -29,32 +31,42 @@ public class NewsServiceImpl implements NewsService {
 
     private final UserRepository userRepository;
 
+    private final CommentaryRepository commentaryRepository;
+
     private final CategoryRepository categoryRepository;
 
     @Override
     public List<NewsDto> findAll(PageRequest page) {
 
-        log.info("List of news was sent!");
+       List<News> newsList = newsRepository.findAll();
+       List<NewsDto> newsDtoList = new ArrayList<>();
 
-        return newsRepository.findAll(page)
-                .stream().map(NewsMapper.NEWS_MAPPER::toNewsDto)
-                .collect(Collectors.toList());
+        for (News news : newsList) {
+           NewsDto newsDto = NewsMapper.NEWS_MAPPER.toNewsDto(news);
+           newsDto.setNumberOfCommentaries(news.getCommentaryList().size());
+           newsDtoList.add(newsDto);
+        }
+
+        log.info("List of news was sent!");
+        return newsDtoList;
     }
 
     @Override
     public NewsDto findNewsById(Long newsId) {
 
-        News news = checkNewsById(newsId);;
+        News news = checkNewsById(newsId);
+        List<Commentary> commentariesList = commentaryRepository.findAll();
+        news.setCommentaryList(commentariesList);
 
-        //todo добавить коментарии
         log.info("News with id: {} was sent", newsId);
 
         return NewsMapper.NEWS_MAPPER.toNewsDto(news);
     }
 
     @Override
+    @Transactional
     public NewsDto createNews(Long userId, NewsDto newsDto) {
-        //todo добавить коментарии
+        //todo добавить категории
 
         User user = checkUserById(userId);
 
@@ -65,6 +77,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    @Transactional
     public NewsDto updateNewsById(Long userId, Long newsId, Long categoryId, NewsDto newsDto) {
 
         User user = checkUserById(userId);
@@ -86,11 +99,12 @@ public class NewsServiceImpl implements NewsService {
         newsRepository.save(newsBd);
         log.info("News was updated");
         //todo добавить коментарии
-
+        //todo добавить категории
         return NewsMapper.NEWS_MAPPER.toNewsDto(newsBd);
     }
 
     @Override
+    @Transactional
     public NewsDto deleteNewsById(Long newsId) {
 
         News news = checkNewsById(newsId);

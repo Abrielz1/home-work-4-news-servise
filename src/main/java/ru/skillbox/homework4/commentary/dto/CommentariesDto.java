@@ -15,3 +15,4 @@ public class CommentariesDto {
 
     private String commentaryText;
 }
+

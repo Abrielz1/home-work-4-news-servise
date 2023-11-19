@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.commentary.mapper.CommentaryMapper;
 import ru.skillbox.homework4.commentary.model.Commentary;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CommentaryServiceImpl implements CommentaryService {
 
@@ -29,11 +31,11 @@ public class CommentaryServiceImpl implements CommentaryService {
     private final NewsRepository newsRepository;
 
     @Override
-    public List<CommentariesDto> findAllCommentary(PageRequest page) {
+    public List<CommentariesDto> findAllCommentary(Long newsId, PageRequest page) {
 
         log.info("All users commentary was sent");
 
-        return commentaryRepository.findAll(page).stream()
+        return commentaryRepository.getListOfCommentariesByNewsId(newsId, page).stream()
                 .map(CommentaryMapper.COMMENTARY_MAPPER::CommentaryToCommentariesDto)
                 .collect(Collectors.toList());
     }
@@ -42,10 +44,56 @@ public class CommentaryServiceImpl implements CommentaryService {
     public CommentariesDto findCommentaryById(Long newsId, Long commentaryId) {
 
         News news = checkNewsById(newsId);
-
         Commentary commentary = checkCommentaryById(commentaryId);
 
         return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentary);
+    }
+
+    @Override
+    @Transactional
+    public CommentariesDto createCommentary(Long newsId,
+                                            Long userId,
+                                            CommentariesDto commentariesDto) {
+
+        News news = checkNewsById(newsId);
+        User user = checkUserById(userId);
+
+        Commentary commentary = new Commentary();
+        commentary.setNews(news);
+        commentary.setUser(user);
+
+        commentaryRepository.save(commentary);
+
+        return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentary);
+    }
+
+    @Override
+    @Transactional
+    public CommentariesDto updateCommentaryById(Long newsId,
+                                                Long commentaryId,
+                                                Long userId,
+                                                CommentariesDto commentariesDto) {
+
+        News newsDb = checkNewsById(newsId);
+        User userDb = checkUserById(userId);
+        Commentary commentaryDb = checkCommentaryById(commentaryId);
+
+        if (newsDb != null) {
+
+        }
+
+        if (userDb != null) {
+
+        }
+
+        if (commentariesDto != null) {
+
+            if (commentariesDto.getCommentaryText() !=null) {
+                commentaryDb.setCommentaryText(commentariesDto.getCommentaryText());
+            }
+        }
+
+        return null;
     }
 
 
