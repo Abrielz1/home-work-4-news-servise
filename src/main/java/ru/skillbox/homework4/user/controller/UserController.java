@@ -34,6 +34,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public List<UserDto> getAllUsers(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                      @Positive @RequestParam(defaultValue = "10") Integer size) {
+
         PageRequest page = PageRequest.of(from / size, size);
         return userService.findAll(page);
     }
@@ -41,24 +42,28 @@ public class UserController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDto getById(@PathVariable long id) {
+
         return userService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@Validated(Create.class) @RequestBody UserDto userDto) {
+
         return userService.create(userDto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDto updateUserById(@PathVariable long id, @Validated(Update.class) @RequestBody UserDto userDto) {
+
         return userService.update(id, userDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public UserDto delete(@PathVariable long id) {
+
         return userService.delete(id);
     }
 }

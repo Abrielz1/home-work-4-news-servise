@@ -16,13 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.homework4.commentary.dto.CommentariesDto;
-import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.commentary.service.CommentaryService;
 import ru.skillbox.homework4.common.Create;
 import ru.skillbox.homework4.common.Update;
 import ru.skillbox.homework4.news.service.NewsServiceImpl;
 import ru.skillbox.homework4.user.service.UserServiceImpl;
-
 import java.util.List;
 
 import static ru.skillbox.homework4.common.Header.HEADER;

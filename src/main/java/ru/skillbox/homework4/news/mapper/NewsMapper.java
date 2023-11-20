@@ -15,5 +15,5 @@ public interface NewsMapper {
 
     NewsDto toNewsDto(News news);
 
-    News toNews(NewsDto newsDto, User user); // Commentary commentary
+    News toNews(NewsDto newsDto, User user);
 }

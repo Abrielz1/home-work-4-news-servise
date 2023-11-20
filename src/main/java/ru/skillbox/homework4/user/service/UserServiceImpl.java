@@ -10,7 +10,6 @@ import ru.skillbox.homework4.user.dto.UserDto;
 import ru.skillbox.homework4.user.mapper.UserMapper;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
-import ru.skillbox.homework4.util.Utils;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,8 +67,6 @@ public class UserServiceImpl implements UserService {
         if (userDto.getName() != null) {
             userBd.setName(userDto.getName());
         }
-
-    //    Utils.copyNonNullProperties(userDto, userBd); //todo: проверить
 
         log.info("User updated");
         userRepository.save(userBd);

@@ -1,5 +1,5 @@
 package ru.skillbox.homework4.common;
 
 public class Header {
-    public static final String HEADER = "X-Sharer-User-Id";
+    public static final String HEADER = "X-News-All-Id";
 }
