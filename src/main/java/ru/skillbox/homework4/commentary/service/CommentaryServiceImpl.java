@@ -63,6 +63,7 @@ public class CommentaryServiceImpl implements CommentaryService {
         Commentary commentary = new Commentary();
         commentary.setNews(news);
         commentary.setUser(user);
+        commentary.setCommentaryText(commentary.getCommentaryText());
 
         commentaryRepository.save(commentary);
 

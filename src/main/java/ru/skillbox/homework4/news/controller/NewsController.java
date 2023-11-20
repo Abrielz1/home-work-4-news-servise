@@ -38,7 +38,6 @@ public class NewsController {
 
     private final CommentaryService commentaryService;
 
-
      @GetMapping
     public List<NewsDto> findAll(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                  @Positive @RequestParam(defaultValue = "10") Integer size) {
@@ -58,19 +57,21 @@ public class NewsController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public NewsDto createNews(@RequestHeader(HEADER) Long userId,
+                              @RequestHeader(HEADER) Long categoryId,
                               @Validated(Create.class) @RequestBody NewsDto newsDto) {
 
-        return newsService.createNews(userId, newsDto);
+        return newsService.createNews(userId, categoryId, newsDto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public NewsDto updateNewsById(@RequestHeader(HEADER) Long userId,
+                                  @RequestHeader(HEADER) Long categoryId,
+                                  @RequestHeader(HEADER) Long commentaryId,
                                   @PathVariable(name = "id") Long newsId,
-                                  @PathVariable Long categoryId,
                                   @Validated(Update.class) @RequestBody NewsDto newsDto) {
 
-         return newsService.updateNewsById(userId, newsId, categoryId, newsDto);
+         return newsService.updateNewsById(userId,categoryId, commentaryId, newsId, newsDto);
     }
 
 

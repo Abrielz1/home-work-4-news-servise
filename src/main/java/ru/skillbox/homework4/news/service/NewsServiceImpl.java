@@ -17,6 +17,7 @@ import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
 
@@ -64,26 +65,37 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
-    public NewsDto createNews(Long userId, NewsDto newsDto) {
-        //todo добавить категории
+    public NewsDto createNews(Long userId, Long categoryId, NewsDto newsDto) {
 
         User user = checkUserById(userId);
+        Category category = checkCategoryById(categoryId);
+
+        News news = new News();
+        news.setUser(user);
+        news.setCategory(category);
+        news =  newsRepository.save(NewsMapper.NEWS_MAPPER.toNews(newsDto, user));
 
         log.info("News was created");
-        News news = newsRepository.save(NewsMapper.NEWS_MAPPER.toNews(newsDto, user));
-
         return NewsMapper.NEWS_MAPPER.toNewsDto(news);
     }
 
     @Override
     @Transactional
-    public NewsDto updateNewsById(Long userId, Long newsId, Long categoryId, NewsDto newsDto) {
+    public NewsDto updateNewsById(Long userId,
+                                  Long commentaryId,
+                                  Long categoryId,
+                                  Long newsId,
+                                  NewsDto newsDto) {
 
         User user = checkUserById(userId);
 
         News newsBd = checkNewsById(newsId);
 
+        Commentary commentary = checkCommentaryById(commentaryId);
+
         Category category = checkCategoryById(categoryId);
+
+        newsBd.setCommentaryList(new ArrayList<>((Collection) commentary));
 
         if (newsDto.getNewsMessage() != null) {
             newsBd.setNewsMessage(newsDto.getNewsMessage());
@@ -91,14 +103,9 @@ public class NewsServiceImpl implements NewsService {
 
         newsDto.setCategory(CATEGORY_MAPPER.toCategoryDto(category));
 
-//        Utils.copyNonNullProperties(newsDto, newsBd); //todo: проверить
-
-  //      newsBd.setUser(user); //
-
         newsRepository.save(newsBd);
         log.info("News was updated");
-        //todo добавить коментарии
-        //todo добавить категории
+
         return NewsMapper.NEWS_MAPPER.toNewsDto(newsBd);
     }
 
@@ -117,29 +124,35 @@ public class NewsServiceImpl implements NewsService {
     // todo: метод управления категориями и проверки права владения.
 
     private User checkUserById(Long userId) {
-     User user = userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("User with id {} was not found", userId);
-            throw  new ObjectNotFoundException("User was not found");
-        });
 
-        return user;
+        return userRepository.findById(userId).orElseThrow(() -> {
+               log.warn("User with id {} was not found", userId);
+               throw  new ObjectNotFoundException("User was not found");
+           });
     }
 
     private News checkNewsById(Long newsId) {
-        News news = newsRepository.findById(newsId).orElseThrow(() -> {
+
+        return newsRepository.findById(newsId).orElseThrow(() -> {
             log.warn("News with id {} was not found", newsId);
             throw  new ObjectNotFoundException("News was not found");
         });
-
-        return news;
     }
 
     private Category checkCategoryById(Long categoryId) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> {
+
+        return categoryRepository.findById(categoryId).orElseThrow(() -> {
             log.warn("Category with id {} was not found", categoryId);
             throw  new ObjectNotFoundException("Category was not found");
         });
+    }
 
-        return category;
+    private Commentary checkCommentaryById(Long commentaryId) {
+
+        return commentaryRepository.findById(commentaryId)
+                .orElseThrow(() -> {
+                    log.warn("Commentary with id {} was not found", commentaryId);
+                    throw new ObjectNotFoundException("Commentary was not found");
+                });
     }
 }

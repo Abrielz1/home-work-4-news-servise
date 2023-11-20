@@ -13,7 +13,7 @@ public interface NewsService {
 
     NewsDto deleteNewsById(Long id);
 
-    NewsDto createNews(Long id, NewsDto newsDto);
+    NewsDto createNews(Long id, Long categoryId, NewsDto newsDto);
 
-    NewsDto updateNewsById(Long userId, Long newsId, Long categoryId, NewsDto newsDto);
+    NewsDto updateNewsById(Long userId, Long commentaryId, Long categoryId, Long newsId, NewsDto newsDto);
 }
