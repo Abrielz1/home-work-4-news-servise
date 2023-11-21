@@ -82,7 +82,6 @@ public class NewsServiceImpl implements NewsService {
     @Override
     @Transactional
     public NewsDto updateNewsById(Long userId,
-                                  Long commentaryId,
                                   Long categoryId,
                                   Long newsId,
                                   NewsDto newsDto) {
@@ -91,11 +90,7 @@ public class NewsServiceImpl implements NewsService {
 
         News newsBd = checkNewsById(newsId);
 
-        Commentary commentary = checkCommentaryById(commentaryId);
-
         Category category = checkCategoryById(categoryId);
-
-        newsBd.setCommentaryList(new ArrayList<>((Collection) commentary));
 
         if (newsDto.getNewsMessage() != null) {
             newsBd.setNewsMessage(newsDto.getNewsMessage());

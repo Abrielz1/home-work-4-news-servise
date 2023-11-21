@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,8 +21,6 @@ import ru.skillbox.homework4.common.Update;
 import ru.skillbox.homework4.news.service.NewsServiceImpl;
 import ru.skillbox.homework4.user.service.UserServiceImpl;
 import java.util.List;
-
-import static ru.skillbox.homework4.common.Header.HEADER;
 
 @Validated
 @RestController
@@ -58,7 +55,7 @@ public class CommentaryController {
 
     @PostMapping
     public CommentariesDto createCommentary(
-            @RequestHeader(HEADER)  Long userId,
+            @RequestParam(name = "userId") Long userId,
             @PathVariable Long newsId,
             @Validated(Create.class) @RequestBody CommentariesDto commentariesDto) {
 
@@ -67,7 +64,7 @@ public class CommentaryController {
 
     @PutMapping("/commentaries/{commentaryId}")
     public CommentariesDto updateCommentaryById(
-            @RequestHeader(HEADER)  Long userId,
+            @RequestParam(name = "userId") Long userId,
             @PathVariable Long newsId,
             @PathVariable Long commentaryId,
             @Validated(Update.class) @RequestBody CommentariesDto commentariesDto) {
@@ -77,7 +74,7 @@ public class CommentaryController {
 
     @DeleteMapping("/commentaries/{commentaryId}")
     public CommentariesDto deleteCommentaryById(
-            @RequestHeader(HEADER)  Long userId,
+            @RequestParam(name = "userId") Long userId,
             @PathVariable Long newsId,
             @PathVariable Long commentaryId) {
 

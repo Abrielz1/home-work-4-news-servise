@@ -11,22 +11,18 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.user.model.User;
-
 import java.util.Objects;
 
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Builder
 @Entity
 @Table(name = "commentaries")

@@ -14,5 +14,5 @@ public interface NewsService {
 
     NewsDto createNews(Long id, Long categoryId, NewsDto newsDto);
 
-    NewsDto updateNewsById(Long userId, Long commentaryId, Long categoryId, Long newsId, NewsDto newsDto);
+    NewsDto updateNewsById(Long userId, Long categoryId, Long newsId, NewsDto newsDto);
 }

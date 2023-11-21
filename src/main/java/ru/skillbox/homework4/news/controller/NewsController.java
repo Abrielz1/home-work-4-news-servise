@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -24,7 +23,6 @@ import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.service.NewsService;
 import ru.skillbox.homework4.user.service.UserService;
 import java.util.List;
-import static ru.skillbox.homework4.common.Header.HEADER;
 
 @Validated
 @RestController
@@ -56,8 +54,8 @@ public class NewsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public NewsDto createNews(@RequestHeader(HEADER) Long userId,
-                              @RequestHeader(HEADER) Long categoryId,
+    public NewsDto createNews(@RequestParam(name = "userId") Long userId,
+                              @RequestParam(name = "categoryId") Long categoryId,
                               @Validated(Create.class) @RequestBody NewsDto newsDto) {
 
         return newsService.createNews(userId, categoryId, newsDto);
@@ -65,13 +63,12 @@ public class NewsController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public NewsDto updateNewsById(@RequestHeader(HEADER) Long userId,
-                                  @RequestHeader(HEADER) Long categoryId,
-                                  @RequestHeader(HEADER) Long commentaryId,
+    public NewsDto updateNewsById(@RequestParam(name = "userId") Long userId,
+                                  @RequestParam(name = "categoryId") Long categoryId,
                                   @PathVariable(name = "id") Long newsId,
                                   @Validated(Update.class) @RequestBody NewsDto newsDto) {
 
-         return newsService.updateNewsById(userId,categoryId, commentaryId, newsId, newsDto);
+         return newsService.updateNewsById(userId,categoryId, newsId, newsDto);
     }
 
 
