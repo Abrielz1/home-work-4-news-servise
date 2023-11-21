@@ -4,13 +4,20 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
+import ru.skillbox.homework4.commentary.dto.CommentariesDto;
+import ru.skillbox.homework4.commentary.mapper.CommentaryMapper;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.user.model.User;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static ru.skillbox.homework4.commentary.mapper.CommentaryMapper.COMMENTARY_MAPPER;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface NewsMapper {
@@ -24,7 +31,12 @@ public interface NewsMapper {
     FullNewsDto toFullNewsDto(News news);
 
     default FullNewsDto setCommentariesList(FullNewsDto fullNewsDto, List<Commentary> commentariesList) {
-        fullNewsDto.setCommentaryList(commentariesList);
+
+        List<CommentariesDto> commentariesDtoList = commentariesList.stream()
+                .map(COMMENTARY_MAPPER::CommentaryToCommentariesDto)
+                .collect(Collectors.toList());
+
+        fullNewsDto.setCommentaryList(commentariesDtoList);
 
         return fullNewsDto;
     }

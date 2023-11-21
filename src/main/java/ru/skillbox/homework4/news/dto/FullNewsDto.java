@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.homework4.commentary.dto.CommentariesDto;
-import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.news.dto.category.CategoryDto;
 import java.util.List;
 
@@ -21,6 +20,6 @@ public class FullNewsDto {
 
     private CategoryDto category;
 
-    private List<Commentary> commentaryList;
+    private List<CommentariesDto> commentaryList;
 }
 
