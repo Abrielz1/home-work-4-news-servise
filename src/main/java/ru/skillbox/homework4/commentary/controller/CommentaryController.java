@@ -18,8 +18,6 @@ import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.commentary.service.CommentaryService;
 import ru.skillbox.homework4.common.Create;
 import ru.skillbox.homework4.common.Update;
-import ru.skillbox.homework4.news.service.NewsServiceImpl;
-import ru.skillbox.homework4.user.service.UserServiceImpl;
 import java.util.List;
 
 @Validated
@@ -27,10 +25,6 @@ import java.util.List;
 @RequestMapping(path = "/news/{newsId}")
 @RequiredArgsConstructor
 public class CommentaryController {
-
-    private final UserServiceImpl userService;
-
-    private final NewsServiceImpl newsService;
 
     private final CommentaryService commentaryService;
 
@@ -74,7 +68,6 @@ public class CommentaryController {
 
     @DeleteMapping("/commentaries/{commentaryId}")
     public CommentariesDto deleteCommentaryById(
-//            @RequestParam(name = "userId") Long userId, userId, newsId,
             @PathVariable(name = "newsId") Long newsId,
             @PathVariable Long commentaryId) {
 

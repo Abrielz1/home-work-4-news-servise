@@ -15,8 +15,6 @@ public interface CommentaryMapper {
     CommentaryMapper COMMENTARY_MAPPER = Mappers.getMapper(CommentaryMapper.class);
 
     @Mapping(target = "id", ignore = true)
-  //  @Mapping(target = )
-
     Commentary CommentariesDto(CommentariesDto commentariesDto, User user, News news);
 
     CommentariesDto CommentaryToCommentariesDto(Commentary commentary);

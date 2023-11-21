@@ -101,17 +101,15 @@ public class CommentaryServiceImpl implements CommentaryService {
 
     @Override
     @Transactional
-    public CommentariesDto deleteCommentaryById(Long commentaryId) { //Long userId, Long newsId,
+    public CommentariesDto deleteCommentaryById(Long commentaryId) {
 
-//        News newsDb = checkNewsById(newsId);
-//        User userDb = checkUserById(userId);
         checkCommentaryById(commentaryId);
 
         commentaryRepository.deleteById(commentaryId);
         log.info("Commentary with id {} was deleted", commentaryId);
 
-        //return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentaryDb);
-        return null;
+        return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(checkCommentaryById(commentaryId));
+
     }
 
 

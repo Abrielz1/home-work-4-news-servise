@@ -5,24 +5,18 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import ru.skillbox.homework4.commentary.dto.CommentariesDto;
-import ru.skillbox.homework4.commentary.mapper.CommentaryMapper;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.user.model.User;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static ru.skillbox.homework4.commentary.mapper.CommentaryMapper.COMMENTARY_MAPPER;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface NewsMapper {
-
-    //todo: добавить коментарий в сущность новости , uses = {CategoryMapper.class, UserMapper.class}
 
     NewsMapper NEWS_MAPPER = Mappers.getMapper(NewsMapper.class);
 
