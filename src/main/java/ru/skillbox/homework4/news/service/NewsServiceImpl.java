@@ -10,7 +10,6 @@ import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
-import ru.skillbox.homework4.news.mapper.NewsMapper;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.news.repository.CategoryRepository;
@@ -56,14 +55,8 @@ public class NewsServiceImpl implements NewsService {
     public FullNewsDto findNewsById(Long newsId) {
 
         News news = checkNewsById(newsId);
-
-        System.out.println("News" + news);
-
         FullNewsDto fullNewsDto = NEWS_MAPPER.toFullNewsDto(news);
-
         List<Commentary> commentariesList = commentaryRepository.findAll();
-
-
 
         log.info("News with id: {} was sent", newsId);
 
