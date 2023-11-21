@@ -5,7 +5,7 @@ import org.mapstruct.factory.Mappers;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.dto.UserDto;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
     UserMapper USER_MAPPER = Mappers.getMapper(UserMapper.class);
