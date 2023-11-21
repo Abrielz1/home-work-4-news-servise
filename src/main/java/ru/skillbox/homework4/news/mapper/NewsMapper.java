@@ -11,6 +11,8 @@ import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.user.model.User;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -22,16 +24,14 @@ public interface NewsMapper {
 
     NewsDto toNewsDto(News news);
 
-    FullNewsDto toFullNewsDto(News news, List<Commentary> commentariesList);
+    FullNewsDto toFullNewsDto(News news);
 
-//    default FullNewsDto setCommentariesList(News news, List<Commentary> commentariesList) {
-//
-//        FullNewsDto fullNewsDto = toFullNewsDto(news);
-//
-//       fullNewsDto.setCommentaryList(commentariesList.stream().toList());
-//
-//        return fullNewsDto;
-//    }
+    default FullNewsDto setCommentariesList(FullNewsDto fullNewsDto, List<Commentary> commentariesList) {
+
+        fullNewsDto.setCommentaryList(commentariesList);
+
+        return fullNewsDto;
+    }
 
     @Mapping(source = "category.id", target = "id")
     News toNews(NewsDto newsDto, User user, Category category);

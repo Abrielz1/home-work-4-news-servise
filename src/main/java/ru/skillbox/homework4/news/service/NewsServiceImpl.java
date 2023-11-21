@@ -59,11 +59,15 @@ public class NewsServiceImpl implements NewsService {
 
         System.out.println("News" + news);
 
+        FullNewsDto fullNewsDto = NEWS_MAPPER.toFullNewsDto(news);
+
         List<Commentary> commentariesList = commentaryRepository.findAll();
+
+
 
         log.info("News with id: {} was sent", newsId);
 
-        return NEWS_MAPPER.toFullNewsDto(news, commentariesList);
+        return NEWS_MAPPER.setCommentariesList(fullNewsDto, commentariesList);
     }
 
     @Override
