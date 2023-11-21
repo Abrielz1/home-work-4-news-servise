@@ -9,6 +9,7 @@ import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.NewsDto;
+import ru.skillbox.homework4.news.dto.FullNewsDto;
 import ru.skillbox.homework4.news.mapper.NewsMapper;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.model.category.Category;
@@ -17,9 +18,9 @@ import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
+import static ru.skillbox.homework4.news.mapper.NewsMapper.NEWS_MAPPER;
 
 @Slf4j
 @Service
@@ -42,7 +43,7 @@ public class NewsServiceImpl implements NewsService {
        List<NewsDto> newsDtoList = new ArrayList<>();
 
         for (News news : newsList) {
-           NewsDto newsDto = NewsMapper.NEWS_MAPPER.toNewsDto(news);
+           NewsDto newsDto = NEWS_MAPPER.toNewsDto(news);
            newsDto.setNumberOfCommentaries(news.getCommentaryList().size());
            newsDtoList.add(newsDto);
         }
@@ -52,15 +53,17 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public NewsDto findNewsById(Long newsId) {
+    public FullNewsDto findNewsById(Long newsId) {
 
         News news = checkNewsById(newsId);
+
+        System.out.println("News" + news);
+
         List<Commentary> commentariesList = commentaryRepository.findAll();
-        news.setCommentaryList(commentariesList);
 
         log.info("News with id: {} was sent", newsId);
 
-        return NewsMapper.NEWS_MAPPER.toNewsDto(news);
+        return NEWS_MAPPER.toFullNewsDto(news, commentariesList);
     }
 
     @Override
@@ -72,11 +75,11 @@ public class NewsServiceImpl implements NewsService {
 
         News news = new News();
         news.setUser(user);
-        news.setCategory(category);
-        news =  newsRepository.save(NewsMapper.NEWS_MAPPER.toNews(newsDto, user));
+        news = NEWS_MAPPER.setCategory(newsDto, user, category);
 
+        newsRepository.save(news);
         log.info("News was created");
-        return NewsMapper.NEWS_MAPPER.toNewsDto(news);
+        return NEWS_MAPPER.toNewsDto(news);
     }
 
     @Override
@@ -101,7 +104,7 @@ public class NewsServiceImpl implements NewsService {
         newsRepository.save(newsBd);
         log.info("News was updated");
 
-        return NewsMapper.NEWS_MAPPER.toNewsDto(newsBd);
+        return NEWS_MAPPER.toNewsDto(newsBd);
     }
 
     @Override
@@ -113,7 +116,7 @@ public class NewsServiceImpl implements NewsService {
         newsRepository.deleteById(newsId);
         log.info("News with id: {} was deleted!", newsId);
 
-        return NewsMapper.NEWS_MAPPER.toNewsDto(news);
+        return NEWS_MAPPER.toNewsDto(news);
     }
 
     // todo: метод управления категориями и проверки права владения.

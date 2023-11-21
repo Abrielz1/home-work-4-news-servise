@@ -63,7 +63,7 @@ public class CommentaryServiceImpl implements CommentaryService {
         Commentary commentary = new Commentary();
         commentary.setNews(news);
         commentary.setUser(user);
-        commentary.setCommentaryText(commentary.getCommentaryText());
+        commentary.setCommentaryText(commentariesDto.getCommentaryText());
 
         commentaryRepository.save(commentary);
 
@@ -98,16 +98,18 @@ public class CommentaryServiceImpl implements CommentaryService {
     }
 
     @Override
-    public CommentariesDto deleteCommentaryById(Long userId, Long newsId, Long commentaryId) {
+    @Transactional
+    public CommentariesDto deleteCommentaryById(Long commentaryId) { //Long userId, Long newsId,
 
-        News newsDb = checkNewsById(newsId);
-        User userDb = checkUserById(userId);
-        Commentary commentaryDb = checkCommentaryById(commentaryId);
+//        News newsDb = checkNewsById(newsId);
+//        User userDb = checkUserById(userId);
+        checkCommentaryById(commentaryId);
 
-        commentaryRepository.delete(commentaryDb);
+        commentaryRepository.deleteById(commentaryId);
         log.info("Commentary with id {} was deleted", commentaryId);
 
-        return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentaryDb);
+        //return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentaryDb);
+        return null;
     }
 
 

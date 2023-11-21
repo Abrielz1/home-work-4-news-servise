@@ -42,8 +42,9 @@ public class Commentary {
     @ToString.Exclude
     News news;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User user;
 
     @Override

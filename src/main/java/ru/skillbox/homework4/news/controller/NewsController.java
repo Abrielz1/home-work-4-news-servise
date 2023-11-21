@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.homework4.commentary.service.CommentaryService;
 import ru.skillbox.homework4.common.Create;
 import ru.skillbox.homework4.common.Update;
+import ru.skillbox.homework4.news.dto.FullNewsDto;
 import ru.skillbox.homework4.news.dto.NewsDto;
+import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.service.NewsService;
 import ru.skillbox.homework4.user.service.UserService;
 import java.util.List;
@@ -47,7 +49,7 @@ public class NewsController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public NewsDto findNewsById(@PathVariable long id) {
+    public FullNewsDto findNewsById(@PathVariable long id) {
 
         return newsService.findNewsById(id);
     }

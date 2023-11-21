@@ -2,13 +2,14 @@ package ru.skillbox.homework4.commentary.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.user.model.User;
 
-@Mapper
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CommentaryMapper {
 
     CommentaryMapper COMMENTARY_MAPPER = Mappers.getMapper(CommentaryMapper.class);
