@@ -24,7 +24,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping(path = "/news/")
+@RequestMapping(path = "/news/{newsId}")
 @RequiredArgsConstructor
 public class CommentaryController {
 
@@ -36,7 +36,7 @@ public class CommentaryController {
 
     @GetMapping("/commentaries")
     public List<CommentariesDto> findAll(
-                @RequestParam(name = "newsId") Long newsId,
+                @PathVariable(name = "newsId") Long newsId,
                 @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                 @Positive @RequestParam(defaultValue = "10") Integer size) {
 
@@ -47,7 +47,7 @@ public class CommentaryController {
 
     @GetMapping("/commentaries/{commentaryId}")
     public CommentariesDto findCommentaryById(
-            @RequestParam(name = "newsId") Long newsId,
+            @PathVariable(name = "newsId") Long newsId,
             @PathVariable Long commentaryId) {
 
        return commentaryService.findCommentaryById(newsId, commentaryId);
@@ -55,8 +55,8 @@ public class CommentaryController {
 
     @PostMapping("/commentaries")
     public CommentariesDto createCommentary(
+            @PathVariable(name = "newsId") Long newsId,
             @RequestParam(name = "userId") Long userId,
-            @RequestParam(name = "newsId") Long newsId,
             @Validated(Create.class) @RequestBody CommentariesDto commentariesDto) {
 
         return commentaryService.createCommentary(userId, newsId, commentariesDto);
@@ -64,18 +64,18 @@ public class CommentaryController {
 
     @PutMapping("/commentaries/{commentaryId}")
     public CommentariesDto updateCommentaryById(
+            @PathVariable(name = "newsId") Long newsId,
             @RequestParam(name = "userId") Long userId,
-            @RequestParam(name = "newsId") Long newsId,
             @PathVariable Long commentaryId,
             @Validated(Update.class) @RequestBody CommentariesDto commentariesDto) {
 
-        return commentaryService.updateCommentaryById(userId, newsId, commentaryId, commentariesDto);
+        return commentaryService.updateCommentaryById(newsId, commentaryId, userId, commentariesDto);
     }
 
     @DeleteMapping("/commentaries/{commentaryId}")
     public CommentariesDto deleteCommentaryById(
 //            @RequestParam(name = "userId") Long userId, userId, newsId,
-//            @RequestParam(name = "newsId") Long newsId,
+            @PathVariable(name = "newsId") Long newsId,
             @PathVariable Long commentaryId) {
 
         return commentaryService.deleteCommentaryById(commentaryId);

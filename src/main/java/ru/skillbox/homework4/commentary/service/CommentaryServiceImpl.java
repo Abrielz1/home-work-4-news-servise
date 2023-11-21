@@ -82,6 +82,8 @@ public class CommentaryServiceImpl implements CommentaryService {
         User userDb = checkUserById(userId);
         Commentary commentaryDb = checkCommentaryById(commentaryId);
 
+        System.out.println(commentaryDb);
+
         if (commentariesDto != null) {
 
             if (commentariesDto.getCommentaryText() !=null) {

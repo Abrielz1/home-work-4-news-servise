@@ -55,12 +55,18 @@ public class NewsServiceImpl implements NewsService {
     public FullNewsDto findNewsById(Long newsId) {
 
         News news = checkNewsById(newsId);
+
+        System.out.println("News: " + news.getCommentaryList());
+
         FullNewsDto fullNewsDto = NEWS_MAPPER.toFullNewsDto(news);
-        List<Commentary> commentariesList = commentaryRepository.findAll();
+
+        List<Commentary> commentariesList = news.getCommentaryList();
+        fullNewsDto = NEWS_MAPPER.setCommentariesList(fullNewsDto, commentariesList);
+        System.out.println("FullNewsDto: " + fullNewsDto);
 
         log.info("News with id: {} was sent", newsId);
 
-        return NEWS_MAPPER.setCommentariesList(fullNewsDto, commentariesList);
+        return fullNewsDto;
     }
 
     @Override
