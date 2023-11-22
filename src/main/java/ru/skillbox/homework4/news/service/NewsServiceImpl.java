@@ -12,12 +12,16 @@ import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.model.category.Category;
+import ru.skillbox.homework4.news.model.category.CategoryFilter;
 import ru.skillbox.homework4.news.repository.CategoryRepository;
 import ru.skillbox.homework4.news.repository.NewsRepository;
+import ru.skillbox.homework4.news.repository.NewsSpecification;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
 import static ru.skillbox.homework4.news.mapper.NewsMapper.NEWS_MAPPER;
 
@@ -34,6 +38,13 @@ public class NewsServiceImpl implements NewsService {
     private final CommentaryRepository commentaryRepository;
 
     private final CategoryRepository categoryRepository;
+
+    @Override
+    public List<NewsDto> filteredByCriteria(CategoryFilter filter, PageRequest page) {
+        return newsRepository.findAll(NewsSpecification.byNewsNameAndOwnerIdFilter(filter), page).stream()
+                .map(NEWS_MAPPER::toNewsDto)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public List<NewsDto> findAll(PageRequest page) {
