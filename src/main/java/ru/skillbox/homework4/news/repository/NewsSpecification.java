@@ -7,6 +7,7 @@ import ru.skillbox.homework4.news.model.category.CategoryFilter;
 public interface NewsSpecification {
 
     static Specification<News> byNewsNameAndOwnerIdFilter(CategoryFilter filter) {
+
         return Specification.where(byNewsName(filter.getNewsName()))
                 .and(byNewsCategoryName(filter.getCategoryName()))
                 .and(byNewsOwnerId(filter.getNewsOwnerId()));
@@ -20,11 +21,12 @@ public interface NewsSpecification {
                 return null;
             }
 
-            return cb.equal(root.get("id"), newsOwnerId);
+            return cb.equal(root.get("user").get("id"), newsOwnerId);
         };
     }
 
     static Specification<News> byNewsCategoryName(String categoryName) {
+
         return (root, query, cb) -> {
 
             if (categoryName == null) {
