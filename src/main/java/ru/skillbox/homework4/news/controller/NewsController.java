@@ -20,6 +20,7 @@ import ru.skillbox.homework4.common.Create;
 import ru.skillbox.homework4.common.Update;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
 import ru.skillbox.homework4.news.dto.NewsDto;
+import ru.skillbox.homework4.news.model.category.CategoryFilter;
 import ru.skillbox.homework4.news.service.NewsService;
 import java.util.List;
 
@@ -31,7 +32,18 @@ public class NewsController {
 
     private final NewsService newsService;
 
-     @GetMapping
+    @GetMapping
+    public List<NewsDto> findAllCriteria(
+                                 @RequestBody CategoryFilter filter,
+                                 @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                 @Positive @RequestParam(defaultValue = "10") Integer size) {
+
+        PageRequest page = PageRequest.of(from / size, size);
+
+        return newsService.filteredByCriteria(filter, page);
+    }
+
+    @GetMapping
     public List<NewsDto> findAll(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                  @Positive @RequestParam(defaultValue = "10") Integer size) {
 
