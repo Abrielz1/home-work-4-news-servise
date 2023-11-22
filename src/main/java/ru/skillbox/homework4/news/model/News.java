@@ -11,6 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,10 +37,13 @@ import java.util.Objects;
 public class News {
 
     @Id
+    @PositiveOrZero
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "news_message")
+
+    @NotBlank
+    @Column(name = "news_message", columnDefinition = "TEXT")
     private String newsMessage;
 
     @ManyToOne(fetch = FetchType.LAZY) //todo: проверить на n+1

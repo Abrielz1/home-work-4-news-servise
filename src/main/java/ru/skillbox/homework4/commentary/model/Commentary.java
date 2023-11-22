@@ -34,7 +34,7 @@ public class Commentary {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "commentary_text")
+    @Column(name = "commentary_text", columnDefinition = "TEXT")
     private String commentaryText;
 
     @ManyToOne(fetch = FetchType.LAZY)
