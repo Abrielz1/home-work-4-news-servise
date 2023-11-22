@@ -33,7 +33,7 @@ public class NewsController {
 
     private final NewsService newsService;
 
-    @GetMapping
+    @GetMapping("/find-bt-criteria/")
     public List<NewsDto> findAllCriteria(
                                  @RequestBody CategoryFilter filter,
                                  @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
@@ -84,8 +84,9 @@ public class NewsController {
     @DeleteMapping("/{id}")
     @Catcher
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public NewsDto deleteNewsById(@Positive @PathVariable long id) {
+    public NewsDto deleteNewsById(@Positive @PathVariable(name = "id") Long newsId,
+                                  @Positive @RequestParam(name = "userId") Long userId) {
 
-        return newsService.deleteNewsById(id);
+        return newsService.deleteNewsById(newsId);
     }
 }
