@@ -72,7 +72,6 @@ public class NewsServiceImpl implements NewsService {
 
         List<Commentary> commentariesList = news.getCommentaryList();
         fullNewsDto = NEWS_MAPPER.setCommentariesList(fullNewsDto, commentariesList);
-        System.out.println("FullNewsDto: " + fullNewsDto);
 
         log.info("News with id: {} was sent", newsId);
 
@@ -131,8 +130,6 @@ public class NewsServiceImpl implements NewsService {
 
         return NEWS_MAPPER.toNewsDto(news);
     }
-
-    // todo: метод управления категориями и проверки права владения.
 
     private User checkUserById(Long userId) {
 

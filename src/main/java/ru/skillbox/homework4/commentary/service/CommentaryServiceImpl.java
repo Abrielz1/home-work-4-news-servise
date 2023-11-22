@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.skillbox.homework4.aop.Catcher;
 import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.commentary.mapper.CommentaryMapper;
 import ru.skillbox.homework4.commentary.model.Commentary;
@@ -72,6 +73,7 @@ public class CommentaryServiceImpl implements CommentaryService {
     }
 
     @Override
+    @Catcher
     @Transactional
     public CommentariesDto updateCommentaryById(Long newsId,
                                                 Long commentaryId,
@@ -100,6 +102,7 @@ public class CommentaryServiceImpl implements CommentaryService {
     }
 
     @Override
+    @Catcher
     @Transactional
     public CommentariesDto deleteCommentaryById(Long commentaryId) {
 

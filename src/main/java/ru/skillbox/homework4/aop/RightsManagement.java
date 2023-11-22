@@ -19,11 +19,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RightsManagement {
 
+    // todo: метод управления категориями и проверки права владения.
     @Before("@annotation(Catcher)")
     public  Boolean userRightsManagement() { // ?? JoinPoint joinPoint
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-        System.out.println("Request: " + request);
+
+        System.out.println("Request: " + request.getAttribute("user"));
         System.out.println("RequestAttributes: " + requestAttributes);
 
         var pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
