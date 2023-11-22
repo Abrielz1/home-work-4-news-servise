@@ -33,7 +33,7 @@ public class NewsController {
 
     private final NewsService newsService;
 
-    @GetMapping("/find-bt-criteria/")
+    @GetMapping("/find-by-criteria/")
     public List<NewsDto> findAllCriteria(
                                  @RequestBody CategoryFilter filter,
                                  @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
