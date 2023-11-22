@@ -104,14 +104,12 @@ public class CommentaryServiceImpl implements CommentaryService {
     @Override
     @Catcher
     @Transactional
-    public CommentariesDto deleteCommentaryById(Long commentaryId) {
+    public void deleteCommentaryById(Long commentaryId) {
 
         checkCommentaryById(commentaryId);
 
         commentaryRepository.deleteById(commentaryId);
         log.info("Commentary with id {} was deleted", commentaryId);
-
-        return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(checkCommentaryById(commentaryId));
 
     }
 

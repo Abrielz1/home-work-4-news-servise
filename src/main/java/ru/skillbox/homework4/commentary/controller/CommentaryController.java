@@ -77,12 +77,12 @@ public class CommentaryController {
     @DeleteMapping("/commentaries/{commentaryId}")
     @Catcher
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public CommentariesDto deleteCommentaryById(
+    public void deleteCommentaryById(
             @Positive @PathVariable(name = "newsId") Long newsId,
-            @Positive @RequestParam(name = "userId") Long userId,
+//            @Positive @RequestParam(name = "userId") Long userId,
             @PathVariable Long commentaryId) {
 
-        return commentaryService.deleteCommentaryById(commentaryId);
+        commentaryService.deleteCommentaryById(commentaryId);
     }
 }
 
