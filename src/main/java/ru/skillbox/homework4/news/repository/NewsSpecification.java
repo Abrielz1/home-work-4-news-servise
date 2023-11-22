@@ -31,7 +31,7 @@ public interface NewsSpecification {
                 return null;
             }
 
-            return cb.equal(root.get("id"), categoryName);
+            return cb.equal(root.get("category"), categoryName);
         };
     }
 
