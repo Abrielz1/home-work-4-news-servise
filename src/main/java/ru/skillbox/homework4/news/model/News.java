@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,7 +37,7 @@ import java.util.Objects;
 public class News {
 
     @Id
-    @PositiveOrZero
+    @Positive
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

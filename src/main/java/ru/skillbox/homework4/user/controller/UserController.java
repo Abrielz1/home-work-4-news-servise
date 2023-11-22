@@ -41,7 +41,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getById(@PathVariable long id) {
+    public UserDto getById(@Positive @PathVariable long id) {
 
         return userService.getById(id);
     }
@@ -55,14 +55,14 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto updateUserById(@PathVariable long id, @Validated(Update.class) @RequestBody UserDto userDto) {
+    public UserDto updateUserById(@Positive @PathVariable long id, @Validated(Update.class) @RequestBody UserDto userDto) {
 
         return userService.update(id, userDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public UserDto delete(@PathVariable long id) {
+    public UserDto delete(@Positive @PathVariable long id) {
 
         return userService.delete(id);
     }

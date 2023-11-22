@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +30,7 @@ import java.util.Objects;
 public class Category {
 
     @Id
+    @Positive
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

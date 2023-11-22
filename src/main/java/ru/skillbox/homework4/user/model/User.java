@@ -9,6 +9,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,14 +34,15 @@ import java.util.Objects;
 public class User {
 
     @Id
+    @Positive
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank
     private String name;
 
-    @NotBlank
     @Email
+    @NotBlank
     private String email;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)

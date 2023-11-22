@@ -12,4 +12,8 @@ import lombok.NoArgsConstructor;
 public class CategoryFilter {
 
     private String categoryName;
+
+    private String newsOwner;
+
+    private String commentaryOwner;
 }

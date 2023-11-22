@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.commentary.service.CommentaryService;
@@ -29,8 +31,9 @@ public class CommentaryController {
     private final CommentaryService commentaryService;
 
     @GetMapping("/commentaries")
+    @ResponseStatus(HttpStatus.OK)
     public List<CommentariesDto> findAll(
-                @PathVariable(name = "newsId") Long newsId,
+                @Positive @PathVariable(name = "newsId") Long newsId,
                 @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                 @Positive @RequestParam(defaultValue = "10") Integer size) {
 
@@ -40,35 +43,39 @@ public class CommentaryController {
     }
 
     @GetMapping("/commentaries/{commentaryId}")
+    @ResponseStatus(HttpStatus.OK)
     public CommentariesDto findCommentaryById(
-            @PathVariable(name = "newsId") Long newsId,
+            @Positive @PathVariable(name = "newsId") Long newsId,
             @PathVariable Long commentaryId) {
 
        return commentaryService.findCommentaryById(newsId, commentaryId);
     }
 
     @PostMapping("/commentaries")
+    @ResponseStatus(HttpStatus.CREATED)
     public CommentariesDto createCommentary(
-            @PathVariable(name = "newsId") Long newsId,
-            @RequestParam(name = "userId") Long userId,
+            @Positive @PathVariable(name = "newsId") Long newsId,
+            @Positive @RequestParam(name = "userId") Long userId,
             @Validated(Create.class) @RequestBody CommentariesDto commentariesDto) {
 
         return commentaryService.createCommentary(userId, newsId, commentariesDto);
     }
 
     @PutMapping("/commentaries/{commentaryId}")
+    @ResponseStatus(HttpStatus.OK)
     public CommentariesDto updateCommentaryById(
-            @PathVariable(name = "newsId") Long newsId,
-            @RequestParam(name = "userId") Long userId,
-            @PathVariable Long commentaryId,
+            @Positive @PathVariable(name = "newsId") Long newsId,
+            @Positive @RequestParam(name = "userId") Long userId,
+            @Positive @PathVariable Long commentaryId,
             @Validated(Update.class) @RequestBody CommentariesDto commentariesDto) {
 
         return commentaryService.updateCommentaryById(newsId, commentaryId, userId, commentariesDto);
     }
 
     @DeleteMapping("/commentaries/{commentaryId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public CommentariesDto deleteCommentaryById(
-            @PathVariable(name = "newsId") Long newsId,
+            @Positive @PathVariable(name = "newsId") Long newsId,
             @PathVariable Long commentaryId) {
 
         return commentaryService.deleteCommentaryById(commentaryId);
