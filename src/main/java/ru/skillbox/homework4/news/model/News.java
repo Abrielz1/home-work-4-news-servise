@@ -41,6 +41,9 @@ public class News {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Column(name = "news_name")
+    private String newsName;
 
     @NotBlank
     @Column(name = "news_message", columnDefinition = "TEXT")

@@ -13,7 +13,7 @@ public class CategoryFilter {
 
     private String categoryName;
 
-    private Long newsOwner;
+    private String newsName;
 
-    private Long commentaryOwner;
+    private Long newsOwnerId;
 }

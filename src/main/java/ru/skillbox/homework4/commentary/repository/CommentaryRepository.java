@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface CommentaryRepository extends JpaRepository<Commentary, Long> {
 
-    //todo: если не запашет, написать натив
 @Query("""
        SELECT commentary FROM Commentary commentary WHERE commentary.news.id = :newsId
        """)
