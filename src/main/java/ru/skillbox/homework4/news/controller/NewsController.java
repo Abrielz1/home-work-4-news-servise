@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ru.skillbox.homework4.aop.Catcher;
 import ru.skillbox.homework4.common.Create;
 import ru.skillbox.homework4.common.Update;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
@@ -69,6 +70,7 @@ public class NewsController {
     }
 
     @PutMapping("/{id}")
+    @Catcher
     @ResponseStatus(HttpStatus.OK)
     public NewsDto updateNewsById(@Positive @RequestParam(name = "userId") Long userId,
                                   @Positive @RequestParam(name = "categoryId") Long categoryId,
@@ -80,6 +82,7 @@ public class NewsController {
 
 
     @DeleteMapping("/{id}")
+    @Catcher
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public NewsDto deleteNewsById(@Positive @PathVariable long id) {
 
