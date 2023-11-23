@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.homework4.aop.Catcher;
 import ru.skillbox.homework4.commentary.dto.CommentariesDto;
-import ru.skillbox.homework4.commentary.mapper.CommentaryMapper;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
@@ -17,6 +16,7 @@ import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
+import static ru.skillbox.homework4.commentary.mapper.CommentaryMapper.COMMENTARY_MAPPER;
 
 @Slf4j
 @Service
@@ -35,22 +35,27 @@ public class CommentaryServiceImpl implements CommentaryService {
     public List<CommentariesDto> findAllCommentary(Long newsId, PageRequest page) {
 
         log.info("All commentaries were sent");
+        //todo: переписать конвертер что , поля ,ыли не null
 
         return commentaryRepository.getListOfCommentariesByNewsId(newsId, page).stream()
-                .map(CommentaryMapper.COMMENTARY_MAPPER::CommentaryToCommentariesDto)
+                .map(COMMENTARY_MAPPER::CommentaryToCommentariesDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Catcher
-    public CommentariesDto findCommentaryById(Long newsId, Long commentaryId) {
+    public CommentariesDto findCommentaryById(Long newsId, Long userId, Long commentaryId) {
 
+        User user = checkUserById(userId);
         News news = checkNewsById(newsId);
         Commentary commentary = checkCommentaryById(commentaryId);
 
         log.info("Commentary with id {} was sent", commentaryId);
 
-        return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentary);
+        CommentariesDto commentariesDto = COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentary);
+        commentariesDto = COMMENTARY_MAPPER.setAuthorIdAndNewsId(commentariesDto, user, news);
+
+        return commentariesDto;
     }
 
     @Override
@@ -69,8 +74,13 @@ public class CommentaryServiceImpl implements CommentaryService {
 
         commentaryRepository.save(commentary);
 
+        CommentariesDto commentariesDtoResponse = COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentary);
+
+        commentariesDtoResponse = COMMENTARY_MAPPER.setAuthorIdAndNewsId(commentariesDtoResponse, user, news);
+
         log.info("Commentary with id {} was created", commentary.getId());
-        return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentary);
+
+        return commentariesDtoResponse;
     }
 
     @Override
@@ -99,7 +109,13 @@ public class CommentaryServiceImpl implements CommentaryService {
             throw new ObjectNotFoundException("no item for update");
         }
 
-        return CommentaryMapper.COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentaryDb);
+        CommentariesDto commentariesDtoResponse = COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentaryDb);
+
+        commentariesDtoResponse = COMMENTARY_MAPPER.setAuthorIdAndNewsId(commentariesDtoResponse, userDb, newsDb);
+
+        log.info("Commentary with id {} was created", commentaryDb.getId());
+
+        return commentariesDtoResponse;
     }
 
     @Override

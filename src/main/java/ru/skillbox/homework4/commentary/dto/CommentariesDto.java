@@ -18,5 +18,9 @@ public class CommentariesDto {
     @NotNull
     @NotBlank
     private String commentaryText;
+
+    private Long newsId;
+
+    private Long authorId;
 }
 

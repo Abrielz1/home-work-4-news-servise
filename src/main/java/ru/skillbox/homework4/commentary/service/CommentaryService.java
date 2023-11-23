@@ -8,11 +8,11 @@ public interface CommentaryService {
 
     List<CommentariesDto> findAllCommentary(Long newsId, PageRequest page);
 
-    CommentariesDto findCommentaryById(Long newsId, Long commentaryId);
+    CommentariesDto findCommentaryById(Long newsId, Long userId, Long commentaryId);
 
     CommentariesDto createCommentary(Long newsId, Long userId, CommentariesDto commentariesDto);
 
     CommentariesDto updateCommentaryById(Long newsId, Long commentaryId, Long userId, CommentariesDto commentariesDto);
 
-    void deleteCommentaryById(Long commentaryId); //Long userId, Long newsId,
+    void deleteCommentaryById(Long commentaryId);
 }

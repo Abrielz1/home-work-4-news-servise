@@ -47,9 +47,10 @@ public class CommentaryController {
     @ResponseStatus(HttpStatus.OK)
     public CommentariesDto findCommentaryById(
             @Positive @PathVariable(name = "newsId") Long newsId,
+            @Positive @RequestParam(name = "userId") Long userId,
             @PathVariable Long commentaryId) {
 
-       return commentaryService.findCommentaryById(newsId, commentaryId);
+       return commentaryService.findCommentaryById(newsId, userId, commentaryId);
     }
 
     @PostMapping("/commentaries")

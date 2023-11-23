@@ -29,7 +29,7 @@ public class RightsManagement {
         System.out.println("RequestAttributes: " + requestAttributes);
 
         var pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-        // request.getParameter(“paramName”); ??
+        System.out.println(pathVariables);// ??
         return false;
     }
 }

@@ -17,5 +17,13 @@ public interface CommentaryMapper {
     @Mapping(target = "id", ignore = true)
     Commentary CommentariesDto(CommentariesDto commentariesDto, User user, News news);
 
+   default CommentariesDto setAuthorIdAndNewsId(CommentariesDto commentariesDto, User user, News news) {
+
+        commentariesDto.setAuthorId(user.getId());
+        commentariesDto.setNewsId(news.getId());
+
+        return commentariesDto;
+    }
+
     CommentariesDto CommentaryToCommentariesDto(Commentary commentary);
 }
