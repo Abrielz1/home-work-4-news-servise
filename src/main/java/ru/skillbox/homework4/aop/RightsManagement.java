@@ -25,7 +25,7 @@ public class RightsManagement {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
 
-        System.out.println("Request: " + request.getAttribute("user"));
+        System.out.println("Request: " + request.getAttribute("id"));
         System.out.println("RequestAttributes: " + requestAttributes);
 
         var pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);

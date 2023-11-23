@@ -42,6 +42,7 @@ public class CommentaryServiceImpl implements CommentaryService {
     }
 
     @Override
+    @Catcher
     public CommentariesDto findCommentaryById(Long newsId, Long commentaryId) {
 
         News news = checkNewsById(newsId);
