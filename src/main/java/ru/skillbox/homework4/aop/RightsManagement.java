@@ -24,14 +24,14 @@ public class RightsManagement {
     // todo: метод управления категориями и проверки права владения.
     @Before("execution(* ru.skillbox.homework4.news.controller.NewsController.updateNewsById(..)) && args(userId, ..)")
     public  Boolean userRightsManagement(@RequestParam("userId") Long userId) { // ??
-        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-
-        System.out.println("Request: " + request.getAttribute("id"));
-        System.out.println("RequestAttributes: " + requestAttributes);
-
-        Long userCatchId = Long.parseLong(request.getAttribute("userId").toString());
-        System.out.println("User caught id is: " + userCatchId);
+//        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+//        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+//
+//        System.out.println("Request: " + request.getAttribute("id"));
+//        System.out.println("RequestAttributes: " + requestAttributes);
+//
+//        Long userCatchId = Long.parseLong(request.getAttribute("userId").toString());
+        System.out.println("User caught id is: " + userId);
         return false;
     }
 
