@@ -20,6 +20,7 @@ import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
 import static ru.skillbox.homework4.news.mapper.NewsMapper.NEWS_MAPPER;
@@ -120,6 +121,17 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public Boolean checkNewsOwner(Long newsId, Long userId) {
+
+        User user = checkUserById(userId);
+        News news = checkNewsById(newsId);
+
+        User testUser = news.getUser();
+
+        return Objects.equals(testUser.getId(), user.getId());
+    }
+
+    @Override
     @Transactional
     public NewsDto deleteNewsById(Long newsId) {
 
@@ -130,6 +142,8 @@ public class NewsServiceImpl implements NewsService {
 
         return NEWS_MAPPER.toNewsDto(news);
     }
+
+
 
     private User checkUserById(Long userId) {
 

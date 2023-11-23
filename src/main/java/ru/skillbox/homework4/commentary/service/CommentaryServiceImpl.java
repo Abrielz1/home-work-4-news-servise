@@ -14,6 +14,7 @@ import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import static ru.skillbox.homework4.commentary.mapper.CommentaryMapper.COMMENTARY_MAPPER;
 
@@ -126,6 +127,15 @@ public class CommentaryServiceImpl implements CommentaryService {
 
     }
 
+    @Override
+    public Boolean checkCommentaryOwner(Long newsId, Long userId, Long commentaryId) {
+
+        News news = checkNewsById(newsId);
+        User user = checkUserById(userId);
+        Commentary commentary = checkCommentaryById(commentaryId);
+
+        return Objects.equals(commentary.getUser().getId(), userId);
+    }
 
     private Commentary checkCommentaryById(Long commentaryId) {
 

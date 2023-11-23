@@ -53,11 +53,11 @@ public class NewsController {
          return newsService.findAll(page);
      }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{newsId}")
     @ResponseStatus(HttpStatus.OK)
-    public FullNewsDto findNewsById(@Positive @PathVariable long id) {
+    public FullNewsDto findNewsById(@Positive @PathVariable Long newsId) {
 
-        return newsService.findNewsById(id);
+        return newsService.findNewsById(newsId);
     }
 
     @PostMapping
@@ -69,22 +69,22 @@ public class NewsController {
         return newsService.createNews(userId, categoryId, newsDto);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{newsId}")
     @Catcher
     @ResponseStatus(HttpStatus.OK)
     public NewsDto updateNewsById(@Positive @RequestParam(name = "userId") Long userId,
                                   @Positive @RequestParam(name = "categoryId") Long categoryId,
-                                  @Positive @PathVariable(name = "id") Long newsId,
+                                  @Positive @PathVariable(name = "newsId") Long newsId,
                                   @Validated(Update.class) @RequestBody NewsDto newsDto) {
 
          return newsService.updateNewsById(userId,categoryId, newsId, newsDto);
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{newsId}")
     @Catcher
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public NewsDto deleteNewsById(@Positive @PathVariable(name = "id") Long newsId,
+    public NewsDto deleteNewsById(@Positive @PathVariable(name = "newsId") Long newsId,
                                   @Positive @RequestParam(name = "userId") Long userId) {
 
         return newsService.deleteNewsById(newsId);
