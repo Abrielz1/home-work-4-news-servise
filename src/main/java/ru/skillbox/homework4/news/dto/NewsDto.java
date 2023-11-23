@@ -20,6 +20,8 @@ public class NewsDto {
     @NotBlank
     private String newsMessage;
 
+    private String newsName;
+
     private CategoryDto category;
 
     private Integer numberOfCommentaries;

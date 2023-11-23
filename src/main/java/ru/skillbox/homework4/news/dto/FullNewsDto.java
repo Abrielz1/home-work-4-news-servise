@@ -22,6 +22,8 @@ public class FullNewsDto {
     @NotBlank
     private String newsMessage;
 
+    private String newsName;
+
     private CategoryDto category;
 
     private List<CommentariesDto> commentaryList;
