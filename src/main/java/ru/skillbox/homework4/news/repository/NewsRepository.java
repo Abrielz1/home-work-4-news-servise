@@ -7,4 +7,6 @@ import ru.skillbox.homework4.news.model.News;
 
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long>, JpaSpecificationExecutor<News> {
+
+    Boolean exists(Long userId, Long newsId);
 }

@@ -15,4 +15,6 @@ public interface CommentaryRepository extends JpaRepository<Commentary, Long> {
        SELECT commentary FROM Commentary commentary WHERE commentary.news.id = :newsId
        """)
     List<Commentary> getListOfCommentariesByNewsId(@Param("newsId")Long newsId, Pageable pageable);
+
+    Boolean exists(Long userId, Long newsId, Long commentaryId);
 }
