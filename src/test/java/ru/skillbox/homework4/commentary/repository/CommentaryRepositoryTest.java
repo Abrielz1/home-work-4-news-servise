@@ -80,11 +80,5 @@ class CommentaryRepositoryTest {
         userRepository.deleteAll();
     }
 
-    @Test
-    void getListOfCommentariesByNewsId() {
-        PageRequest pg = PageRequest.of(0, 10);
-        List<Commentary> commentaryList = commentaryRepository.getListOfCommentariesByNewsId(1L, pg);
 
-        assertEquals(1, commentaryList.size());
-    }
 }

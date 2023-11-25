@@ -63,7 +63,7 @@ public class RightsManagement {
 
         //commentaryService.checkCommentaryOwner(newsId, userId, commentaryId)
 
-        if (!commentaryRepository.exists(newsId, userId, commentaryId)) {
+        if (!commentaryRepository.exists(userId, commentaryId)) {
             throw new UnsupportedStateException("You not owner!");
         }
     }
@@ -78,7 +78,7 @@ public class RightsManagement {
 
         //commentaryService.checkCommentaryOwner(newsId, userId, commentaryId)
 
-        if (!commentaryRepository.exists(newsId, userId, commentaryId)) {
+        if (!commentaryRepository.exists(userId, commentaryId)) {
             throw new UnsupportedStateException("You not owner!");
         }
     }

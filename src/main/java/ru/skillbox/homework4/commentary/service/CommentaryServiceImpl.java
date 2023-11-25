@@ -35,9 +35,7 @@ public class CommentaryServiceImpl implements CommentaryService {
     public List<CommentariesDto> findAllCommentary(Long newsId, PageRequest page) {
 
         log.info("All commentaries were sent");
-        //todo: переписать конвертер что , поля ,ыли не null
-
-        return commentaryRepository.getListOfCommentariesByNewsId(newsId, page).stream()
+        return commentaryRepository.findAllByNewsId(newsId, page).stream()
                 .map(COMMENTARY_MAPPER::CommentaryToCommentariesDto)
                 .collect(Collectors.toList());
     }
