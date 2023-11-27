@@ -11,5 +11,5 @@ public interface CommentaryRepository extends JpaRepository<Commentary, Long> {
 
     List<Commentary> findAllByNewsId(Long newsId, Pageable pageable);
 
-    Boolean exists(Long userId, Long commentaryId);
+    Boolean existsByIdAndUserId(Long id, Long userIduserId);
 }

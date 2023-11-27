@@ -30,7 +30,7 @@ class UserServiceImplTest {
     private UserRepository userRepository;
 
     @InjectMocks
-    private UserServiceImpl service;
+    private UserService service;
 
     private User user1;
 

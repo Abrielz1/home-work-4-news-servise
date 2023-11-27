@@ -47,7 +47,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<NewsDto> findAll(PageRequest page) {
 
-       List<News> newsList = newsRepository.findAll();
+       List<News> newsList = newsRepository.getAllNews(page);
        List<NewsDto> newsDtoList = new ArrayList<>();
 
         for (News news : newsList) {
