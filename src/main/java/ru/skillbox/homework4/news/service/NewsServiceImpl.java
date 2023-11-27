@@ -20,9 +20,7 @@ import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
 import static ru.skillbox.homework4.news.mapper.NewsMapper.NEWS_MAPPER;
 
 @Slf4j
@@ -66,16 +64,11 @@ public class NewsServiceImpl implements NewsService {
     public FullNewsDto findNewsById(Long newsId) {
 
         News news = checkNewsById(newsId);
-
-        System.out.println("News: " + news.getCommentaryList());
-
         FullNewsDto fullNewsDto = NEWS_MAPPER.toFullNewsDto(news);
-
         List<Commentary> commentariesList = news.getCommentaryList();
         fullNewsDto = NEWS_MAPPER.setCommentariesList(fullNewsDto, commentariesList);
 
         log.info("News with id: {} was sent", newsId);
-
         return fullNewsDto;
     }
 
@@ -85,12 +78,12 @@ public class NewsServiceImpl implements NewsService {
 
         User user = checkUserById(userId);
         Category category = checkCategoryById(categoryId);
-
         News news = new News();
         news.setUser(user);
         news = NEWS_MAPPER.setCategory(newsDto, user, category);
 
         newsRepository.save(news);
+
         log.info("News was created");
         return NEWS_MAPPER.toNewsDto(news);
     }
@@ -103,32 +96,21 @@ public class NewsServiceImpl implements NewsService {
                                   NewsDto newsDto) {
 
         User user = checkUserById(userId);
-
         News newsBd = checkNewsById(newsId);
-
         Category category = checkCategoryById(categoryId);
 
         if (newsDto.getNewsMessage() != null) {
             newsBd.setNewsMessage(newsDto.getNewsMessage());
         }
 
-        newsDto.setCategory(CATEGORY_MAPPER.toCategoryDto(category));
+        if (!newsDto.getCategory().getId().equals(category.getId())) {
+            newsBd.setCategory(category);
+        }
 
         newsRepository.save(newsBd);
+
         log.info("News was updated");
-
         return NEWS_MAPPER.toNewsDto(newsBd);
-    }
-
-    @Override
-    public Boolean checkNewsOwner(Long newsId, Long userId) {
-
-        User user = checkUserById(userId);
-        News news = checkNewsById(newsId);
-
-        User testUser = news.getUser();
-
-        return Objects.equals(testUser.getId(), user.getId());
     }
 
     @Override
@@ -138,8 +120,8 @@ public class NewsServiceImpl implements NewsService {
         News news = checkNewsById(newsId);
 
         newsRepository.deleteById(newsId);
-        log.info("News with id: {} was deleted!", newsId);
 
+        log.info("News with id: {} was deleted!", newsId);
         return NEWS_MAPPER.toNewsDto(news);
     }
 
@@ -167,14 +149,5 @@ public class NewsServiceImpl implements NewsService {
             log.warn("Category with id {} was not found", categoryId);
             throw  new ObjectNotFoundException("Category was not found");
         });
-    }
-
-    private Commentary checkCommentaryById(Long commentaryId) {
-
-        return commentaryRepository.findById(commentaryId)
-                .orElseThrow(() -> {
-                    log.warn("Commentary with id {} was not found", commentaryId);
-                    throw new ObjectNotFoundException("Commentary was not found");
-                });
     }
 }

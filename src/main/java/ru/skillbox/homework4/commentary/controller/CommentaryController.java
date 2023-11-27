@@ -38,9 +38,7 @@ public class CommentaryController {
                 @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                 @Positive @RequestParam(defaultValue = "10") Integer size) {
 
-        PageRequest page = PageRequest.of(from / size, size);
-
-        return commentaryService.findAllCommentary(newsId, page);
+        return commentaryService.findAllCommentary(newsId, PageRequest.of(from / size, size));
     }
 
     @GetMapping("/commentaries/{commentaryId}")
@@ -80,7 +78,6 @@ public class CommentaryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCommentaryById(
             @Positive @PathVariable(name = "newsId") Long newsId,
-//            @Positive @RequestParam(name = "userId") Long userId,
             @PathVariable Long commentaryId) {
 
         commentaryService.deleteCommentaryById(commentaryId);

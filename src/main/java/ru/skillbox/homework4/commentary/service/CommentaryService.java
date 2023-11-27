@@ -15,6 +15,4 @@ public interface CommentaryService {
     CommentariesDto updateCommentaryById(Long newsId, Long commentaryId, Long userId, CommentariesDto commentariesDto);
 
     void deleteCommentaryById(Long commentaryId);
-
-    Boolean checkCommentaryOwner(Long newsId, Long userId, Long commentaryId);
 }

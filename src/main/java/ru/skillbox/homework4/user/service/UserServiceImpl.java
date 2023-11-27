@@ -88,11 +88,10 @@ public class UserServiceImpl implements UserService {
 
     private User checkUserById(Long userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> {
+        return userRepository.findById(userId).orElseThrow(() -> {
             log.warn("User with id {} was not found", userId);
+
             throw  new ObjectNotFoundException("Пользователь не найден");
         });
-
-        return user;
     }
 }

@@ -14,7 +14,6 @@ import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import static ru.skillbox.homework4.commentary.mapper.CommentaryMapper.COMMENTARY_MAPPER;
 
@@ -23,7 +22,6 @@ import static ru.skillbox.homework4.commentary.mapper.CommentaryMapper.COMMENTAR
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CommentaryServiceImpl implements CommentaryService {
-
 
     private final CommentaryRepository commentaryRepository;
 
@@ -46,12 +44,10 @@ public class CommentaryServiceImpl implements CommentaryService {
         User user = checkUserById(userId);
         News news = checkNewsById(newsId);
         Commentary commentary = checkCommentaryById(commentaryId);
-
-        log.info("Commentary with id {} was sent", commentaryId);
-
         CommentariesDto commentariesDto = COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentary);
         commentariesDto = COMMENTARY_MAPPER.setAuthorIdAndNewsId(commentariesDto, user, news);
 
+        log.info("Commentary with id {} was sent", commentaryId);
         return commentariesDto;
     }
 
@@ -63,7 +59,6 @@ public class CommentaryServiceImpl implements CommentaryService {
 
         News news = checkNewsById(newsId);
         User user = checkUserById(userId);
-
         Commentary commentary = new Commentary();
         commentary.setNews(news);
         commentary.setUser(user);
@@ -72,11 +67,9 @@ public class CommentaryServiceImpl implements CommentaryService {
         commentaryRepository.save(commentary);
 
         CommentariesDto commentariesDtoResponse = COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentary);
-
         commentariesDtoResponse = COMMENTARY_MAPPER.setAuthorIdAndNewsId(commentariesDtoResponse, user, news);
 
         log.info("Commentary with id {} was created", commentary.getId());
-
         return commentariesDtoResponse;
     }
 
@@ -91,8 +84,6 @@ public class CommentaryServiceImpl implements CommentaryService {
         User userDb = checkUserById(userId);
         Commentary commentaryDb = checkCommentaryById(commentaryId);
 
-        System.out.println(commentaryDb);
-
         if (commentariesDto != null) {
 
             if (commentariesDto.getCommentaryText() !=null) {
@@ -106,11 +97,9 @@ public class CommentaryServiceImpl implements CommentaryService {
         }
 
         CommentariesDto commentariesDtoResponse = COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentaryDb);
-
         commentariesDtoResponse = COMMENTARY_MAPPER.setAuthorIdAndNewsId(commentariesDtoResponse, userDb, newsDb);
 
         log.info("Commentary with id {} was created", commentaryDb.getId());
-
         return commentariesDtoResponse;
     }
 
@@ -122,17 +111,6 @@ public class CommentaryServiceImpl implements CommentaryService {
 
         commentaryRepository.deleteById(commentaryId);
         log.info("Commentary with id {} was deleted", commentaryId);
-
-    }
-
-    @Override
-    public Boolean checkCommentaryOwner(Long newsId, Long userId, Long commentaryId) {
-
-        News news = checkNewsById(newsId);
-        User user = checkUserById(userId);
-        Commentary commentary = checkCommentaryById(commentaryId);
-
-        return Objects.equals(commentary.getUser().getId(), userId);
     }
 
     private Commentary checkCommentaryById(Long commentaryId) {
@@ -141,7 +119,7 @@ public class CommentaryServiceImpl implements CommentaryService {
                 .orElseThrow(() -> {
                     log.warn("Commentary with id {} was not found", commentaryId);
                     throw new ObjectNotFoundException("Commentary was not found");
-                });
+        });
     }
 
     private User checkUserById(Long userId) {

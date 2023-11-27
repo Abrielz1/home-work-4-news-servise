@@ -38,7 +38,7 @@ public interface NewsMapper {
     @Mapping(source = "category.id", target = "id")
     News toNews(NewsDto newsDto, User user, Category category);
 
-    default News setCategory(NewsDto newsDto, User user, Category category) { //todo: Босс проверь этот костыль
+    default News setCategory(NewsDto newsDto, User user, Category category) {
 
         News news = toNews( newsDto, user, category);
         news.setCategory(category);
