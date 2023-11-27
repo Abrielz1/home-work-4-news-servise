@@ -60,6 +60,8 @@ class UserServiceImplTest {
 
         when(userRepository.findAllUsers(p)).thenReturn(List.of(user1));
 
+//        when(userRepository.findAll(p)).thenReturn((Page<User>) List.of(user1)); со стандарным findAll(PageRequest) не пашет
+
         List<UserDto> userDto = service.findAll(p);
 
         assertEquals(1L, userDto.size());
