@@ -1,6 +1,7 @@
 package ru.skillbox.homework4.user.model;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,10 +40,12 @@ public class User {
     private Long id;
 
     @NotBlank
+    @Column(unique=true)
     private String name;
 
     @Email
     @NotBlank
+    @Column(unique=true)
     private String email;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
