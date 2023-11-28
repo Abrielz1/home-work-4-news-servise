@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.skillbox.homework4.aop.Catcher;
 import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.commentary.service.CommentaryService;
 import ru.skillbox.homework4.common.Create;
@@ -62,7 +61,6 @@ public class CommentaryController {
     }
 
     @PutMapping("/commentaries/{commentaryId}")
-    @Catcher
     @ResponseStatus(HttpStatus.OK)
     public CommentariesDto updateCommentaryById(
             @Positive @PathVariable(name = "newsId") Long newsId,
@@ -74,7 +72,6 @@ public class CommentaryController {
     }
 
     @DeleteMapping("/commentaries/{commentaryId}")
-    @Catcher
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCommentaryById(
             @Positive @PathVariable(name = "newsId") Long newsId,
