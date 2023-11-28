@@ -183,7 +183,7 @@ class NewsServiceImplTest {
 
         PageRequest p = PageRequest.of(0, 20);
 
-        when(newsRepository.findAll()).thenReturn(List.of(news1, news2, news3));
+        when(newsRepository.findAll(p).getContent()).thenReturn(List.of(news1, news2, news3));
 
         List<NewsDto> newsDtoList = newsService.findAll(p);
 

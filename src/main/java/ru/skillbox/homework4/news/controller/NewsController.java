@@ -34,6 +34,7 @@ public class NewsController {
     private final NewsService newsService;
 
     @GetMapping("/find-by-criteria/")
+    @ResponseStatus(HttpStatus.OK)
     public List<NewsDto> findAllCriteria(
                                  @RequestBody CategoryFilter filter,
                                  @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
@@ -45,6 +46,7 @@ public class NewsController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<NewsDto> findAll(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                  @Positive @RequestParam(defaultValue = "10") Integer size) {
 

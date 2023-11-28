@@ -1,7 +1,7 @@
 package ru.skillbox.homework4.news.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,12 +14,13 @@ import ru.skillbox.homework4.news.dto.category.CategoryDto;
 @AllArgsConstructor
 public class NewsDto {
 
+    @Positive
     private Long id;
 
-    @NotNull
     @NotBlank
     private String newsMessage;
 
+    @NotBlank
     private String newsName;
 
     private CategoryDto category;

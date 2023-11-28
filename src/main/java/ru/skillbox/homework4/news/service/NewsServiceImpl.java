@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.homework4.commentary.model.Commentary;
-import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
@@ -33,8 +32,6 @@ public class NewsServiceImpl implements NewsService {
 
     private final UserRepository userRepository;
 
-    private final CommentaryRepository commentaryRepository;
-
     private final CategoryRepository categoryRepository;
 
     @Override
@@ -47,7 +44,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<NewsDto> findAll(PageRequest page) {
 
-       List<News> newsList = newsRepository.getAllNews(page);
+       List<News> newsList = newsRepository.findAll(page).getContent();
        List<NewsDto> newsDtoList = new ArrayList<>();
 
         for (News news : newsList) {
@@ -108,7 +105,6 @@ public class NewsServiceImpl implements NewsService {
         }
 
         newsRepository.save(newsBd);
-
         log.info("News was updated");
         return NEWS_MAPPER.toNewsDto(newsBd);
     }
@@ -130,6 +126,7 @@ public class NewsServiceImpl implements NewsService {
     private User checkUserById(Long userId) {
 
         return userRepository.findById(userId).orElseThrow(() -> {
+
                log.warn("User with id {} was not found", userId);
                throw  new ObjectNotFoundException("User was not found");
            });
@@ -138,6 +135,7 @@ public class NewsServiceImpl implements NewsService {
     private News checkNewsById(Long newsId) {
 
         return newsRepository.findById(newsId).orElseThrow(() -> {
+
             log.warn("News with id {} was not found", newsId);
             throw  new ObjectNotFoundException("News was not found");
         });
@@ -146,6 +144,7 @@ public class NewsServiceImpl implements NewsService {
     private Category checkCategoryById(Long categoryId) {
 
         return categoryRepository.findById(categoryId).orElseThrow(() -> {
+
             log.warn("Category with id {} was not found", categoryId);
             throw  new ObjectNotFoundException("Category was not found");
         });
