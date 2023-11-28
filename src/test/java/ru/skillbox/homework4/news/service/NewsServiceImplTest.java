@@ -3,6 +3,8 @@ package ru.skillbox.homework4.news.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.annotation.Before;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +25,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import org.mockito.Mock;
+import ru.skillbox.homework4.commentary.dto.CommentariesDto;
+import ru.skillbox.homework4.commentary.mapper.CommentaryMapper;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
@@ -41,13 +45,14 @@ import ru.skillbox.homework4.user.repository.UserRepository;
 
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.skillbox.homework4.commentary.mapper.CommentaryMapper.COMMENTARY_MAPPER;
 import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
 import static ru.skillbox.homework4.news.mapper.NewsMapper.NEWS_MAPPER;
 import static ru.skillbox.homework4.user.mapper.UserMapper.USER_MAPPER;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor()
 class NewsServiceImplTest {
 
     @InjectMocks
@@ -87,6 +92,8 @@ class NewsServiceImplTest {
 
     @BeforeEach
     void beforeEach() {
+
+        MockitoAnnotations.openMocks(this);
 
         user1 = User.builder()
                 .id(1L)
@@ -183,9 +190,17 @@ class NewsServiceImplTest {
 
         PageRequest p = PageRequest.of(0, 20);
 
-        when(newsRepository.findAll(p).getContent()).thenReturn(List.of(news1, news2, news3));
+        commentary1.setUser(user1);
+        news1.setCommentaryList(List.of(commentary1));
+        news1.setUser(user1);
+        news1.setCategory(category1);
 
-        List<NewsDto> newsDtoList = newsService.findAll(p);
+        newsRepository.save(news1);
+
+        when(newsRepository.findAll(any(PageRequest.class)).getContent())
+                .thenReturn(List.of(news1));
+
+        List<NewsDto> newsDtoList = newsService.findAll(any(PageRequest.class));
 
         assertEquals(3, newsDtoList.size());
     }
