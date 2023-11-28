@@ -55,7 +55,7 @@ class UserServiceImplTest {
 
         PageRequest p = PageRequest.of(0, 20);
 
-        when(userRepository.findAllUsers(p)).thenReturn(List.of(user1));
+        when(userRepository.findAll(p).getContent()).thenReturn(List.of(user1));
 
 //        when(userRepository.findAll(p)).thenReturn((Page<User>) List.of(user1)); со стандарным findAll(PageRequest) не пашет
 

@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
         log.info("All users were sent");
 
-       return userRepository.findAllUsers(page)
+       return userRepository.findAll(page).getContent()
                .stream().map(UserMapper.USER_MAPPER::toUserDto)
                .collect(Collectors.toList());
     }
