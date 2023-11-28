@@ -1,11 +1,12 @@
 package ru.skillbox.homework4.news.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.AfterEach;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +20,6 @@ import org.mockito.quality.Strictness;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import org.mockito.InjectMocks;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -42,21 +42,17 @@ import ru.skillbox.homework4.user.dto.UserDto;
 import ru.skillbox.homework4.user.mapper.UserMapper;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
-
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.skillbox.homework4.commentary.mapper.CommentaryMapper.COMMENTARY_MAPPER;
 import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
 import static ru.skillbox.homework4.news.mapper.NewsMapper.NEWS_MAPPER;
 import static ru.skillbox.homework4.user.mapper.UserMapper.USER_MAPPER;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-@RequiredArgsConstructor()
 class NewsServiceImplTest {
-
-    @InjectMocks
-    private NewsServiceImpl newsService;
 
     @Mock
     private NewsRepository newsRepository;
@@ -69,6 +65,9 @@ class NewsServiceImplTest {
 
     @Mock
     private CommentaryRepository commentaryRepository;
+
+    @InjectMocks
+    private NewsServiceImpl newsService;
 
     private User user1;
 
@@ -92,8 +91,6 @@ class NewsServiceImplTest {
 
     @BeforeEach
     void beforeEach() {
-
-        MockitoAnnotations.openMocks(this);
 
         user1 = User.builder()
                 .id(1L)
@@ -175,20 +172,58 @@ class NewsServiceImplTest {
                 .commentaryText("Text 1-2")
                 .build();
 
+        news3.setCommentaryList(List.of(commentary1, commentary2, commentary3));
         newsRepository.save(news3);
     }
 
+    @AfterEach
+    void afterEach() {
+        userRepository.deleteAll();
+        categoryRepository.deleteAll();
+        commentaryRepository.deleteAll();
+        newsRepository.deleteAll();
+    }
 
     @Test
     void filteredByCriteria() {
-
+      //  fail("test");
         //я хз, как тестить критерию
     }
 
     @Test
     void findAll() {
 
-        PageRequest p = PageRequest.of(0, 20);
+        user1 = User.builder()
+                .id(1L)
+                .name("User1 name")
+                .email("user1@mail.com")
+                .build();
+
+        userRepository.save(user1);
+
+        category1 = Category.builder()
+                .id(1L)
+                .name("Celebrity")
+                .build();
+
+        categoryRepository.save(category1);
+
+        news1 = News.builder()
+                .id(1L)
+                .newsName("Test name news 1")
+                .newsMessage("Test message news 1")
+                .category(category1)
+                .user(user1)
+                .build();
+
+        commentary1 = Commentary.builder()
+                .id(1L)
+                .user(user1)
+                .news(news3)
+                .commentaryText("Text 1")
+                .build();
+
+        commentaryRepository.save(commentary1);
 
         commentary1.setUser(user1);
         news1.setCommentaryList(List.of(commentary1));
@@ -197,12 +232,29 @@ class NewsServiceImplTest {
 
         newsRepository.save(news1);
 
+        when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(user1));
+
+        when(categoryRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(category1));
+
+        when(commentaryRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(commentary1));
+
+        when(newsRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(news1));
+
+        PageRequest p = PageRequest.of(0, 20);
+
+        List<News> list = new ArrayList<>();
+        list.add(news1);
+
         when(newsRepository.findAll(any(PageRequest.class)).getContent())
-                .thenReturn(List.of(news1));
+                .thenReturn(list);
 
-        List<NewsDto> newsDtoList = newsService.findAll(any(PageRequest.class));
+        List<NewsDto> newsDtoList = newsService.findAll(p);
 
-        assertEquals(3, newsDtoList.size());
+        assertEquals(1, newsDtoList.size());
     }
 
     @Test

@@ -44,22 +44,23 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<NewsDto> findAll(PageRequest page) {
 
-//       List<News> newsList = newsRepository.findAll(page).getContent();
-//       List<NewsDto> newsDtoList = new ArrayList<>();
-//
-//        for (News news : newsList) {
-//           NewsDto newsDto = NEWS_MAPPER.toNewsDto(news);
-//           newsDto.setNumberOfCommentaries(news.getCommentaryList().size());
-//           newsDtoList.add(newsDto);
-//        }
-//
-//        log.info("List of news were sent!");
-//        return newsDtoList;
-        return newsRepository.findAll(page)
-                .getContent()
-                .stream()
-                .map(NEWS_MAPPER::toNewsDto)
-                .collect(Collectors.toList());
+       List<News> newsList = newsRepository.findAll(page).getContent();
+       List<NewsDto> newsDtoList = new ArrayList<>();
+
+        for (News news : newsList) {
+           NewsDto newsDto = NEWS_MAPPER.toNewsDto(news);
+           newsDto.setNumberOfCommentaries(news.getCommentaryList().size());
+           newsDtoList.add(newsDto);
+        }
+
+        log.info("List of news were sent!");
+        return newsDtoList;
+
+//        return newsRepository.findAll(page)
+//                .getContent()
+//                .stream()
+//                .map(NEWS_MAPPER::toNewsDto)
+//                .collect(Collectors.toList());
     }
 
     @Override
