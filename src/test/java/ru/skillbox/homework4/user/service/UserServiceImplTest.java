@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import java.util.ArrayList;
 import java.util.Optional;
 import org.mockito.Mock;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.user.dto.UserDto;
@@ -67,8 +68,10 @@ class UserServiceImplTest {
 
         PageRequest p = PageRequest.of(0, 20);
 
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
         when(userRepository.findAll(any(PageRequest.class)).getContent())
-                .thenReturn(list);
+                .thenReturn((List<User>) new PageImpl(list));
 
         List<UserDto> userDto = this.service.findAll(p);
 

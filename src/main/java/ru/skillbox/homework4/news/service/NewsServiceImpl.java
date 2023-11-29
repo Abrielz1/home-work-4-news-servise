@@ -81,11 +81,11 @@ public class NewsServiceImpl implements NewsService {
 
         User user = checkUserById(userId);
         Category category = checkCategoryById(categoryId);
-        News news = new News();
-        news.setUser(user);
-        news = NEWS_MAPPER.setCategory(newsDto, user, category);
 
-        newsRepository.save(news);
+        News news = new News();
+
+        news.setUser(user);
+        news = newsRepository.save(NEWS_MAPPER.setCategory(newsDto, user, category));
 
         log.info("News was created");
         return NEWS_MAPPER.toNewsDto(news);

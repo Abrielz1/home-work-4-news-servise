@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -250,7 +251,7 @@ class NewsServiceImplTest {
         list.add(news1);
 
         when(newsRepository.findAll(any(PageRequest.class)).getContent())
-                .thenReturn(list);
+                .thenReturn((List<News>) new PageImpl(list));
 
         List<NewsDto> newsDtoList = newsService.findAll(p);
 

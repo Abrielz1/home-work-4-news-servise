@@ -36,6 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryDto createCategory(CategoryNewDto newDto) {
 
         Category category = CATEGORY_MAPPER.toCategory(newDto);
@@ -46,6 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryDto updateCategory(Long categoryId, CategoryDto categoryDto) {
 
     Category categoryDb = checkCategoryById(categoryId);
@@ -60,6 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void deleteCategoryById(Long categoryId) {
 
         repository.delete(checkCategoryById(categoryId));
