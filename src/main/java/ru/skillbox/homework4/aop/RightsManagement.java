@@ -27,9 +27,9 @@ public class RightsManagement {
     public void userRightsManagementOnUpdate(@PathVariable(name = "newsId") Long newsId,
                                              @RequestParam("userId") Long userId) {
 
-        //!newsService.checkNewsOwner(newsId, userId)
+        if (newsRepository.existsByIdAndUserId(newsId, userId)) {
 
-        if (!newsRepository.existsByIdAndUserId(newsId, userId)) {
+            log.error("User with id: {} trying to reach someone else property with id: {}", userId, newsId);
             throw new UnsupportedStateException("You not owner!");
         }
     }
@@ -40,9 +40,10 @@ public class RightsManagement {
     public void userRightsManagementOnDelete(@PathVariable(name = "newsId") Long newsId,
                                              @RequestParam("userId") Long userId) {
 
-        //newsService.checkNewsOwner(newsId, userId
 
-        if (!newsRepository.existsByIdAndUserId(newsId, userId)) {
+        if (newsRepository.existsByIdAndUserId(newsId, userId)) {
+
+            log.error("User with id: {} trying to reach someone else property with id: {}", userId, newsId);
             throw new UnsupportedStateException("You not owner!");
         }
     }
@@ -55,9 +56,9 @@ public class RightsManagement {
                                                        @RequestParam("userId") Long userId,
                                                        @PathVariable Long commentaryId) {
 
-        //commentaryService.checkCommentaryOwner(newsId, userId, commentaryId)
+        if (commentaryRepository.existsByIdAndUserId(commentaryId, userId)) {
 
-        if (!commentaryRepository.existsByIdAndUserId(commentaryId, userId)) {
+            log.error("User with id: {} trying to reach someone else property with id: {}", userId, commentaryId);
             throw new UnsupportedStateException("You not owner!");
         }
     }
@@ -70,9 +71,9 @@ public class RightsManagement {
                                                        @RequestParam("userId") Long userId,
                                                        @PathVariable Long commentaryId) {
 
-        //commentaryService.checkCommentaryOwner(newsId, userId, commentaryId)
+        if (commentaryRepository.existsByIdAndUserId(commentaryId, userId)) {
 
-        if (!commentaryRepository.existsByIdAndUserId(commentaryId, userId)) {
+            log.error("User with id: {} trying to reach someone else property with id: {}", userId, commentaryId);
             throw new UnsupportedStateException("You not owner!");
         }
     }

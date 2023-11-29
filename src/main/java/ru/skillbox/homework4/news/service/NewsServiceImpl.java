@@ -36,6 +36,8 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<NewsDto> filteredByCriteria(CategoryFilter filter, PageRequest page) {
+
+        log.info("Request category were sent!");
         return newsRepository.findAll(NewsSpecification.byNewsNameAndOwnerIdFilter(filter), page).stream()
                 .map(NEWS_MAPPER::toNewsDto)
                 .collect(Collectors.toList());
@@ -55,12 +57,6 @@ public class NewsServiceImpl implements NewsService {
 
         log.info("List of news were sent!");
         return newsDtoList;
-
-//        return newsRepository.findAll(page)
-//                .getContent()
-//                .stream()
-//                .map(NEWS_MAPPER::toNewsDto)
-//                .collect(Collectors.toList());
     }
 
     @Override
@@ -83,9 +79,7 @@ public class NewsServiceImpl implements NewsService {
         Category category = checkCategoryById(categoryId);
 
         News news = new News();
-
-        news.setUser(user);
-        news = newsRepository.save(NEWS_MAPPER.setCategory(newsDto, user, category));
+        news = newsRepository.save(NEWS_MAPPER.setCategoryToNewsAndUserAsOwner(newsDto, user, category));
 
         log.info("News was created");
         return NEWS_MAPPER.toNewsDto(news);
@@ -111,6 +105,7 @@ public class NewsServiceImpl implements NewsService {
         }
 
         newsRepository.save(newsBd);
+
         log.info("News was updated");
         return NEWS_MAPPER.toNewsDto(newsBd);
     }

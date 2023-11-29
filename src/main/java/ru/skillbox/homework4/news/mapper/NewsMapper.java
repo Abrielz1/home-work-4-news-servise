@@ -38,9 +38,10 @@ public interface NewsMapper {
     @Mapping(source = "category.id", target = "id")
     News toNews(NewsDto newsDto, User user, Category category);
 
-    default News setCategory(NewsDto newsDto, User user, Category category) {
+    default News setCategoryToNewsAndUserAsOwner(NewsDto newsDto, User user, Category category) {
 
         News news = toNews( newsDto, user, category);
+        news.setUser(user);
         news.setCategory(category);
 
         return news;
