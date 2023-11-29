@@ -237,7 +237,7 @@ class NewsServiceImplTest {
         list.add(news1);
 
         when(newsRepository.findAll(any(PageRequest.class)))
-                .thenReturn((new PageImpl<News>(list)));
+                .thenReturn((new PageImpl<>(list)));
 
         /*
         final Page<Something> page = new PageImpl<>(theListOfSomething);

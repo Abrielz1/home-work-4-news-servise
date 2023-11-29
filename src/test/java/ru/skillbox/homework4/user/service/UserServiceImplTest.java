@@ -3,6 +3,8 @@ package ru.skillbox.homework4.user.service;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
+
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,6 +21,7 @@ import org.mockito.Mock;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
+import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.user.dto.UserDto;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
@@ -68,10 +71,8 @@ class UserServiceImplTest {
 
         PageRequest p = PageRequest.of(0, 20);
 
-        when(userRepository.save(any(User.class))).thenReturn(user);
-
-        when(userRepository.findAll(any(PageRequest.class)).getContent())
-                .thenReturn((List<User>) new PageImpl(list));
+        when(userRepository.findAll(any(PageRequest.class)))
+                .thenReturn(new PageImpl<User>(list));
 
         List<UserDto> userDto = this.service.findAll(p);
 
