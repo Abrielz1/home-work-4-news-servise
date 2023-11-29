@@ -3,7 +3,6 @@ package ru.skillbox.homework4.user.service;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
-
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.mockito.Mockito;
