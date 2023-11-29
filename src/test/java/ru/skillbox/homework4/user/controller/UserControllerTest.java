@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.any;
 import org.springframework.http.MediaType;
@@ -18,10 +17,8 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import ru.skillbox.homework4.user.dto.UserDto;
-import ru.skillbox.homework4.user.mapper.UserMapper;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.service.UserServiceImpl;
-import static org.junit.jupiter.api.Assertions.*;
 import static ru.skillbox.homework4.user.mapper.UserMapper.USER_MAPPER;
 
 @WebMvcTest(UserController.class)

@@ -112,7 +112,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
-    public NewsDto deleteNewsById(Long newsId) {
+    public NewsDto deleteNewsById(Long newsId, Long userId) {
 
         News news = checkNewsById(newsId);
 

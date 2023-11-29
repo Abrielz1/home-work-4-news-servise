@@ -86,6 +86,6 @@ public class NewsController {
     public NewsDto deleteNewsById(@Positive @PathVariable(name = "newsId") Long newsId,
                                   @Positive @RequestParam(name = "userId") Long userId) {
 
-        return newsService.deleteNewsById(newsId);
+        return newsService.deleteNewsById(newsId, userId);
     }
 }

@@ -1,13 +1,8 @@
 package ru.skillbox.homework4.news.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.Before;
+
 import org.junit.jupiter.api.AfterEach;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,38 +14,27 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.mockito.Mockito.when;
 import org.mockito.quality.Strictness;
 import org.junit.jupiter.api.Test;
-import java.time.LocalDateTime;
 import org.mockito.InjectMocks;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import org.mockito.Mock;
-import ru.skillbox.homework4.commentary.dto.CommentariesDto;
-import ru.skillbox.homework4.commentary.mapper.CommentaryMapper;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.dto.category.CategoryDto;
-import ru.skillbox.homework4.news.mapper.CategoryMapper;
-import ru.skillbox.homework4.news.mapper.NewsMapper;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.news.repository.CategoryRepository;
 import ru.skillbox.homework4.news.repository.NewsRepository;
-import ru.skillbox.homework4.user.dto.UserDto;
-import ru.skillbox.homework4.user.mapper.UserMapper;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
-import static ru.skillbox.homework4.commentary.mapper.CommentaryMapper.COMMENTARY_MAPPER;
+
 import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
 import static ru.skillbox.homework4.news.mapper.NewsMapper.NEWS_MAPPER;
-import static ru.skillbox.homework4.user.mapper.UserMapper.USER_MAPPER;
-import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -370,7 +354,7 @@ class NewsServiceImplTest {
                 .thenReturn(Optional.ofNullable(category1));
 
         CategoryDto categoryDto = CATEGORY_MAPPER.toCategoryDto(category1);
-        NewsDto newsDto = newsService.deleteNewsById(news1.getId());
+        NewsDto newsDto = newsService.deleteNewsById(news1.getId(), user1.getId());
 
         assertEquals(1, newsDto.getId());
         assertEquals("Test name news 1", newsDto.getNewsName());
@@ -476,7 +460,7 @@ class NewsServiceImplTest {
                 .thenReturn(Optional.empty());
 
         ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
-                () -> newsService.deleteNewsById( 1L));
+                () -> newsService.deleteNewsById( 1L, user1.getId()));
 
         assertEquals(
                 "News was not found",
