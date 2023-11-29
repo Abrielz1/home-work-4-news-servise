@@ -3,6 +3,7 @@ package ru.skillbox.homework4.news.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.AfterEach;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -235,8 +236,12 @@ class NewsServiceImplTest {
         List<News> list = new ArrayList<>();
         list.add(news1);
 
-        when(newsRepository.findAll(any(PageRequest.class)).getContent())
-                .thenReturn((List<News>) new PageImpl(list));
+        when(newsRepository.findAll(any(PageRequest.class)))
+                .thenReturn((new PageImpl<News>(list)));
+
+        /*
+        final Page<Something> page = new PageImpl<>(theListOfSomething);
+        */
 
         List<NewsDto> newsDtoList = newsService.findAll(p);
 
