@@ -3,7 +3,6 @@ package ru.skillbox.homework4.news.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.AfterEach;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +32,6 @@ import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.List;
-
 import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
 import static ru.skillbox.homework4.news.mapper.NewsMapper.NEWS_MAPPER;
 
@@ -239,10 +237,6 @@ class NewsServiceImplTest {
         when(newsRepository.findAll(any(PageRequest.class)))
                 .thenReturn((new PageImpl<>(list)));
 
-        /*
-        final Page<Something> page = new PageImpl<>(theListOfSomething);
-        */
-
         List<NewsDto> newsDtoList = newsService.findAll(p);
 
         assertEquals(1, newsDtoList.size());
@@ -328,20 +322,23 @@ class NewsServiceImplTest {
         when(categoryRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(category2));
 
+        when(newsRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(news1));
+
         when(newsRepository.save(any(News.class)))
                 .thenReturn(news1);
 
-        CategoryDto categoryDto = CATEGORY_MAPPER.toCategoryDto(category2);
+        news1.setId(1L);
+        news1.setCategory(category2);
+        news1.setNewsName("Name1");
+        news1.setNewsMessage("Message1");
 
         NewsDto newsNewDto = NEWS_MAPPER.toNewsDto(news1);
-        newsNewDto.setCategory(categoryDto);
-        newsNewDto.setNewsName("Name1");
-        newsNewDto.setNewsMessage("Message1");
 
-        NewsDto newsDto = newsService.createNews(user1.getId(), category1.getId(), newsNewDto);
+        NewsDto newsDto = newsService.updateNewsById(user1.getId(), category2.getId(), newsNewDto.getId(), newsNewDto);
 
-        assertEquals(2L, newsDto.getId());
-        assertEquals(categoryDto, newsDto.getCategory());
+        assertEquals(1L, newsDto.getId());
+        assertEquals(category2.getId(), newsDto.getCategory().getId());
         assertEquals("Name1",newsDto.getNewsName() );
         assertEquals("Message1", newsDto.getNewsMessage());
     }
