@@ -1,6 +1,5 @@
 package ru.skillbox.homework4.news.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,11 +20,9 @@ import ru.skillbox.homework4.news.service.NewsServiceImpl;
 import ru.skillbox.homework4.user.dto.UserDto;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -216,7 +213,7 @@ class NewsControllerTest {
     @Test
     void createNews() throws Exception {
 
-        when(newsService.createNews(anyLong() ,anyLong(), any(NewsDto.class)))
+        when(newsService.createNews(anyLong(), anyLong(), any(NewsDto.class)))
                 .thenReturn(newsDto1);
 
         mockMvc.perform(post("/news?userId=1&categoryId=1")
