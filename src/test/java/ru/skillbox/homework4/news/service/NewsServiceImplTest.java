@@ -468,4 +468,19 @@ class NewsServiceImplTest {
                 "Category was not found",
                 exception.getMessage());
     }
+
+    @Test
+    void ifNewsNotPresentExceptionAreThrownWhenDeleteNewsById() {
+
+        when(newsRepository.findById(anyLong()))
+                .thenReturn(Optional.empty());
+
+        ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
+                () -> newsService.deleteNewsById( 1L));
+
+        assertEquals(
+                "News was not found",
+                exception.getMessage());
+    }
+
 }
