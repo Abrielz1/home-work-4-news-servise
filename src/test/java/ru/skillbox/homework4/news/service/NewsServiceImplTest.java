@@ -30,6 +30,7 @@ import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.commentary.mapper.CommentaryMapper;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
+import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.dto.category.CategoryDto;
@@ -376,5 +377,95 @@ class NewsServiceImplTest {
         assertEquals("Test message news 1", newsDto.getNewsMessage());
         assertEquals(categoryDto, newsDto.getCategory());
         assertEquals(user1, news1.getUser());
+    }
+
+    @Test
+    void ifUserNotPresentExceptionAreThrownWhenNewsUpdateTest() {
+
+        when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.empty());
+
+        when(newsRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(news1));
+
+        when(categoryRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(category2));
+
+        when(newsRepository.save(any(News.class)))
+                .thenReturn(news1);
+
+        CategoryDto categoryDto = CATEGORY_MAPPER.toCategoryDto(category2);
+
+        NewsDto newsNewDto = NEWS_MAPPER.toNewsDto(news1);
+        newsNewDto.setCategory(categoryDto);
+        newsNewDto.setNewsName("Name1");
+        newsNewDto.setNewsMessage("Message1");
+
+        ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
+                () -> newsService.updateNewsById( 0L, 1L, 1L, newsNewDto));
+
+        assertEquals(
+                "User was not found",
+                exception.getMessage());
+    }
+
+    @Test
+    void ifNewsNotPresentExceptionAreThrownWhenNewsUpdateTest() {
+
+        when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(user1));
+
+        when(newsRepository.findById(anyLong()))
+                .thenReturn(Optional.empty());
+
+        when(categoryRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(category2));
+
+        when(newsRepository.save(any(News.class)))
+                .thenReturn(news1);
+
+        CategoryDto categoryDto = CATEGORY_MAPPER.toCategoryDto(category2);
+
+        NewsDto newsNewDto = NEWS_MAPPER.toNewsDto(news1);
+        newsNewDto.setCategory(categoryDto);
+        newsNewDto.setNewsName("Name1");
+        newsNewDto.setNewsMessage("Message1");
+
+        ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
+                () -> newsService.updateNewsById( 1L, 1L, 1L, newsNewDto));
+
+        assertEquals(
+                "News was not found",
+                exception.getMessage());
+    }
+
+    @Test
+    void ifCategoryNotPresentExceptionAreThrownWhenNewsUpdateTest() {
+
+        when(userRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(user1));
+
+        when(newsRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(news1));
+
+        when(categoryRepository.findById(anyLong()))
+                .thenReturn(Optional.empty());
+
+        when(newsRepository.save(any(News.class)))
+                .thenReturn(news1);
+
+        CategoryDto categoryDto = CATEGORY_MAPPER.toCategoryDto(category2);
+
+        NewsDto newsNewDto = NEWS_MAPPER.toNewsDto(news1);
+        newsNewDto.setCategory(categoryDto);
+        newsNewDto.setNewsName("Name1");
+        newsNewDto.setNewsMessage("Message1");
+
+        ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
+                () -> newsService.updateNewsById( 1L, 0L, 1L, newsNewDto));
+
+        assertEquals(
+                "Category was not found",
+                exception.getMessage());
     }
 }
