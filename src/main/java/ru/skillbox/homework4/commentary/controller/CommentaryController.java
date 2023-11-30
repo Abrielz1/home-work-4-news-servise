@@ -75,6 +75,7 @@ public class CommentaryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public CommentariesDto deleteCommentaryById(
             @Positive @PathVariable(name = "newsId") Long newsId,
+            @Positive @RequestParam(name = "userId") Long userId,
             @PathVariable Long commentaryId) {
 
         return commentaryService.deleteCommentaryById(commentaryId);

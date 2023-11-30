@@ -34,7 +34,6 @@ public class CommentaryServiceImpl implements CommentaryService {
 
         log.info("All commentaries were sent");
         return commentaryRepository.findAllByNewsId(newsId, page).stream()
-               // .map(COMMENTARY_MAPPER::CommentaryToCommentariesDto)
                 .map(COMMENTARY_MAPPER::setNewsAndAuthorsOfComments)
                 .collect(Collectors.toList());
     }
