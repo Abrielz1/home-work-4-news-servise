@@ -57,22 +57,6 @@ class CategoryServiceImplTest {
         categoryNewDto = CategoryNewDto.builder()
                 .name("IT")
                 .build();
-
-//        category = Category.builder()
-//                .id(1L)
-//                .name("IT")
-//                .build();
-//
-//        repository.save(category);
-//
-////        if (category.getId() == null) {
-////            category.setId(1L);
-////        }
-//
-//        categoryDto = CategoryDto.builder()
-//                .id(1L)
-//                .name("IT")
-//                .build();
     }
 
     @AfterEach
@@ -172,5 +156,26 @@ class CategoryServiceImplTest {
 
         assertThat(category.getId()).isEqualTo(1L);
         assertThat(category.getName()).isEqualToIgnoringCase("IT");
+    }
+
+    @Test
+    void updateCategoryWithNoSuchCategory() {
+
+        when(repository.findById(anyLong()))
+                .thenReturn(Optional.empty());
+
+        category = CATEGORY_MAPPER.toCategory(categoryNewDto);
+        categoryDto = CATEGORY_MAPPER.toCategoryDto(category);
+        categoryDto.setId(0L);
+
+        ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
+                () -> service.updateCategory(1L, categoryDto)
+                );
+
+        assertEquals("Category was not found", exception.getMessage());
+
+        assertThatThrownBy(() -> {throw new ObjectNotFoundException("Category was not found");});
+        Throwable throwable = catchThrowable(() -> {throw new ObjectNotFoundException("Category was not found");});
+        assertThat(throwable).hasMessage("Category was not found");
     }
 }
