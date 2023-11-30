@@ -13,10 +13,7 @@ import ru.skillbox.homework4.news.dto.category.CategoryDto;
 import ru.skillbox.homework4.news.dto.category.CategoryNewDto;
 import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.news.service.CategoryServiceImpl;
-
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -87,8 +84,8 @@ class CategoryControllerTest {
                 .thenReturn(categoryDto);
 
         mockMvc.perform(post("/news/category")
-                .content(mapper.writeValueAsString(categoryDto))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(categoryDto))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(mapper.writeValueAsString(categoryDto)));
     }

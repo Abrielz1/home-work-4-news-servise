@@ -73,11 +73,11 @@ public class CommentaryController {
 
     @DeleteMapping("/commentaries/{commentaryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCommentaryById(
+    public CommentariesDto deleteCommentaryById(
             @Positive @PathVariable(name = "newsId") Long newsId,
             @PathVariable Long commentaryId) {
 
-        commentaryService.deleteCommentaryById(commentaryId);
+        return commentaryService.deleteCommentaryById(commentaryId);
     }
 }
 

@@ -34,7 +34,8 @@ public class CommentaryServiceImpl implements CommentaryService {
 
         log.info("All commentaries were sent");
         return commentaryRepository.findAllByNewsId(newsId, page).stream()
-                .map(COMMENTARY_MAPPER::CommentaryToCommentariesDto)
+               // .map(COMMENTARY_MAPPER::CommentaryToCommentariesDto)
+                .map(COMMENTARY_MAPPER::setNewsAndAuthorsOfComments)
                 .collect(Collectors.toList());
     }
 
@@ -44,7 +45,7 @@ public class CommentaryServiceImpl implements CommentaryService {
         User user = checkUserById(userId);
         News news = checkNewsById(newsId);
         Commentary commentary = checkCommentaryById(commentaryId);
-        CommentariesDto commentariesDto = COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentary);
+        CommentariesDto commentariesDto = COMMENTARY_MAPPER.setNewsAndAuthorsOfComments(commentary);
         commentariesDto = COMMENTARY_MAPPER.setAuthorIdAndNewsId(commentariesDto, user, news);
 
         log.info("Commentary with id {} was sent", commentaryId);
@@ -66,7 +67,7 @@ public class CommentaryServiceImpl implements CommentaryService {
 
         commentaryRepository.save(commentary);
 
-        CommentariesDto commentariesDtoResponse = COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentary);
+        CommentariesDto commentariesDtoResponse = COMMENTARY_MAPPER.setNewsAndAuthorsOfComments(commentary);
         commentariesDtoResponse = COMMENTARY_MAPPER.setAuthorIdAndNewsId(commentariesDtoResponse, user, news);
 
         log.info("Commentary with id {} was created", commentary.getId());
@@ -96,7 +97,7 @@ public class CommentaryServiceImpl implements CommentaryService {
             throw new ObjectNotFoundException("no item for update");
         }
 
-        CommentariesDto commentariesDtoResponse = COMMENTARY_MAPPER.CommentaryToCommentariesDto(commentaryDb);
+        CommentariesDto commentariesDtoResponse = COMMENTARY_MAPPER.setNewsAndAuthorsOfComments(commentaryDb);
         commentariesDtoResponse = COMMENTARY_MAPPER.setAuthorIdAndNewsId(commentariesDtoResponse, userDb, newsDb);
 
         log.info("Commentary with id {} was created", commentaryDb.getId());
@@ -105,12 +106,14 @@ public class CommentaryServiceImpl implements CommentaryService {
 
     @Override
     @Transactional
-    public void deleteCommentaryById(Long commentaryId) {
+    public CommentariesDto deleteCommentaryById(Long commentaryId) {
 
-        checkCommentaryById(commentaryId);
+        Commentary commentary = checkCommentaryById(commentaryId);
 
         commentaryRepository.deleteById(commentaryId);
+
         log.info("Commentary with id {} was deleted", commentaryId);
+        return COMMENTARY_MAPPER.setNewsAndAuthorsOfComments(commentary);
     }
 
     private Commentary checkCommentaryById(Long commentaryId) {

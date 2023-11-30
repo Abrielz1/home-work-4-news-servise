@@ -152,7 +152,7 @@ class CategoryServiceImplTest {
         when(repository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(category));
 
-        categoryDto = service.findCategoryById(1L);
+        service.deleteCategoryById(1L);
 
         assertThat(category.getId()).isEqualTo(1L);
         assertThat(category.getName()).isEqualToIgnoringCase("IT");

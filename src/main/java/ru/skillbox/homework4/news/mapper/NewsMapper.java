@@ -27,7 +27,7 @@ public interface NewsMapper {
     default FullNewsDto setCommentariesList(FullNewsDto fullNewsDto, List<Commentary> commentariesList) {
 
         List<CommentariesDto> commentariesDtoList = commentariesList.stream()
-                .map(COMMENTARY_MAPPER::CommentaryToCommentariesDto)
+                .map(COMMENTARY_MAPPER::setNewsAndAuthorsOfComments)
                 .collect(Collectors.toList());
 
         fullNewsDto.setCommentaryList(commentariesDtoList);
