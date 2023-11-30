@@ -14,7 +14,7 @@ public interface NewsService {
 
     FullNewsDto findNewsById(Long id);
 
-    NewsDto deleteNewsById(Long id,Long userId);
+    NewsDto deleteNewsById(Long id, Long userId);
 
     NewsDto createNews(Long id, Long categoryId, NewsDto newsDto);
 

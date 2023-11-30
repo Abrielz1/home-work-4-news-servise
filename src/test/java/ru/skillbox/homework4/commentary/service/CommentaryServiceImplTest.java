@@ -9,31 +9,22 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import ru.skillbox.homework4.commentary.dto.CommentariesDto;
-import ru.skillbox.homework4.commentary.mapper.CommentaryMapper;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
 import ru.skillbox.homework4.news.dto.NewsDto;
-import ru.skillbox.homework4.news.mapper.NewsMapper;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.news.repository.CategoryRepository;
 import ru.skillbox.homework4.news.repository.NewsRepository;
-import ru.skillbox.homework4.news.service.NewsServiceImpl;
 import ru.skillbox.homework4.user.dto.UserDto;
-import ru.skillbox.homework4.user.mapper.UserMapper;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -239,8 +230,8 @@ class CommentaryServiceImplTest {
         commentary3.setNews(news1);
 
         CommentariesDto commentariesDto = commentaryService.findCommentaryById(news1.getId(),
-                                                                                user1.getId(),
-                                                                                commentary1.getId());
+                user1.getId(),
+                commentary1.getId());
         CommentariesDto commentariesDtoTest = COMMENTARY_MAPPER.setNewsAndAuthorsOfComments(commentary1);
 
         assertThat(commentariesDto).isEqualTo(commentariesDtoTest);
@@ -270,9 +261,9 @@ class CommentaryServiceImplTest {
 
         CommentariesDto commentariesDtoTest = COMMENTARY_MAPPER.setNewsAndAuthorsOfComments(commentary1);
         CommentariesDto commentariesDto = commentaryService.createCommentary(
-                                                                            news1.getId(),
-                                                                            user1.getId(),
-                                                                            commentariesDtoTest);
+                news1.getId(),
+                user1.getId(),
+                commentariesDtoTest);
 
         commentariesDto.setId(1L);
 

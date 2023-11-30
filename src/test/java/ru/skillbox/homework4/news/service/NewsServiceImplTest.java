@@ -1,7 +1,6 @@
 package ru.skillbox.homework4.news.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +30,9 @@ import ru.skillbox.homework4.news.repository.CategoryRepository;
 import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
+
 import java.util.List;
+
 import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
 import static ru.skillbox.homework4.news.mapper.NewsMapper.NEWS_MAPPER;
 
@@ -171,7 +172,7 @@ class NewsServiceImplTest {
 
     @Test
     void filteredByCriteria() {
-      //  fail("test");
+        //  fail("test");
         //я хз, как тестить критерию
     }
 
@@ -339,7 +340,7 @@ class NewsServiceImplTest {
 
         assertEquals(1L, newsDto.getId());
         assertEquals(category2.getId(), newsDto.getCategory().getId());
-        assertEquals("Name1",newsDto.getNewsName() );
+        assertEquals("Name1", newsDto.getNewsName());
         assertEquals("Message1", newsDto.getNewsMessage());
     }
 
@@ -388,7 +389,7 @@ class NewsServiceImplTest {
         newsNewDto.setNewsMessage("Message1");
 
         ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
-                () -> newsService.updateNewsById( 0L, 1L, 1L, newsNewDto));
+                () -> newsService.updateNewsById(0L, 1L, 1L, newsNewDto));
 
         assertEquals(
                 "User was not found",
@@ -418,7 +419,7 @@ class NewsServiceImplTest {
         newsNewDto.setNewsMessage("Message1");
 
         ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
-                () -> newsService.updateNewsById( 1L, 1L, 1L, newsNewDto));
+                () -> newsService.updateNewsById(1L, 1L, 1L, newsNewDto));
 
         assertEquals(
                 "News was not found",
@@ -448,7 +449,7 @@ class NewsServiceImplTest {
         newsNewDto.setNewsMessage("Message1");
 
         ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
-                () -> newsService.updateNewsById( 1L, 0L, 1L, newsNewDto));
+                () -> newsService.updateNewsById(1L, 0L, 1L, newsNewDto));
 
         assertEquals(
                 "Category was not found",
@@ -462,7 +463,7 @@ class NewsServiceImplTest {
                 .thenReturn(Optional.empty());
 
         ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
-                () -> newsService.deleteNewsById( 1L, user1.getId()));
+                () -> newsService.deleteNewsById(1L, user1.getId()));
 
         assertEquals(
                 "News was not found",

@@ -35,9 +35,9 @@ public class NewsController {
     @GetMapping("/find-by-criteria/")
     @ResponseStatus(HttpStatus.OK)
     public List<NewsDto> findAllCriteria(
-                                 @RequestBody CategoryFilter filter,
-                                 @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                                 @Positive @RequestParam(defaultValue = "10") Integer size) {
+            @RequestBody CategoryFilter filter,
+            @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+            @Positive @RequestParam(defaultValue = "10") Integer size) {
 
         PageRequest page = PageRequest.of(from / size, size);
 
@@ -49,10 +49,10 @@ public class NewsController {
     public List<NewsDto> findAll(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                  @Positive @RequestParam(defaultValue = "10") Integer size) {
 
-         PageRequest page = PageRequest.of(from / size, size);
+        PageRequest page = PageRequest.of(from / size, size);
 
-         return newsService.findAll(page);
-     }
+        return newsService.findAll(page);
+    }
 
     @GetMapping("/{newsId}")
     @ResponseStatus(HttpStatus.OK)
@@ -77,7 +77,7 @@ public class NewsController {
                                   @Positive @PathVariable(name = "newsId") Long newsId,
                                   @Validated(Update.class) @RequestBody NewsDto newsDto) {
 
-         return newsService.updateNewsById(userId,categoryId, newsId, newsDto);
+        return newsService.updateNewsById(userId, categoryId, newsId, newsDto);
     }
 
 

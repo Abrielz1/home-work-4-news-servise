@@ -2,7 +2,6 @@ package ru.skillbox.homework4.news.service;
 
 import ru.skillbox.homework4.news.dto.category.CategoryDto;
 import ru.skillbox.homework4.news.dto.category.CategoryNewDto;
-
 import java.util.List;
 
 public interface CategoryService {

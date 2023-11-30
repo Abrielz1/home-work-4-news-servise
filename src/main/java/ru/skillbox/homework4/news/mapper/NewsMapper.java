@@ -13,6 +13,7 @@ import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.user.model.User;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import static ru.skillbox.homework4.commentary.mapper.CommentaryMapper.COMMENTARY_MAPPER;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -40,7 +41,7 @@ public interface NewsMapper {
 
     default News setCategoryToNewsAndUserAsOwner(NewsDto newsDto, User user, Category category) {
 
-        News news = toNews( newsDto, user, category);
+        News news = toNews(newsDto, user, category);
         news.setUser(user);
         news.setCategory(category);
 

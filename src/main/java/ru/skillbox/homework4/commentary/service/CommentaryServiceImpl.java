@@ -86,7 +86,7 @@ public class CommentaryServiceImpl implements CommentaryService {
 
         if (commentariesDto != null) {
 
-            if (commentariesDto.getCommentaryText() !=null) {
+            if (commentariesDto.getCommentaryText() != null) {
                 commentaryDb.setCommentaryText(commentariesDto.getCommentaryText());
             }
 
@@ -121,7 +121,7 @@ public class CommentaryServiceImpl implements CommentaryService {
                 .orElseThrow(() -> {
                     log.warn("Commentary with id {} was not found", commentaryId);
                     throw new ObjectNotFoundException("Commentary was not found");
-        });
+                });
     }
 
     private User checkUserById(Long userId) {

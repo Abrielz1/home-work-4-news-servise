@@ -50,14 +50,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public CategoryDto updateCategory(Long categoryId, CategoryDto categoryDto) {
 
-    Category categoryDb = checkCategoryById(categoryId);
+        Category categoryDb = checkCategoryById(categoryId);
 
-    if (categoryDb.getName() != null) {
-        categoryDb.setName(categoryDto.getName());
-    }
+        if (categoryDb.getName() != null) {
+            categoryDb.setName(categoryDto.getName());
+        }
 
-    repository.save(categoryDb);
-    log.info("Category was updated");
+        repository.save(categoryDb);
+        log.info("Category was updated");
 
         return CATEGORY_MAPPER.toCategoryDto(categoryDb);
     }
@@ -74,7 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
         return repository.findById(categoryId).orElseThrow(() -> {
 
             log.warn("Category with id {} was not found", categoryId);
-            throw  new ObjectNotFoundException("Category was not found");
+            throw new ObjectNotFoundException("Category was not found");
         });
     }
 }

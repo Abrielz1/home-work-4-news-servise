@@ -9,7 +9,6 @@ import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
-import ru.skillbox.homework4.news.mapper.CategoryMapper;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.news.model.category.CategoryFilter;
@@ -21,7 +20,6 @@ import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
 import static ru.skillbox.homework4.news.mapper.NewsMapper.NEWS_MAPPER;
 
@@ -49,13 +47,13 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<NewsDto> findAll(PageRequest page) {
 
-       List<News> newsList = newsRepository.findAll(page).getContent();
-       List<NewsDto> newsDtoList = new ArrayList<>();
+        List<News> newsList = newsRepository.findAll(page).getContent();
+        List<NewsDto> newsDtoList = new ArrayList<>();
 
         for (News news : newsList) {
-           NewsDto newsDto = NEWS_MAPPER.toNewsDto(news);
-           newsDto.setNumberOfCommentaries(news.getCommentaryList().size());
-           newsDtoList.add(newsDto);
+            NewsDto newsDto = NEWS_MAPPER.toNewsDto(news);
+            newsDto.setNumberOfCommentaries(news.getCommentaryList().size());
+            newsDtoList.add(newsDto);
         }
 
         log.info("List of news were sent!");
@@ -95,7 +93,7 @@ public class NewsServiceImpl implements NewsService {
                                   Long newsId,
                                   NewsDto newsDto) {
 
-        User user = checkUserById(userId);
+        checkUserById(userId);
         News newsBd = checkNewsById(newsId);
         Category category = checkCategoryById(categoryId);
 
@@ -135,14 +133,13 @@ public class NewsServiceImpl implements NewsService {
     }
 
 
-
     private User checkUserById(Long userId) {
 
         return userRepository.findById(userId).orElseThrow(() -> {
 
-               log.warn("User with id {} was not found", userId);
-               throw  new ObjectNotFoundException("User was not found");
-           });
+            log.warn("User with id {} was not found", userId);
+            throw new ObjectNotFoundException("User was not found");
+        });
     }
 
     private News checkNewsById(Long newsId) {
@@ -150,7 +147,7 @@ public class NewsServiceImpl implements NewsService {
         return newsRepository.findById(newsId).orElseThrow(() -> {
 
             log.warn("News with id {} was not found", newsId);
-            throw  new ObjectNotFoundException("News was not found");
+            throw new ObjectNotFoundException("News was not found");
         });
     }
 
@@ -159,7 +156,7 @@ public class NewsServiceImpl implements NewsService {
         return categoryRepository.findById(categoryId).orElseThrow(() -> {
 
             log.warn("Category with id {} was not found", categoryId);
-            throw  new ObjectNotFoundException("Category was not found");
+            throw new ObjectNotFoundException("Category was not found");
         });
     }
 }

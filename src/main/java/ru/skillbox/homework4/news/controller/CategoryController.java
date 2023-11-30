@@ -51,7 +51,7 @@ public class CategoryController {
     @PutMapping("/{categoryId}")
     @ResponseStatus(HttpStatus.OK)
     public CategoryDto updateCategory(@PathVariable Long categoryId,
-                                     @Validated(Update.class) @RequestBody CategoryDto categoryDto) {
+                                      @Validated(Update.class) @RequestBody CategoryDto categoryDto) {
 
         return service.updateCategory(categoryId, categoryDto);
     }

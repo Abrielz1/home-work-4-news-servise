@@ -26,19 +26,19 @@ public class UserServiceImpl implements UserService {
 
         log.info("All users were sent");
 
-       return userRepository.findAll(page).getContent()
-               .stream().map(UserMapper.USER_MAPPER::toUserDto)
-               .collect(Collectors.toList());
+        return userRepository.findAll(page).getContent()
+                .stream().map(UserMapper.USER_MAPPER::toUserDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public UserDto getById(Long id) {
 
-       return UserMapper.USER_MAPPER.toUserDto(userRepository.findById(id).orElseThrow( () -> {
-           log.warn("User with id {} was not found", id);
+        return UserMapper.USER_MAPPER.toUserDto(userRepository.findById(id).orElseThrow(() -> {
+            log.warn("User with id {} was not found", id);
 
-           throw new ObjectNotFoundException("User not found");
-       }));
+            throw new ObjectNotFoundException("User not found");
+        }));
     }
 
 
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).orElseThrow(() -> {
             log.warn("User with id {} was not found", userId);
 
-            throw  new ObjectNotFoundException("Пользователь не найден");
+            throw new ObjectNotFoundException("Пользователь не найден");
         });
     }
 }

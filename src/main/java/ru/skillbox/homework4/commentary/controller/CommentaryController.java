@@ -33,9 +33,9 @@ public class CommentaryController {
     @GetMapping("/commentaries")
     @ResponseStatus(HttpStatus.OK)
     public List<CommentariesDto> findAll(
-                @Positive @PathVariable(name = "newsId") Long newsId,
-                @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                @Positive @RequestParam(defaultValue = "10") Integer size) {
+            @Positive @PathVariable(name = "newsId") Long newsId,
+            @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+            @Positive @RequestParam(defaultValue = "10") Integer size) {
 
         return commentaryService.findAllCommentary(newsId, PageRequest.of(from / size, size));
     }
@@ -47,7 +47,7 @@ public class CommentaryController {
             @Positive @RequestParam(name = "userId") Long userId,
             @PathVariable Long commentaryId) {
 
-       return commentaryService.findCommentaryById(newsId, userId, commentaryId);
+        return commentaryService.findCommentaryById(newsId, userId, commentaryId);
     }
 
     @PostMapping("/commentaries")

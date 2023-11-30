@@ -40,15 +40,15 @@ public class User {
     private Long id;
 
     @NotBlank
-    @Column(unique=true)
+    @Column(unique = true)
     private String name;
 
     @Email
     @NotBlank
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<News> listNews = new ArrayList<>();
 

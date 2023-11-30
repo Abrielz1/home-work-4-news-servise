@@ -1,7 +1,5 @@
 package ru.skillbox.homework4.news.service;
 
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,30 +9,19 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.junit.jupiter.api.BeforeEach;
-
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
-import static ru.skillbox.homework4.user.mapper.UserMapper.USER_MAPPER;
-import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import java.util.ArrayList;
 import java.util.Optional;
 import org.mockito.Mock;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.category.CategoryDto;
 import ru.skillbox.homework4.news.dto.category.CategoryNewDto;
-import ru.skillbox.homework4.news.mapper.CategoryMapper;
 import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.news.repository.CategoryRepository;
-import ru.skillbox.homework4.user.dto.UserDto;
-import ru.skillbox.homework4.user.model.User;
-import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.List;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceImplTest {
@@ -68,9 +55,9 @@ class CategoryServiceImplTest {
     @Test
     void findAll() {
 
-       category = CATEGORY_MAPPER.toCategory(categoryNewDto);
-       category.setId(1L);
-       categoryDto = CATEGORY_MAPPER.toCategoryDto(category);
+        category = CATEGORY_MAPPER.toCategory(categoryNewDto);
+        category.setId(1L);
+        categoryDto = CATEGORY_MAPPER.toCategoryDto(category);
 
         List<Category> list = new ArrayList<>();
         list.add(category);
@@ -135,7 +122,7 @@ class CategoryServiceImplTest {
         categoryDto = CATEGORY_MAPPER.toCategoryDto(category);
         CategoryDto testCategory = categoryDto;
 
-        categoryDto = service.updateCategory(category.getId() , categoryDto);
+        categoryDto = service.updateCategory(category.getId(), categoryDto);
 
         assertThat(categoryDto.getId()).isEqualTo(1L);
         assertThat(categoryDto.getName()).isEqualToIgnoringCase("Auto");
@@ -170,12 +157,16 @@ class CategoryServiceImplTest {
 
         ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
                 () -> service.updateCategory(1L, categoryDto)
-                );
+        );
 
         assertEquals("Category was not found", exception.getMessage());
 
-        assertThatThrownBy(() -> {throw new ObjectNotFoundException("Category was not found");});
-        Throwable throwable = catchThrowable(() -> {throw new ObjectNotFoundException("Category was not found");});
+        assertThatThrownBy(() -> {
+            throw new ObjectNotFoundException("Category was not found");
+        });
+        Throwable throwable = catchThrowable(() -> {
+            throw new ObjectNotFoundException("Category was not found");
+        });
         assertThat(throwable).hasMessage("Category was not found");
     }
 }
