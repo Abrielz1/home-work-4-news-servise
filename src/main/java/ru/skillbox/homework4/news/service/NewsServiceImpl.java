@@ -9,6 +9,7 @@ import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
+import ru.skillbox.homework4.news.mapper.CategoryMapper;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.model.category.Category;
 import ru.skillbox.homework4.news.model.category.CategoryFilter;
@@ -20,6 +21,8 @@ import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static ru.skillbox.homework4.news.mapper.CategoryMapper.CATEGORY_MAPPER;
 import static ru.skillbox.homework4.news.mapper.NewsMapper.NEWS_MAPPER;
 
 @Slf4j
@@ -96,12 +99,21 @@ public class NewsServiceImpl implements NewsService {
         News newsBd = checkNewsById(newsId);
         Category category = checkCategoryById(categoryId);
 
-        if (newsDto.getNewsMessage() != null) {
-            newsBd.setNewsMessage(newsDto.getNewsMessage());
+        if (newsDto.getCategory() == null) {
+            newsDto.setCategory(CATEGORY_MAPPER.toCategoryDto(category));
         }
 
-        if (!newsDto.getCategory().getId().equals(category.getId())) {
+        if (!categoryId.equals(newsBd.getCategory().getId())) {
             newsBd.setCategory(category);
+            System.out.println("newsBd ->" + newsBd);
+        }
+
+        if (newsDto.getNewsName() != null) {
+            newsBd.setNewsName(newsDto.getNewsName());
+        }
+
+        if (newsDto.getNewsMessage() != null) {
+            newsBd.setNewsMessage(newsDto.getNewsMessage());
         }
 
         newsRepository.save(newsBd);
