@@ -43,6 +43,8 @@ class UserServiceImplTest {
                 .name("User1 name")
                 .email("user1@mail.com")
                 .build();
+
+        userRepository.save(user1);
     }
 
     @AfterEach
@@ -57,13 +59,7 @@ class UserServiceImplTest {
 
         List<User> list = new ArrayList<>();
 
-        User user =  User.builder()
-                .id(1L)
-                .name("User1 name")
-                .email("user1@mail.com")
-                .build();
-
-        list.add(user);
+        list.add(user1);
 
         PageRequest p = PageRequest.of(0, 20);
 

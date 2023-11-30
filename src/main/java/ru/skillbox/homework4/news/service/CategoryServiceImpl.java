@@ -58,7 +58,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     repository.save(categoryDb);
     log.info("Category was updated");
-        return categoryDto;
+
+        return CATEGORY_MAPPER.toCategoryDto(categoryDb);
     }
 
     @Override
