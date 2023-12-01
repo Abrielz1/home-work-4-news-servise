@@ -14,5 +14,5 @@ public interface CommentaryService {
 
     CommentariesDto updateCommentaryById(Long newsId, Long commentaryId, Long userId, CommentariesDto commentariesDto);
 
-    CommentariesDto deleteCommentaryById(Long commentaryId);
+    CommentariesDto deleteCommentaryById(Long newsId, Long commentaryId, Long userId);
 }

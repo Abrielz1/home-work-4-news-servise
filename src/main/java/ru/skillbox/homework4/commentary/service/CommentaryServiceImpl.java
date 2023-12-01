@@ -105,7 +105,9 @@ public class CommentaryServiceImpl implements CommentaryService {
 
     @Override
     @Transactional
-    public CommentariesDto deleteCommentaryById(Long commentaryId) {
+    public CommentariesDto deleteCommentaryById(Long newsId,
+                                                Long commentaryId,
+                                                Long userId) {
 
         Commentary commentary = checkCommentaryById(commentaryId);
 

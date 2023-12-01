@@ -78,7 +78,7 @@ public class CommentaryController {
             @Positive @RequestParam(name = "userId") Long userId,
             @PathVariable Long commentaryId) {
 
-        return commentaryService.deleteCommentaryById(commentaryId);
+        return commentaryService.deleteCommentaryById(newsId, commentaryId, userId);
     }
 }
 

@@ -326,7 +326,7 @@ class CommentaryServiceImplTest {
         commentary3.setUser(user2);
         commentary3.setNews(news1);
 
-        CommentariesDto commentariesDto = commentaryService.deleteCommentaryById(commentary1.getId());
+        CommentariesDto commentariesDto = commentaryService.deleteCommentaryById(news1.getId(), commentary1.getId(), user1.getId());
         CommentariesDto commentariesDtoTest = COMMENTARY_MAPPER.setNewsAndAuthorsOfComments(commentary1);
 
         assertThat(commentariesDto).isEqualTo(commentariesDtoTest);
