@@ -56,7 +56,7 @@ public class RightsManagement {
                                                        @RequestParam("userId") Long userId,
                                                        @PathVariable Long commentaryId) {
 
-        if (!commentaryRepository.checkRights(userId)) {
+        if (!commentaryRepository.checkRights(commentaryId, userId)) {
 
             log.error("User with id: {} trying to reach someone else property with id: {}", userId, commentaryId);
             throw new UnsupportedStateException("You not owner!");
@@ -71,8 +71,8 @@ public class RightsManagement {
                                                        @RequestParam("userId") Long userId,
                                                        @PathVariable Long commentaryId) {
 
-        if (!commentaryRepository.checkRights(userId)) {
-            System.out.println("Response form: " + commentaryRepository.checkRights(userId));
+        if (!commentaryRepository.checkRights(commentaryId, userId)) {
+            System.out.println("Response form: " + commentaryRepository.checkRights(commentaryId, userId));
             log.error("User with id: {} trying to reach someone else property with id: {}", userId, commentaryId);
             throw new UnsupportedStateException("You not owner!");
         }

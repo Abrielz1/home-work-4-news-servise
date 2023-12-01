@@ -18,17 +18,20 @@ public interface CommentaryRepository extends JpaRepository<Commentary, Long> {
     @Query(value = """
     SELECT case when count(c)>0 then true else false end
     FROM commentaries AS c
-    WHERE c.user_id = :userId
+    WHERE  c.id = :commentaryId and c.user_id = :userId
            """, nativeQuery = true)
-    Boolean checkRights(@Param("userId") Long userId);
+    Boolean checkRights(@Param("commentaryId") Long commentaryId, @Param("userId") Long userId);
 
-    @Query(value = """
-           SELECT case when count(c)>0 then true else false end
-            FROM commentaries AS c JOIN news AS n on :newsId = :newsId
-            JOIN users u on :userId = :userId
-            WHERE c.user_id = :userId
-           """, nativeQuery = true)
-    Boolean viewRights(@Param("commentaryId") Long commentaryId,
-                       @Param("newsId") Long newsId,
-                       @Param("userId") Long userId);
+//    @Query(value = """
+//           SELECT case when count(c)>0 then true else false end
+//            FROM commentaries AS c JOIN news AS n on :newsId = :newsId
+//            JOIN users u on :userId = :userId
+//            WHERE c.user_id = :userId
+//           """, nativeQuery = true)
+//    Boolean viewRights(@Param("commentaryId") Long commentaryId,
+//                       @Param("newsId") Long newsId,
+//                       @Param("userId") Long userId);
+    //SELECT case when count(c)>0 then true else false end
+    //FROM commentaries AS c
+    //WHERE c.id = 2 and c.user_id = 1
 }
