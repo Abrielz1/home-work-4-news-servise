@@ -27,8 +27,8 @@ public class RightsManagement {
     public void userRightsManagementOnUpdate(@PathVariable(name = "newsId") Long newsId,
                                              @RequestParam("userId") Long userId) {
 
-        if (newsRepository.existsByIdAndUserId(newsId, userId)) {
-
+        if (!newsRepository.checkRights(userId)) {
+            System.out.println("Response form: " + newsRepository.checkRights(userId));
             log.error("User with id: {} trying to reach someone else property with id: {}", userId, newsId);
             throw new UnsupportedStateException("You not owner!");
         }
@@ -41,7 +41,7 @@ public class RightsManagement {
                                              @RequestParam("userId") Long userId) {
 
 
-        if (newsRepository.existsByIdAndUserId(newsId, userId)) {
+        if (!newsRepository.existsByIdAndUserId(newsId, userId)) {
 
             log.error("User with id: {} trying to reach someone else property with id: {}", userId, newsId);
             throw new UnsupportedStateException("You not owner!");
@@ -56,7 +56,7 @@ public class RightsManagement {
                                                        @RequestParam("userId") Long userId,
                                                        @PathVariable Long commentaryId) {
 
-        if (commentaryRepository.existsByIdAndUserId(commentaryId, userId)) {
+        if (!commentaryRepository.checkRights(userId)) {
 
             log.error("User with id: {} trying to reach someone else property with id: {}", userId, commentaryId);
             throw new UnsupportedStateException("You not owner!");
@@ -71,8 +71,8 @@ public class RightsManagement {
                                                        @RequestParam("userId") Long userId,
                                                        @PathVariable Long commentaryId) {
 
-        if (commentaryRepository.existsByIdAndUserId(commentaryId, userId)) {
-
+        if (!commentaryRepository.checkRights(userId)) {
+            System.out.println("Response form: " + commentaryRepository.checkRights(userId));
             log.error("User with id: {} trying to reach someone else property with id: {}", userId, commentaryId);
             throw new UnsupportedStateException("You not owner!");
         }

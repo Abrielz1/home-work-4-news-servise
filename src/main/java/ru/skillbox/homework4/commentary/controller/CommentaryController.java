@@ -57,7 +57,7 @@ public class CommentaryController {
             @Positive @RequestParam(name = "userId") Long userId,
             @Validated(Create.class) @RequestBody CommentariesDto commentariesDto) {
 
-        return commentaryService.createCommentary(userId, newsId, commentariesDto);
+        return commentaryService.createCommentary(newsId, userId, commentariesDto);
     }
 
     @PutMapping("/commentaries/{commentaryId}")

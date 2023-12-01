@@ -28,9 +28,9 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(UnsupportedStateException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse handlerUnsupportedState(final UnsupportedStateException exception) {
-        log.warn("500 {}", exception.getMessage(), exception);
+        log.warn("403 {}", exception.getMessage(), exception);
         return new ErrorResponse(exception.getMessage(), exception.getMessage());
     }
 
