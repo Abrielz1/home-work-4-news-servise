@@ -45,7 +45,7 @@ public interface NewsSpecification {
                 return null;
             }
 
-            return cb.equal(root.get("news"), newsName);
+            return cb.equal(root.get("newsName"), newsName);
         };
     }
 }

@@ -15,7 +15,6 @@ import org.springframework.web.servlet.HandlerMapping;
 import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
 import ru.skillbox.homework4.exception.exceptions.UnsupportedStateException;
 import ru.skillbox.homework4.news.repository.NewsRepository;
-
 import java.util.List;
 import java.util.Map;
 
