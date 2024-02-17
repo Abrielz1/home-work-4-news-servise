@@ -94,4 +94,10 @@ public class UserServiceImpl implements UserService {
             throw new ObjectNotFoundException("Пользователь не найден");
         });
     }
+
+    public User findByName(String username) {
+
+        return userRepository.findByName(username)
+                .orElseThrow(() -> new RuntimeException("Username name was not found"));
+    }
 }
