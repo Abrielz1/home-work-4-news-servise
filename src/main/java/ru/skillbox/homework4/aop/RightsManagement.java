@@ -13,8 +13,13 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.HandlerMapping;
 import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
+import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.exception.exceptions.UnsupportedStateException;
 import ru.skillbox.homework4.news.repository.NewsRepository;
+import ru.skillbox.homework4.user.model.Role;
+import ru.skillbox.homework4.user.model.RoleType;
+import ru.skillbox.homework4.user.model.User;
+import ru.skillbox.homework4.user.repository.UserRepository;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +32,53 @@ public class RightsManagement {
     private final CommentaryRepository commentaryRepository;
 
     private final NewsRepository newsRepository;
+
+    private final UserRepository userRepository;
+
+    @Before(value = "execution(* ru.skillbox.homework4.user.controller.UserController.getById(..))"
+            + " && args(id, ..)", argNames = "id")
+    public void userCheckId(@PathVariable(name = "id") Long id) {
+
+        User user = checkByIdInDb(id);
+
+        for (Role role: user.getRole()) {
+            if (role.toString().equals(RoleType.ROLE_USER.toString())) {
+                if (!userRepository.existsById(id)) {
+                    throw new UnsupportedStateException("You not owner!");
+                }
+            }
+        }
+    }
+
+    @Before(value = "execution(* ru.skillbox.homework4.user.controller.UserController.updateUserById(..))"
+            + " && args(id, ..)", argNames = "id")
+    public void userCheckUpdate(@PathVariable(name = "id") Long id) {
+
+        User user = checkByIdInDb(id);
+
+        for (Role role: user.getRole()) {
+            if (role.toString().equals(RoleType.ROLE_USER.toString())) {
+                if (!userRepository.existsById(id)) {
+                    throw new UnsupportedStateException("You not owner!");
+                }
+            }
+        }
+    }
+
+    @Before(value = "execution(* ru.skillbox.homework4.user.controller.UserController.delete(..))"
+            + " && args(id, ..)", argNames = "id")
+    public void userCheckdelete(@PathVariable(name = "id") Long id) {
+
+        User user = checkByIdInDb(id);
+
+        for (Role role: user.getRole()) {
+            if (role.toString().equals(RoleType.ROLE_USER.toString())) {
+                if (!userRepository.existsById(id)) {
+                    throw new UnsupportedStateException("You not owner!");
+                }
+            }
+        }
+    }
 
     @Before(value = "execution(* ru.skillbox.homework4.news.controller.NewsController.updateNewsById(..))" +
             "&& args(newsId, ..)" +
@@ -108,5 +160,12 @@ public class RightsManagement {
             log.error("User with id: {} trying to reach someone else property with id: {}", userId, commentaryId);
             throw new UnsupportedStateException("You not owner!");
         }
+    }
+
+    private User checkByIdInDb(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> {
+            throw new ObjectNotFoundException("User was not found in db");
+
+        });
     }
 }

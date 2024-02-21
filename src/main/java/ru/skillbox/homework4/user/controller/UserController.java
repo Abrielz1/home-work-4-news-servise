@@ -5,6 +5,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority(ROLE_ADMIN)")
     public List<UserDto> getAllUsers(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                      @Positive @RequestParam(defaultValue = "10") Integer size) {
 
@@ -41,6 +43,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority(ROLE_USER, ROLE_ADMIN, ROLE_MODERATOR)")
     public UserDto getById(@Positive @PathVariable Long id) {
 
         return userService.getById(id);
@@ -55,6 +58,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority(ROLE_USER, ROLE_ADMIN, ROLE_MODERATOR)")
     public UserDto updateUserById(@Positive @PathVariable Long id, @Validated(Update.class) @RequestBody UserDto userDto) {
 
         return userService.update(id, userDto);
