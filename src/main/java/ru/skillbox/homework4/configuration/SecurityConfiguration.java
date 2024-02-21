@@ -48,11 +48,13 @@ public class SecurityConfiguration {
 
         try {
             security.authorizeHttpRequests((auth) -> auth.requestMatchers("/user/**")
-                            .hasAnyRole("USER", "ADMIN")
-                            .requestMatchers("/admin/**")
-                            .hasAnyRole("ADMIN")
-                            .requestMatchers("/public/**")
-                            .permitAll()
+                            .hasAnyRole("USER", "ADMIN", "MODERATOR")
+                            .requestMatchers("/news/**")
+                            .hasAnyRole("USER", "ADMIN", "MODERATOR")
+                            .requestMatchers("/news/category/**")
+                            .hasAnyRole("USER", "ADMIN", "MODERATOR")
+                            .requestMatchers("/news/**")
+                            .hasAnyRole("USER", "ADMIN", "MODERATOR")
                             .anyRequest().authenticated())
                     .csrf(AbstractHttpConfigurer::disable)
                     .httpBasic(Customizer.withDefaults())
