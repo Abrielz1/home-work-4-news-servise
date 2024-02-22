@@ -42,7 +42,7 @@ public class RightsManagement {
         User user = checkByIdInDb(id);
 
         for (Role role: user.getRole()) {
-            if (role.getAuthority().toString().equals(RoleType.ROLE_USER.toString())) {
+            if (role.getAuthority().equals(RoleType.ROLE_USER)) {
                 if (!userRepository.existsById(id)) {
                     throw new UnsupportedStateException("You not owner!");
                 }
