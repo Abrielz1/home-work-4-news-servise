@@ -42,7 +42,7 @@ public class RightsManagement {
         User user = checkByIdInDb(id);
 
         for (Role role: user.getRole()) {
-            if (role.toString().equals(RoleType.ROLE_USER.toString())) {
+            if (role.getAuthority().toString().equals(RoleType.ROLE_USER.toString())) {
                 if (!userRepository.existsById(id)) {
                     throw new UnsupportedStateException("You not owner!");
                 }
@@ -67,7 +67,7 @@ public class RightsManagement {
 
     @Before(value = "execution(* ru.skillbox.homework4.user.controller.UserController.delete(..))"
             + " && args(id, ..)", argNames = "id")
-    public void userCheckdelete(@PathVariable(name = "id") Long id) {
+    public void userCheckDelete(@PathVariable(name = "id") Long id) {
 
         User user = checkByIdInDb(id);
 
