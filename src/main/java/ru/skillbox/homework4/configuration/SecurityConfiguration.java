@@ -55,6 +55,8 @@ public class SecurityConfiguration {
                             .hasAnyRole("USER", "ADMIN", "MODERATOR")
                             .requestMatchers("/news/**")
                             .hasAnyRole("USER", "ADMIN", "MODERATOR")
+                            .requestMatchers("/register/**")
+                            .permitAll()
                             .anyRequest().authenticated())
                     .csrf(AbstractHttpConfigurer::disable)
                     .httpBasic(Customizer.withDefaults())

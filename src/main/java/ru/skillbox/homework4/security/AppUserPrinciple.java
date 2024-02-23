@@ -1,11 +1,10 @@
 package ru.skillbox.homework4.security;
 
-import com.example.basicauthdemo.entity.Role;
-import com.example.basicauthdemo.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import ru.skillbox.homework4.user.model.User;
+import ru.skillbox.homework4.user.model.Role;
 import java.util.Collection;
 
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class AppUserPrinciple implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getName();
     }
 
     @Override

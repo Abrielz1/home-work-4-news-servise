@@ -33,52 +33,52 @@ public class RightsManagement {
 
     private final NewsRepository newsRepository;
 
-    private final UserRepository userRepository;
+//    private final UserRepository userRepository;
+//
+//    @Before(value = "execution(* ru.skillbox.homework4.user.controller.UserController.getById(..))"
+//            + " && args(id, ..)", argNames = "id")
+//    public void userCheckId(@PathVariable(name = "id") Long id) {
+//
+//        User user = checkByIdInDb(id);
+//
+//        for (Role role: user.getRole()) {
+//            if (role.getAuthority().equals(RoleType.ROLE_USER)) {
+//                if (!userRepository.existsById(id)) {
+//                    throw new UnsupportedStateException("You not owner!");
+//                }
+//            }
+//        }
+//    }
 
-    @Before(value = "execution(* ru.skillbox.homework4.user.controller.UserController.getById(..))"
-            + " && args(id, ..)", argNames = "id")
-    public void userCheckId(@PathVariable(name = "id") Long id) {
-
-        User user = checkByIdInDb(id);
-
-        for (Role role: user.getRole()) {
-            if (role.getAuthority().equals(RoleType.ROLE_USER)) {
-                if (!userRepository.existsById(id)) {
-                    throw new UnsupportedStateException("You not owner!");
-                }
-            }
-        }
-    }
-
-    @Before(value = "execution(* ru.skillbox.homework4.user.controller.UserController.updateUserById(..))"
-            + " && args(id, ..)", argNames = "id")
-    public void userCheckUpdate(@PathVariable(name = "id") Long id) {
-
-        User user = checkByIdInDb(id);
-
-        for (Role role: user.getRole()) {
-            if (role.toString().equals(RoleType.ROLE_USER.toString())) {
-                if (!userRepository.existsById(id)) {
-                    throw new UnsupportedStateException("You not owner!");
-                }
-            }
-        }
-    }
-
-    @Before(value = "execution(* ru.skillbox.homework4.user.controller.UserController.delete(..))"
-            + " && args(id, ..)", argNames = "id")
-    public void userCheckDelete(@PathVariable(name = "id") Long id) {
-
-        User user = checkByIdInDb(id);
-
-        for (Role role: user.getRole()) {
-            if (role.toString().equals(RoleType.ROLE_USER.toString())) {
-                if (!userRepository.existsById(id)) {
-                    throw new UnsupportedStateException("You not owner!");
-                }
-            }
-        }
-    }
+//    @Before(value = "execution(* ru.skillbox.homework4.user.controller.UserController.updateUserById(..))"
+//            + " && args(id, ..)", argNames = "id")
+//    public void userCheckUpdate(@PathVariable(name = "id") Long id) {
+//
+//        User user = checkByIdInDb(id);
+//
+//        for (Role role: user.getRole()) {
+//            if (role.toString().equals(RoleType.ROLE_USER.toString())) {
+//                if (!userRepository.existsById(id)) {
+//                    throw new UnsupportedStateException("You not owner!");
+//                }
+//            }
+//        }
+//    }
+//
+//    @Before(value = "execution(* ru.skillbox.homework4.user.controller.UserController.delete(..))"
+//            + " && args(id, ..)", argNames = "id")
+//    public void userCheckDelete(@PathVariable(name = "id") Long id) {
+//
+//        User user = checkByIdInDb(id);
+//
+//        for (Role role: user.getRole()) {
+//            if (role.toString().equals(RoleType.ROLE_USER.toString())) {
+//                if (!userRepository.existsById(id)) {
+//                    throw new UnsupportedStateException("You not owner!");
+//                }
+//            }
+//        }
+//    }
 
     @Before(value = "execution(* ru.skillbox.homework4.news.controller.NewsController.updateNewsById(..))" +
             "&& args(newsId, ..)" +
@@ -162,10 +162,10 @@ public class RightsManagement {
         }
     }
 
-    private User checkByIdInDb(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> {
-            throw new ObjectNotFoundException("User was not found in db");
-
-        });
-    }
+//    private User checkByIdInDb(Long id) {
+//        return userRepository.findById(id).orElseThrow(() -> {
+//            throw new ObjectNotFoundException("User was not found in db");
+//
+//        });
+//    }
 }

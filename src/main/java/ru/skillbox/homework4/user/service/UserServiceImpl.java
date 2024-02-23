@@ -8,8 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
 import ru.skillbox.homework4.user.dto.UserDto;
 import ru.skillbox.homework4.user.mapper.UserMapper;
+import ru.skillbox.homework4.user.model.Role;
+import ru.skillbox.homework4.user.model.RoleType;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,9 +47,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto create(UserDto userDto) {
+    public UserDto create(UserDto userDto, RoleType type) {
 
         User user = UserMapper.USER_MAPPER.toUser(userDto);
+        user.setRole(Collections.singletonList(Role.from(type)));
 
         userRepository.save(user);
         log.info("User was created");

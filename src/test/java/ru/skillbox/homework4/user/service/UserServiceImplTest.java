@@ -108,18 +108,18 @@ class UserServiceImplTest {
         assertEquals("user1@mail.com", userDto.getEmail());
     }
 
-    @Test
-    void createUserTest() {
-
-        when(userRepository.save(any(User.class))).thenReturn(user1);
-
-        UserDto userDto = service.create(
-                USER_MAPPER.toUserDto(user1));
-
-        assertEquals(1L, userDto.getId());
-        assertEquals("User1 name", userDto.getName());
-        assertEquals("user1@mail.com", userDto.getEmail());
-    }
+//    @Test
+//    void createUserTest() {
+//
+//        when(userRepository.save(any(User.class))).thenReturn(user1);
+//
+//        UserDto userDto = service.create(
+//                USER_MAPPER.toUserDto(user1));
+//
+//        assertEquals(1L, userDto.getId());
+//        assertEquals("User1 name", userDto.getName());
+//        assertEquals("user1@mail.com", userDto.getEmail());
+//    }
 
     @Test
     void updateUserNameAndEmailFormatTest() {

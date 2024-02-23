@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.skillbox.homework4.common.Create;
 import ru.skillbox.homework4.common.Update;
 import ru.skillbox.homework4.user.dto.UserDto;
 import ru.skillbox.homework4.user.service.UserServiceImpl;
@@ -26,6 +26,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping(path = "/users")
+//@EnableMethodSecurity
 @RequiredArgsConstructor
 public class UserController {
 
@@ -47,13 +48,6 @@ public class UserController {
     public UserDto getById(@Positive @PathVariable Long id) {
 
         return userService.getById(id);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createUser(@Validated(Create.class) @RequestBody UserDto userDto) {
-
-        return userService.create(userDto);
     }
 
     @PutMapping("/{id}")

@@ -2,6 +2,7 @@ package ru.skillbox.homework4.user.service;
 
 import org.springframework.data.domain.Pageable;
 import ru.skillbox.homework4.user.dto.UserDto;
+import ru.skillbox.homework4.user.model.RoleType;
 import ru.skillbox.homework4.user.model.User;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface UserService {
 
     UserDto getById(Long id);
 
-    UserDto create(UserDto userDto);
+    UserDto create(UserDto userDto, RoleType type);
 
     UserDto update(Long id, UserDto userDto);
 

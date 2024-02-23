@@ -1,6 +1,6 @@
 package ru.skillbox.homework4.security;
 
-import com.example.basicauthdemo.service.UserService;
+import ru.skillbox.homework4.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-//@ConditionalOnProperty(prefix = "app.security", name = "type", havingValue = "db")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserService service;
@@ -17,6 +16,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return new AppUserPrinciple(service.findByUserName(username));
+        return new AppUserPrinciple(service.findByName(username));
     }
 }

@@ -72,18 +72,18 @@ class UserControllerTest {
                 .andExpect(content().json(mapper.writeValueAsString(user1Dto)));
     }
 
-    @Test
-    void createUserTest() throws Exception {
-
-        when(userService.create(any(UserDto.class)))
-                .thenReturn(user1Dto);
-
-        mockMvc.perform(post("/users")
-                        .content(mapper.writeValueAsString(user1Dto))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(content().json(mapper.writeValueAsString(user1Dto)));
-    }
+//    @Test
+//    void createUserTest() throws Exception {
+//
+//        when(userService.create(any(UserDto.class)))
+//                .thenReturn(user1Dto);
+//
+//        mockMvc.perform(post("/users")
+//                        .content(mapper.writeValueAsString(user1Dto))
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isCreated())
+//                .andExpect(content().json(mapper.writeValueAsString(user1Dto)));
+//    }
 
     @Test
     void updateUserByIdTest() throws Exception {
