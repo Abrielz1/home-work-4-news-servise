@@ -16,7 +16,7 @@ import ru.skillbox.homework4.user.service.UserServiceImpl;
 
 @Validated
 @RestController
-@RequestMapping(path = "/register")
+@RequestMapping(path = "/users/register")
 @RequiredArgsConstructor
 public class PublicController {
 
