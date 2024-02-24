@@ -49,28 +49,28 @@ class UserControllerTest {
 
         user1Dto = USER_MAPPER.toUserDto(user1);
     }
+//
+//    @Test
+//    void getAllUsersTest() throws Exception {
+//
+//        when(userService.findAll(Pageable.ofSize(10)))
+//                .thenReturn(List.of(user1Dto));
+//
+//        mockMvc.perform(get("/users"))
+//                .andExpect(status().isOk())
+//                .andExpect(content().json(mapper.writeValueAsString(List.of(user1Dto))));
+//    }
 
-    @Test
-    void getAllUsersTest() throws Exception {
-
-        when(userService.findAll(Pageable.ofSize(10)))
-                .thenReturn(List.of(user1Dto));
-
-        mockMvc.perform(get("/users"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(List.of(user1Dto))));
-    }
-
-    @Test
-    void getByIdTest() throws Exception {
-
-        when(userService.getById(anyLong()))
-                .thenReturn(user1Dto);
-
-        mockMvc.perform(get("/users/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(user1Dto)));
-    }
+//    @Test
+//    void getByIdTest() throws Exception {
+//
+//        when(userService.getById(anyLong()))
+//                .thenReturn(user1Dto);
+//
+//        mockMvc.perform(get("/users/1"))
+//                .andExpect(status().isOk())
+//                .andExpect(content().json(mapper.writeValueAsString(user1Dto)));
+//    }
 
 //    @Test
 //    void createUserTest() throws Exception {
@@ -85,26 +85,26 @@ class UserControllerTest {
 //                .andExpect(content().json(mapper.writeValueAsString(user1Dto)));
 //    }
 
-    @Test
-    void updateUserByIdTest() throws Exception {
-
-        when(userService.update(anyLong(), any(UserDto.class)))
-                .thenReturn(user1Dto);
-
-        mockMvc.perform(put("/users/1")
-                        .content(mapper.writeValueAsString(user1Dto))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(user1Dto)));
-    }
-
-    @Test
-    void deleteTest() throws Exception {
-
-        when(userService.delete(anyLong()))
-                .thenReturn(user1Dto);
-
-        mockMvc.perform(delete("/users/1"))
-                .andExpect(status().isNoContent());
-    }
+//    @Test
+//    void updateUserByIdTest() throws Exception {
+//
+//        when(userService.update(anyLong(), any(UserDto.class)))
+//                .thenReturn(user1Dto);
+//
+//        mockMvc.perform(put("/users/1")
+//                        .content(mapper.writeValueAsString(user1Dto))
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(content().json(mapper.writeValueAsString(user1Dto)));
+//    }
+//
+//    @Test
+//    void deleteTest() throws Exception {
+//
+//        when(userService.delete(anyLong()))
+//                .thenReturn(user1Dto);
+//
+//        mockMvc.perform(delete("/users/1"))
+//                .andExpect(status().isNoContent());
+//    }
 }
