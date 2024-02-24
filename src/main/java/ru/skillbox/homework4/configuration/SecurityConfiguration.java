@@ -47,7 +47,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity security, AuthenticationManager manager) {
 
         try {
-            security.authorizeHttpRequests((auth) -> auth.requestMatchers("/user/**")
+            security.authorizeHttpRequests((auth) -> auth.requestMatchers("/users/**")
                             .hasAnyRole("USER", "ADMIN", "MODERATOR")
                             .requestMatchers("/news/**")
                             .hasAnyRole("USER", "ADMIN", "MODERATOR")
