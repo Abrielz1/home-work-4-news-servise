@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.homework4.common.Update;
 import ru.skillbox.homework4.user.dto.UserDto;
-import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.service.UserServiceImpl;
 import java.security.Principal;
 import java.util.List;
