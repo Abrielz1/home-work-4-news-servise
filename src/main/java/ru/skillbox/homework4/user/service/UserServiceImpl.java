@@ -92,8 +92,8 @@ public class UserServiceImpl implements UserService {
             userBd.setEmail(userDto.getEmail());
         }
 
-        if (userDto.getName() != null) {
-            userBd.setName(userDto.getName());
+        if (userDto.getUsername() != null) {
+            userBd.setUsername(userDto.getUsername());
         }
 
         log.info("User updated");
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
 
     public User findByName(String username) {
 
-        return userRepository.findByName(username)
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Username name was not found"));
     }
 

@@ -93,7 +93,7 @@ class NewsControllerTest {
 
         user1 = User.builder()
                 .id(1L)
-                .name("User1 name")
+                .username("User1 name")
                 .email("user1@mail.com")
                 .build();
 
@@ -101,7 +101,7 @@ class NewsControllerTest {
 
         user2 = User.builder()
                 .id(2L)
-                .name("User2 name")
+                .username("User2 name")
                 .email("user2@mail.com")
                 .build();
 

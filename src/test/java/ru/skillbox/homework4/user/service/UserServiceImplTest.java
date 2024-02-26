@@ -2,27 +2,16 @@ package ru.skillbox.homework4.user.service;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyLong;
+
 import org.junit.jupiter.api.AfterEach;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.junit.jupiter.api.BeforeEach;
-import static org.mockito.Mockito.when;
-import static ru.skillbox.homework4.user.mapper.UserMapper.USER_MAPPER;
-import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import java.util.ArrayList;
-import java.util.Optional;
 import org.mockito.Mock;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
-import ru.skillbox.homework4.user.dto.UserDto;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
-import java.util.List;
-import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -40,7 +29,7 @@ class UserServiceImplTest {
 
         user1 = User.builder()
                 .id(1L)
-                .name("User1 name")
+                .username("User1 name")
                 .email("user1@mail.com")
                 .build();
 

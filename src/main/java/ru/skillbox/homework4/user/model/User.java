@@ -38,21 +38,20 @@ public class User {
 
     @Id
     @Positive
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
     @Column(unique = true)
-    private String name;
-
-    @NotBlank
-    @Column(unique = true)
-    private String password;
+    private String username;
 
     @Email
     @NotBlank
     @Column(unique = true)
     private String email;
+
+    @NotBlank
+    private String password;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude

@@ -2,20 +2,14 @@ package ru.skillbox.homework4.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.mockito.ArgumentMatchers.anyLong;
+
 import static org.mockito.ArgumentMatchers.any;
-import org.springframework.http.MediaType;
+
 import org.junit.jupiter.api.BeforeEach;
-import static org.mockito.Mockito.when;
-import org.junit.jupiter.api.Test;
-import java.util.List;
 import ru.skillbox.homework4.user.dto.UserDto;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.service.UserServiceImpl;
@@ -43,7 +37,7 @@ class UserControllerTest {
 
         user1 = User.builder()
                 .id(1L)
-                .name("User1 name")
+                .username("User1 name")
                 .email("user1@mail.com")
                 .build();
 

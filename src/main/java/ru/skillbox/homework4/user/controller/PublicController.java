@@ -2,6 +2,7 @@ package ru.skillbox.homework4.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,11 +17,13 @@ import ru.skillbox.homework4.user.service.UserServiceImpl;
 
 @Validated
 @RestController
-@RequestMapping(path = "/users/register")
+@RequestMapping(path = "/register")
 @RequiredArgsConstructor
 public class PublicController {
 
     private final UserServiceImpl userService;
+
+    private final PasswordEncoder encoder;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
