@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService {
     public UserDto create(UserDto userDto, RoleType type) {
 
         User user = UserMapper.USER_MAPPER.toUser(userDto);
+        user.setPassword(userDto.getPassword());
         user.setRole(Collections.singletonList(Role.from(type)));
 
         userRepository.save(user);
