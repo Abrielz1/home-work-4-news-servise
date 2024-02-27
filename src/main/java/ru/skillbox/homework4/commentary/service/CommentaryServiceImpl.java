@@ -16,6 +16,7 @@ import ru.skillbox.homework4.user.model.Role;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import static ru.skillbox.homework4.commentary.mapper.CommentaryMapper.COMMENTARY_MAPPER;
@@ -91,7 +92,8 @@ public class CommentaryServiceImpl implements CommentaryService {
             if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
                     !role.getAuthority().toString().equals("ROLE_MODERATOR")){
                 if (!commentaryDb.getUser().getId().equals(user.getId())) {
-                    throw new UnsupportedStateException("You are not news owner!");
+                    log.warn("News with id {} was not found", newsId);
+                    throw new UnsupportedStateException("You are not commentary with id: %s owner!".formatted(commentaryDb.getUser().getId()));
                 }
             }
         }
@@ -106,6 +108,7 @@ public class CommentaryServiceImpl implements CommentaryService {
             commentaryRepository.save(commentaryDb);
             log.info("Commentary with id {} was created", commentaryDb.getId());
         } else {
+            log.warn("no item for update");
             throw new ObjectNotFoundException("no item for update");
         }
 
@@ -129,7 +132,8 @@ public class CommentaryServiceImpl implements CommentaryService {
             if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
                     !role.getAuthority().toString().equals("ROLE_MODERATOR")){
                 if (!commentary.getUser().getId().equals(user.getId())) {
-                    throw new UnsupportedStateException("You are not news owner!");
+
+                    throw new UnsupportedStateException("You are not commentary with id: %s owner!".formatted(commentary.getUser().getId()));
                 }
             }
         }
@@ -141,28 +145,28 @@ public class CommentaryServiceImpl implements CommentaryService {
     }
 
     private Commentary checkCommentaryById(Long commentaryId) {
-
+        log.info("And send from method %s at time - ".formatted("checkCommentaryById") + LocalDateTime.now());
         return commentaryRepository.findById(commentaryId)
                 .orElseThrow(() -> {
                     log.warn("Commentary with id {} was not found", commentaryId);
-                    throw new ObjectNotFoundException("Commentary was not found");
+                    throw new ObjectNotFoundException("Commentary with id: %s was not found".formatted(commentaryId));
                 });
     }
 
     private News checkNewsById(Long newsId) {
-
+        log.info("And send from method %s at time - ".formatted("checkNewsById") + LocalDateTime.now());
         return newsRepository.findById(newsId).orElseThrow(() -> {
             log.warn("News with id {} is not found", newsId);
-            throw new ObjectNotFoundException("News was not found");
+            throw new ObjectNotFoundException("News with id %s was not found".formatted(newsId));
         });
     }
 
     private User checkNyUsername(String name) {
-
+        log.info("And send from method %s at time - ".formatted("checkNyUsername") + LocalDateTime.now());
         return userRepository.findByUsername(name).orElseThrow(() -> {
 
-            log.warn("User with id {} was not found", name);
-            throw new ObjectNotFoundException("User was not found");
+            log.warn("User with username {} was not found", name);
+            throw new ObjectNotFoundException("User with username %s was not found".formatted(name));
         });
     }
 }

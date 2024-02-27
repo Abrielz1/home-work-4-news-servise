@@ -20,6 +20,7 @@ import ru.skillbox.homework4.user.model.Role;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,7 +87,7 @@ public class NewsServiceImpl implements NewsService {
         News news = new News();
         news = newsRepository.save(NEWS_MAPPER.setCategoryToNewsAndUserAsOwner(newsDto, user, category));
 
-        log.info("News was created");
+        log.info("News with name: %s was created".formatted(news.getNewsName()));
         return NEWS_MAPPER.toNewsDto(news);
     }
 
@@ -106,7 +107,8 @@ public class NewsServiceImpl implements NewsService {
             if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
                     !role.getAuthority().toString().equals("ROLE_MODERATOR")){
                 if (!newsBd.getUser().getId().equals(user.getId())) {
-                    throw new UnsupportedStateException("You are not news owner!");
+                    log.warn("News with id {} was not found", newsId);
+                    throw new UnsupportedStateException("You are not news with id: %s owner!".formatted(newsId));
                 }
             }
         }
@@ -149,7 +151,8 @@ public class NewsServiceImpl implements NewsService {
             if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
                     !role.getAuthority().toString().equals("ROLE_MODERATOR")){
                 if (!news.getUser().getId().equals(user.getId())) {
-                    throw new UnsupportedStateException("You are not news owner!");
+                    log.warn("News with id {} was not found", newsId);
+                    throw new UnsupportedStateException("You are not news with id: %s owner!".formatted(newsId));
                 }
             }
         }
@@ -159,29 +162,29 @@ public class NewsServiceImpl implements NewsService {
     }
 
     private News checkNewsById(Long newsId) {
-
+        log.info("And send from method %s at time - ".formatted("checkNewsById") + LocalDateTime.now());
         return newsRepository.findById(newsId).orElseThrow(() -> {
 
             log.warn("News with id {} was not found", newsId);
-            throw new ObjectNotFoundException("News was not found");
+            throw new ObjectNotFoundException("News  with id: %s was not found!".formatted(newsId));
         });
     }
 
     private Category checkCategoryById(Long categoryId) {
-
+        log.info("And send from method %s at time - ".formatted("checkCategoryById") + LocalDateTime.now());
         return categoryRepository.findById(categoryId).orElseThrow(() -> {
 
             log.warn("Category with id {} was not found", categoryId);
-            throw new ObjectNotFoundException("Category was not found");
+            throw new ObjectNotFoundException("Category with id: %s was not found".formatted(categoryId));
         });
     }
 
     private User checkNyUsername(String name) {
-
+        log.info("And send from method %s at time - ".formatted("checkNyUsername") + LocalDateTime.now());
         return userRepository.findByUsername(name).orElseThrow(() -> {
 
-            log.warn("User with id {} was not found", name);
-            throw new ObjectNotFoundException("User was not found");
+            log.warn("User with name {} was not found", name);
+            throw new ObjectNotFoundException("User with name %s was not found".formatted(name));
         });
     }
 }

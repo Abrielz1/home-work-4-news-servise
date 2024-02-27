@@ -15,6 +15,7 @@ import ru.skillbox.homework4.user.model.RoleType;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> findAll(Pageable page) {
 
+        log.info(" and at time - " + LocalDateTime.now());
         log.info("All users were sent");
 
         return userRepository.findAll(page).getContent()
@@ -53,7 +55,8 @@ public class UserServiceImpl implements UserService {
                     !role.getAuthority().toString().equals("ROLE_MODERATOR")) {
                 if (role.getAuthority().toString().equals("ROLE_USER")) {
                     if (!(Objects.equals(userByName.getId(), userCheck.getId()))) {
-                        throw new UnsupportedStateException("You not owner!");
+                        log.info("And threw at time - " + LocalDateTime.now());
+                        throw new UnsupportedStateException("You with name %s not owner!".formatted(userCheck));
                     }
                 }
             }
@@ -77,7 +80,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(userDto.getPassword()));
 
         userRepository.save(user);
-        log.info("User was created");
+        log.info("User with id: %d and username: %s was created".formatted(user.getId(), user.getUsername()));
+        log.info(" and at time - " + LocalDateTime.now());
 
         return UserMapper.USER_MAPPER.toUserDto(user);
     }
@@ -96,11 +100,10 @@ public class UserServiceImpl implements UserService {
                     !role.getAuthority().toString().equals("ROLE_MODERATOR")) {
                 if (role.getAuthority().toString().equals("ROLE_USER")) {
                     if (!(Objects.equals(userByName.getId(), userCheck.getId()))) {
-                        throw new UnsupportedStateException("You not owner!");
+                        log.info("And threw at time - " + LocalDateTime.now());
+                        throw new UnsupportedStateException("You with id: %d are not owner!".formatted(userCheck.getId()));
                     }
                 }
-            } else {
-                throw new UnsupportedStateException("You not owner!");
             }
         }
 
@@ -112,7 +115,8 @@ public class UserServiceImpl implements UserService {
             userCheck.setUsername(userDto.getUsername());
         }
 
-        log.info("User updated");
+        log.info("User with id: %d updated".formatted(userCheck.getId()));
+        log.info(" and at time - " + LocalDateTime.now());
         userRepository.save(userCheck);
 
         return UserMapper.USER_MAPPER.toUserDto(userCheck);
@@ -132,34 +136,40 @@ public class UserServiceImpl implements UserService {
                     !role.getAuthority().toString().equals("ROLE_MODERATOR")) {
                 if (role.getAuthority().toString().equals("ROLE_USER")) {
                     if (!(Objects.equals(userByName.getId(), userCheck.getId()))) {
-                        throw new UnsupportedStateException("You not owner!");
+                        log.info("And threw at time - " + LocalDateTime.now());
+                        throw new UnsupportedStateException("You with id: %d are not owner!".formatted(userCheck.getId()));
                     }
                 }
-            } else {
-                throw new UnsupportedStateException("You not owner!");
             }
         }
+
         userRepository.delete(userCheck);
         log.info("User with id {} was deleted", id);
+        log.info(" and at time - " + LocalDateTime.now());
 
         return UserMapper.USER_MAPPER.toUserDto(userCheck);
     }
 
     public User findByName(String username) {
-
+        log.info("And send from method %s at time - ".formatted("findByName") + LocalDateTime.now());
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Username name was not found"));
+                .orElseThrow(() -> {
+                    log.info("And threw at time - " + LocalDateTime.now());
+                    throw  new RuntimeException("Username %s name was not found".formatted(username));
+                });
     }
 
     private User checkByIdInDb(Long id) {
+        log.info("And send from method %s at time - ".formatted("checkByIdInDb") + LocalDateTime.now());
         return userRepository.findById(id).orElseThrow(() -> {
+            log.info("And threw at time - " + LocalDateTime.now());
             throw new ObjectNotFoundException("User was not found in db");
 
         });
     }
 
     private User getMyId(Principal principal) {
-
+        log.info("And send from method %s at time - ".formatted("getMyId") + LocalDateTime.now());
         return findByName(principal.getName());
     }
 }
