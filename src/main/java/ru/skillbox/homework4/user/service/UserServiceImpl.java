@@ -17,6 +17,7 @@ import ru.skillbox.homework4.user.repository.UserRepository;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -42,19 +43,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getById(Long id, Principal principal) {
 
-        User userCheck = userRepository.findById(id).orElseThrow(() -> {
-            log.warn("User with id {} was not found", id);
-
-            throw new ObjectNotFoundException("User not found");
-        });
+        User userCheck = checkByIdInDb(id);
 
         User userByName = getMyId(principal);
 
-        for (Role role: userCheck.getRole()) {
-            if (role.toString().equals(RoleType.ROLE_USER.toString())) {
-                if (!(userByName.getId().equals(id))) {
-                    throw new UnsupportedStateException("You not owner!");
+        for (Role role : userByName.getRole()) {
+
+            if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
+                    !role.getAuthority().toString().equals("ROLE_MODERATOR")) {
+                if (role.getAuthority().toString().equals("ROLE_USER")) {
+                    if (!(Objects.equals(userByName.getId(), userCheck.getId()))) {
+                        throw new UnsupportedStateException("You not owner!");
+                    }
                 }
+            } else {
+                throw new UnsupportedStateException("You not owner!");
             }
         }
 
@@ -85,61 +88,63 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto update(Long id, UserDto userDto, Principal principal) {
 
-        User userBd = checkUserById(id);
+        User userCheck = checkByIdInDb(id);
 
         User userByName = getMyId(principal);
 
-        for (Role role: userBd.getRole()) {
-            if (role.toString().equals(RoleType.ROLE_USER.toString())) {
-                if (!(userByName.getId().equals(id))) {
-                    throw new UnsupportedStateException("You not owner!");
+        for (Role role : userByName.getRole()) {
+
+            if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
+                    !role.getAuthority().toString().equals("ROLE_MODERATOR")) {
+                if (role.getAuthority().toString().equals("ROLE_USER")) {
+                    if (!(Objects.equals(userByName.getId(), userCheck.getId()))) {
+                        throw new UnsupportedStateException("You not owner!");
+                    }
                 }
+            } else {
+                throw new UnsupportedStateException("You not owner!");
             }
         }
 
         if (userDto.getEmail() != null) {
-            userBd.setEmail(userDto.getEmail());
+            userCheck.setEmail(userDto.getEmail());
         }
 
         if (userDto.getUsername() != null) {
-            userBd.setUsername(userDto.getUsername());
+            userCheck.setUsername(userDto.getUsername());
         }
 
         log.info("User updated");
-        userRepository.save(userBd);
+        userRepository.save(userCheck);
 
-        return UserMapper.USER_MAPPER.toUserDto(userBd);
+        return UserMapper.USER_MAPPER.toUserDto(userCheck);
     }
 
     @Override
     @Transactional
     public UserDto delete(Long id, Principal principal) {
 
-        User user = checkByIdInDb(id);
+        User userCheck = checkByIdInDb(id);
 
         User userByName = getMyId(principal);
 
-        for (Role role: user.getRole()) {
-            if (role.toString().equals(RoleType.ROLE_USER.toString())) {
-                if (!(userByName.getId().equals(id))) {
-                    throw new UnsupportedStateException("You not owner!");
+        for (Role role : userByName.getRole()) {
+
+            if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
+                    !role.getAuthority().toString().equals("ROLE_MODERATOR")) {
+                if (role.getAuthority().toString().equals("ROLE_USER")) {
+                    if (!(Objects.equals(userByName.getId(), userCheck.getId()))) {
+                        throw new UnsupportedStateException("You not owner!");
+                    }
                 }
+            } else {
+                throw new UnsupportedStateException("You not owner!");
             }
         }
-
-        userRepository.delete(user);
+        userRepository.delete(userCheck);
         log.info("User with id {} was deleted", id);
 
-        return UserMapper.USER_MAPPER.toUserDto(user);
-    }
-
-    private User checkUserById(Long userId) {
-
-        return userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("User with id {} was not found", userId);
-
-            throw new ObjectNotFoundException("Пользователь не найден");
-        });
+        return UserMapper.USER_MAPPER.toUserDto(userCheck);
     }
 
     public User findByName(String username) {
@@ -148,7 +153,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("Username name was not found"));
     }
 
-        private User checkByIdInDb(Long id) {
+    private User checkByIdInDb(Long id) {
         return userRepository.findById(id).orElseThrow(() -> {
             throw new ObjectNotFoundException("User was not found in db");
 
