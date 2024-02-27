@@ -3,6 +3,7 @@ package ru.skillbox.homework4.user.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final PasswordEncoder encoder;
 
     @Override
     public List<UserDto> findAll(Pageable page) {
@@ -63,10 +66,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto create(UserDto userDto, RoleType type) {
 
-        User user = UserMapper.USER_MAPPER.toUser(userDto);
-        user.setPassword(userDto.getPassword());
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+
         user.setRole(Collections.singletonList(Role.from(type)));
 
+        user.setPassword(encoder.encode(userDto.getPassword()));
         userRepository.save(user);
         log.info("User was created");
 

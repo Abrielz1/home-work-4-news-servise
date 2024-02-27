@@ -37,7 +37,7 @@ public class UserController {
                                      @Positive @RequestParam(defaultValue = "10") Integer size) {
 
         PageRequest page = PageRequest.of(from / size, size);
-        return userService.findAll(page);
+          return userService.findAll(page);
     }
 
     @GetMapping("/{id}")
