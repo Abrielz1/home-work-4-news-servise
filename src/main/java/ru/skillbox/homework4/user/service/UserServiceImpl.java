@@ -67,12 +67,14 @@ public class UserServiceImpl implements UserService {
     public UserDto create(UserDto userDto, RoleType type) {
 
         User user = new User();
+        Role role = Role.from(type);
+
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
-
-        user.setRole(Collections.singletonList(Role.from(type)));
-
+        role.setUser(user);
+        user.setRole(Collections.singletonList(role));
         user.setPassword(encoder.encode(userDto.getPassword()));
+
         userRepository.save(user);
         log.info("User was created");
 
