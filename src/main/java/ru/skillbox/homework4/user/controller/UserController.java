@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(ROLE_ADMIN)")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public List<UserDto> getAllUsers(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                      @Positive @RequestParam(defaultValue = "10") Integer size) {
 
@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(ROLE_USER, ROLE_ADMIN, ROLE_MODERATOR)")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
     public UserDto getById(@Positive @PathVariable Long id, Principal principal) {
 
         return userService.getById(id, principal);
@@ -50,7 +50,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority(ROLE_USER, ROLE_ADMIN, ROLE_MODERATOR)")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
     public UserDto updateUserById(@Positive @PathVariable Long id,
                                   @Validated(Update.class) @RequestBody UserDto userDto,
                                   Principal principal) {
