@@ -9,10 +9,13 @@ import ru.skillbox.homework4.commentary.dto.CommentariesDto;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.commentary.repository.CommentaryRepository;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
+import ru.skillbox.homework4.exception.exceptions.UnsupportedStateException;
 import ru.skillbox.homework4.news.model.News;
 import ru.skillbox.homework4.news.repository.NewsRepository;
+import ru.skillbox.homework4.user.model.Role;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 import static ru.skillbox.homework4.commentary.mapper.CommentaryMapper.COMMENTARY_MAPPER;
@@ -39,9 +42,9 @@ public class CommentaryServiceImpl implements CommentaryService {
     }
 
     @Override
-    public CommentariesDto findCommentaryById(Long newsId, Long userId, Long commentaryId) {
+    public CommentariesDto findCommentaryById(Long newsId, Principal principal, Long commentaryId) {
 
-        User user = checkUserById(userId);
+        User user = checkNyUsername(principal.getName());
         News news = checkNewsById(newsId);
         Commentary commentary = checkCommentaryById(commentaryId);
         CommentariesDto commentariesDto = COMMENTARY_MAPPER.setNewsAndAuthorsOfComments(commentary);
@@ -54,11 +57,11 @@ public class CommentaryServiceImpl implements CommentaryService {
     @Override
     @Transactional
     public CommentariesDto createCommentary(Long newsId,
-                                            Long userId,
+                                            Principal principal,
                                             CommentariesDto commentariesDto) {
 
         News news = checkNewsById(newsId);
-        User user = checkUserById(userId);
+        User user = checkNyUsername(principal.getName());
         Commentary commentary = new Commentary();
         commentary.setNews(news);
         commentary.setUser(user);
@@ -77,12 +80,22 @@ public class CommentaryServiceImpl implements CommentaryService {
     @Transactional
     public CommentariesDto updateCommentaryById(Long newsId,
                                                 Long commentaryId,
-                                                Long userId,
+                                                Principal principal,
                                                 CommentariesDto commentariesDto) {
 
         News newsDb = checkNewsById(newsId);
-        User userDb = checkUserById(userId);
         Commentary commentaryDb = checkCommentaryById(commentaryId);
+        User user = checkNyUsername(principal.getName());
+
+        for (Role role : user.getRole()) {
+            if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
+                    !role.getAuthority().toString().equals("ROLE_MODERATOR")){
+                if (!commentaryDb.getUser().getId().equals(user.getId())) {
+                    throw new UnsupportedStateException("You are not news owner!");
+                }
+            }
+        }
+
 
         if (commentariesDto != null) {
 
@@ -97,7 +110,7 @@ public class CommentaryServiceImpl implements CommentaryService {
         }
 
         CommentariesDto commentariesDtoResponse = COMMENTARY_MAPPER.setNewsAndAuthorsOfComments(commentaryDb);
-        commentariesDtoResponse = COMMENTARY_MAPPER.setAuthorIdAndNewsId(commentariesDtoResponse, userDb, newsDb);
+        commentariesDtoResponse = COMMENTARY_MAPPER.setAuthorIdAndNewsId(commentariesDtoResponse, user, newsDb);
 
         log.info("Commentary with id {} was created", commentaryDb.getId());
         return commentariesDtoResponse;
@@ -106,10 +119,20 @@ public class CommentaryServiceImpl implements CommentaryService {
     @Override
     @Transactional
     public CommentariesDto deleteCommentaryById(Long newsId,
-                                                Long commentaryId,
-                                                Long userId) {
+                                                Principal principal,
+                                                Long commentaryId) {
 
         Commentary commentary = checkCommentaryById(commentaryId);
+        User user = checkNyUsername(principal.getName());
+
+        for (Role role : user.getRole()) {
+            if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
+                    !role.getAuthority().toString().equals("ROLE_MODERATOR")){
+                if (!commentary.getUser().getId().equals(user.getId())) {
+                    throw new UnsupportedStateException("You are not news owner!");
+                }
+            }
+        }
 
         commentaryRepository.deleteById(commentaryId);
 
@@ -126,19 +149,20 @@ public class CommentaryServiceImpl implements CommentaryService {
                 });
     }
 
-    private User checkUserById(Long userId) {
-
-        return userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("User with id {} is not found", userId);
-            throw new ObjectNotFoundException("User was not found");
-        });
-    }
-
     private News checkNewsById(Long newsId) {
 
         return newsRepository.findById(newsId).orElseThrow(() -> {
             log.warn("News with id {} is not found", newsId);
             throw new ObjectNotFoundException("News was not found");
+        });
+    }
+
+    private User checkNyUsername(String name) {
+
+        return userRepository.findByUsername(name).orElseThrow(() -> {
+
+            log.warn("User with id {} was not found", name);
+            throw new ObjectNotFoundException("User was not found");
         });
     }
 }

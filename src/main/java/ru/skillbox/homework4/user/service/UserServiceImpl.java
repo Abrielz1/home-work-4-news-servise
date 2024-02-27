@@ -56,8 +56,6 @@ public class UserServiceImpl implements UserService {
                         throw new UnsupportedStateException("You not owner!");
                     }
                 }
-            } else {
-                throw new UnsupportedStateException("You not owner!");
             }
         }
 
@@ -88,9 +86,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto update(Long id, UserDto userDto, Principal principal) {
 
-        User userCheck = checkByIdInDb(id);
+        var userCheck = checkByIdInDb(id);
 
-        User userByName = getMyId(principal);
+        var userByName = getMyId(principal);
 
         for (Role role : userByName.getRole()) {
 

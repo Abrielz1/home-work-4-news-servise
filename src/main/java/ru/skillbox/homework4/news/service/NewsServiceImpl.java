@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
+import ru.skillbox.homework4.exception.exceptions.UnsupportedStateException;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
 import ru.skillbox.homework4.news.model.News;
@@ -15,8 +16,10 @@ import ru.skillbox.homework4.news.model.category.CategoryFilter;
 import ru.skillbox.homework4.news.repository.CategoryRepository;
 import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.news.repository.NewsSpecification;
+import ru.skillbox.homework4.user.model.Role;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +42,8 @@ public class NewsServiceImpl implements NewsService {
     public List<NewsDto> filteredByCriteria(CategoryFilter filter, PageRequest page) {
 
         log.info("Request category were sent!");
-        return newsRepository.findAll(NewsSpecification.byNewsNameAndOwnerIdFilter(filter), page).stream()
+        return newsRepository.findAll(NewsSpecification.byNewsNameAndOwnerIdFilter(filter), page)
+                .stream()
                 .map(NEWS_MAPPER::toNewsDto)
                 .collect(Collectors.toList());
     }
@@ -74,9 +78,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
-    public NewsDto createNews(Long userId, Long categoryId, NewsDto newsDto) {
+    public NewsDto createNews(Principal principal, Long categoryId, NewsDto newsDto) {
 
-        User user = checkUserById(userId);
+        User user = checkNyUsername(principal.getName());
         Category category = checkCategoryById(categoryId);
 
         News news = new News();
@@ -88,14 +92,25 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
-    public NewsDto updateNewsById(Long userId,
+    public NewsDto updateNewsById(Principal principal,
                                   Long categoryId,
                                   Long newsId,
                                   NewsDto newsDto) {
 
-        checkUserById(userId);
+
         News newsBd = checkNewsById(newsId);
         Category category = checkCategoryById(categoryId);
+        User user = checkNyUsername(principal.getName());
+
+        for (Role role : user.getRole()) {
+            if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
+                    !role.getAuthority().toString().equals("ROLE_MODERATOR")){
+                if (!newsBd.getUser().getId().equals(user.getId())) {
+                    throw new UnsupportedStateException("You are not news owner!");
+                }
+            }
+        }
+
 
         if (newsDto.getCategory() == null) {
             newsDto.setCategory(CATEGORY_MAPPER.toCategoryDto(category));
@@ -122,24 +137,25 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
-    public NewsDto deleteNewsById(Long newsId, Long userId) {
+    public NewsDto deleteNewsById(Long newsId, Principal principal) {
 
         News news = checkNewsById(newsId);
 
         newsRepository.deleteById(newsId);
 
+        User user = checkNyUsername(principal.getName());
+
+        for (Role role : user.getRole()) {
+            if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
+                    !role.getAuthority().toString().equals("ROLE_MODERATOR")){
+                if (!news.getUser().getId().equals(user.getId())) {
+                    throw new UnsupportedStateException("You are not news owner!");
+                }
+            }
+        }
+
         log.info("News with id: {} was deleted!", newsId);
         return NEWS_MAPPER.toNewsDto(news);
-    }
-
-
-    private User checkUserById(Long userId) {
-
-        return userRepository.findById(userId).orElseThrow(() -> {
-
-            log.warn("User with id {} was not found", userId);
-            throw new ObjectNotFoundException("User was not found");
-        });
     }
 
     private News checkNewsById(Long newsId) {
@@ -157,6 +173,15 @@ public class NewsServiceImpl implements NewsService {
 
             log.warn("Category with id {} was not found", categoryId);
             throw new ObjectNotFoundException("Category was not found");
+        });
+    }
+
+    private User checkNyUsername(String name) {
+
+        return userRepository.findByUsername(name).orElseThrow(() -> {
+
+            log.warn("User with id {} was not found", name);
+            throw new ObjectNotFoundException("User was not found");
         });
     }
 }
