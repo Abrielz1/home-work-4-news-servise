@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.homework4.commentary.model.Commentary;
 import ru.skillbox.homework4.exception.exceptions.ObjectNotFoundException;
+import ru.skillbox.homework4.exception.exceptions.UnsupportedStateException;
 import ru.skillbox.homework4.news.dto.NewsDto;
 import ru.skillbox.homework4.news.dto.FullNewsDto;
 import ru.skillbox.homework4.news.model.News;
@@ -15,8 +16,11 @@ import ru.skillbox.homework4.news.model.category.CategoryFilter;
 import ru.skillbox.homework4.news.repository.CategoryRepository;
 import ru.skillbox.homework4.news.repository.NewsRepository;
 import ru.skillbox.homework4.news.repository.NewsSpecification;
+import ru.skillbox.homework4.user.model.Role;
 import ru.skillbox.homework4.user.model.User;
 import ru.skillbox.homework4.user.repository.UserRepository;
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +43,8 @@ public class NewsServiceImpl implements NewsService {
     public List<NewsDto> filteredByCriteria(CategoryFilter filter, PageRequest page) {
 
         log.info("Request category were sent!");
-        return newsRepository.findAll(NewsSpecification.byNewsNameAndOwnerIdFilter(filter), page).stream()
+        return newsRepository.findAll(NewsSpecification.byNewsNameAndOwnerIdFilter(filter), page)
+                .stream()
                 .map(NEWS_MAPPER::toNewsDto)
                 .collect(Collectors.toList());
     }
@@ -74,28 +79,40 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
-    public NewsDto createNews(Long userId, Long categoryId, NewsDto newsDto) {
+    public NewsDto createNews(Principal principal, Long categoryId, NewsDto newsDto) {
 
-        User user = checkUserById(userId);
+        User user = checkNyUsername(principal.getName());
         Category category = checkCategoryById(categoryId);
 
         News news = new News();
         news = newsRepository.save(NEWS_MAPPER.setCategoryToNewsAndUserAsOwner(newsDto, user, category));
 
-        log.info("News was created");
+        log.info("News with name: %s was created".formatted(news.getNewsName()));
         return NEWS_MAPPER.toNewsDto(news);
     }
 
     @Override
     @Transactional
-    public NewsDto updateNewsById(Long userId,
+    public NewsDto updateNewsById(Principal principal,
                                   Long categoryId,
                                   Long newsId,
                                   NewsDto newsDto) {
 
-        checkUserById(userId);
+
         News newsBd = checkNewsById(newsId);
         Category category = checkCategoryById(categoryId);
+        User user = checkNyUsername(principal.getName());
+
+        for (Role role : user.getRole()) {
+            if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
+                    !role.getAuthority().toString().equals("ROLE_MODERATOR")){
+                if (!newsBd.getUser().getId().equals(user.getId())) {
+                    log.warn("News with id {} was not found", newsId);
+                    throw new UnsupportedStateException("You are not news with id: %s owner!".formatted(newsId));
+                }
+            }
+        }
+
 
         if (newsDto.getCategory() == null) {
             newsDto.setCategory(CATEGORY_MAPPER.toCategoryDto(category));
@@ -122,41 +139,52 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
-    public NewsDto deleteNewsById(Long newsId, Long userId) {
+    public NewsDto deleteNewsById(Long newsId, Principal principal) {
 
         News news = checkNewsById(newsId);
 
         newsRepository.deleteById(newsId);
 
+        User user = checkNyUsername(principal.getName());
+
+        for (Role role : user.getRole()) {
+            if (!role.getAuthority().toString().equals("ROLE_ADMIN") ||
+                    !role.getAuthority().toString().equals("ROLE_MODERATOR")){
+                if (!news.getUser().getId().equals(user.getId())) {
+                    log.warn("News with id {} was not found", newsId);
+                    throw new UnsupportedStateException("You are not news with id: %s owner!".formatted(newsId));
+                }
+            }
+        }
+
         log.info("News with id: {} was deleted!", newsId);
         return NEWS_MAPPER.toNewsDto(news);
     }
 
-
-    private User checkUserById(Long userId) {
-
-        return userRepository.findById(userId).orElseThrow(() -> {
-
-            log.warn("User with id {} was not found", userId);
-            throw new ObjectNotFoundException("User was not found");
-        });
-    }
-
     private News checkNewsById(Long newsId) {
-
+        log.info("And send from method %s at time - ".formatted("checkNewsById") + LocalDateTime.now());
         return newsRepository.findById(newsId).orElseThrow(() -> {
 
             log.warn("News with id {} was not found", newsId);
-            throw new ObjectNotFoundException("News was not found");
+            throw new ObjectNotFoundException("News  with id: %s was not found!".formatted(newsId));
         });
     }
 
     private Category checkCategoryById(Long categoryId) {
-
+        log.info("And send from method %s at time - ".formatted("checkCategoryById") + LocalDateTime.now());
         return categoryRepository.findById(categoryId).orElseThrow(() -> {
 
             log.warn("Category with id {} was not found", categoryId);
-            throw new ObjectNotFoundException("Category was not found");
+            throw new ObjectNotFoundException("Category with id: %s was not found".formatted(categoryId));
+        });
+    }
+
+    private User checkNyUsername(String name) {
+        log.info("And send from method %s at time - ".formatted("checkNyUsername") + LocalDateTime.now());
+        return userRepository.findByUsername(name).orElseThrow(() -> {
+
+            log.warn("User with name {} was not found", name);
+            throw new ObjectNotFoundException("User with name %s was not found".formatted(name));
         });
     }
 }
